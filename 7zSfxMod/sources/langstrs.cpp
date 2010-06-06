@@ -2,9 +2,9 @@
 /* File:        langstrs.cpp                                                 */
 /* Created:     Wed, 10 Jan 2007 23:44:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Mon, 22 Mar 2010 11:17:07 GMT                                */
+/* Last update: Sun, 06 Jun 2010 10:54:57 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1167                                                         */
+/* Revision:    1243                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1167                                                         */
 /* Updated:     Mon, 22 Mar 2010 11:17:07 GMT                                */
@@ -142,11 +142,11 @@ LANGSTRING SfxLangStrings[] = {
 	{ STR_WARNING_SUFFIX,		": warning",
 								": предупреждение", NULL },
 #ifdef _SFX_USE_CHECK_FREE_SPACE
-	{ STR_DISK_FREE_SPACE,		"Not enough free space for extracting.\n\nAre you want to continue?",
+	{ STR_DISK_FREE_SPACE,		"Not enough free space for extracting.\n\nDo you want to continue?",
 								"На диске недостаточно места для распаковки.\n\nВы хотите продолжить?", NULL },
 #endif // _SFX_USE_CHECK_FREE_SPACE
 #ifdef _SFX_USE_CHECK_RAM
-	{ STR_PHYSICAL_MEMORY,		"Insufficient physical memory.\nExtracting may take a long time.\n\nAre you want to continue?",
+	{ STR_PHYSICAL_MEMORY,		"Insufficient physical memory.\nExtracting may take a long time.\n\nDo you want to continue?",
 								"Недостаточно физической памяти.\nРаспаковка может занять продолжительное время.\n\nВы хотите продолжить?", NULL },
 #endif // _SFX_USE_CHECK_FREE_SPACE
 #endif // _SFX_USE_WARNINGS

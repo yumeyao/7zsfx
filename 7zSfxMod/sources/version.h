@@ -2,9 +2,15 @@
 /* File:        version.h                                                    */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 06 Jun 2010 03:58:09 GMT                                */
+/* Last update: Sun, 06 Jun 2010 09:41:35 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
 /* Revision:    1774                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1774                                                         */
+/* Updated:     Sun, 06 Jun 2010 08:49:42 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Add warnings stuff											 */
+/*				(_SFX_USE_CHECK_RAM && _SFX_USE_CHECK_FREE_SPACE)            */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1773                                                         */
 /* Updated:     Sat, 05 Jun 2010 11:16:59 GMT                                */

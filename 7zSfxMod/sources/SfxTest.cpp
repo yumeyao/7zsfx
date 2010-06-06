@@ -2,9 +2,14 @@
 /* File:        SfxTest.cpp                                                  */
 /* Created:     Sun, 25 Feb 2007 09:13:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 06 Jun 2010 07:24:24 GMT                                */
+/* Last update: Sun, 06 Jun 2010 09:05:47 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
 /* Revision:    1197                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1197                                                         */
+/* Updated:     Sun, 06 Jun 2010 09:05:47 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Add one more test for warning dialog                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1122                                                         */
 /* Updated:     Mon, 22 Mar 2010 11:32:53 GMT                                */

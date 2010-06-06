@@ -2,9 +2,14 @@
 /* File:        ExtractEngine.cpp                                            */
 /* Created:     Wed, 05 Oct 2005 07:36:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 06 Jun 2010 01:51:02 GMT                                */
+/* Last update: Sun, 06 Jun 2010 08:51:01 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1705                                                         */
+/* Revision:    1706                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1706                                                         */
+/* Updated:     Sun, 06 Jun 2010 08:51:01 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Add check free space on destination drive                    */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1630                                                         */
 /* Updated:     Mon, 22 Mar 2010 11:14:29 GMT                                */

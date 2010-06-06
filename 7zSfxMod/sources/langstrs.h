@@ -2,9 +2,14 @@
 /* File:        langstrs.h                                                   */
 /* Created:     Fri, 29 Jul 2005 23:10:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Mon, 22 Mar 2010 11:19:08 GMT                                */
+/* Last update: Sun, 06 Jun 2010 08:47:19 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1697                                                         */
+/* Revision:    1773                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1773                                                         */
+/* Updated:     Sun, 06 Jun 2010 08:47:19 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Add warnings stuff                                           */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1697                                                         */
 /* Updated:     Mon, 22 Mar 2010 11:19:08 GMT                                */

@@ -2,9 +2,15 @@
 /* File:        config.h                                                     */
 /* Created:     Sat, 23 Jan 2010 11:11:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sat, 05 Jun 2010 23:58:49 GMT                                */
+/* Last update: Sun, 06 Jun 2010 08:46:48 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
 /* Revision:    134                                                          */
+/*---------------------------------------------------------------------------*/
+/* Revision:    134                                                          */
+/* Updated:     Sun, 06 Jun 2010 07:47:47 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Add warnings stuff											 */
+/*				(_SFX_USE_CHECK_RAM && _SFX_USE_CHECK_FREE_SPACE)            */
 /*---------------------------------------------------------------------------*/
 /* Revision:    55                                                           */
 /* Updated:     Thu, 18 Mar 2010 14:04:32 GMT                                */

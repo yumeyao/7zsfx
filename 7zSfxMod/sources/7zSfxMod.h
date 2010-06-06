@@ -2,9 +2,14 @@
 /* File:        7zSfxMod.h                                                   */
 /* Created:     Thu, 28 Jul 2005 02:44:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 06 Jun 2010 07:21:55 GMT                                */
+/* Last update: Sun, 06 Jun 2010 07:47:08 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
 /* Revision:    1775                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1775                                                         */
+/* Updated:     Sun, 06 Jun 2010 07:46:34 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Add warnings stuff                                           */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1699                                                         */
 /* Updated:     Mon, 22 Mar 2010 11:00:15 GMT                                */

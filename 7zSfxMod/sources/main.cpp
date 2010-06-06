@@ -2,10 +2,17 @@
 /* File:        main.cpp                                                     */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sat, 05 Jun 2010 23:44:37 GMT                                */
+/* Last update: Sun, 06 Jun 2010 09:41:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Revision:    1774                                                         */
 /*---------------------------------------------------------------------------*/
-/* Revision:    1773                                                         */
+/* Revision:    1774                                                         */
+/* Updated:     Sun, 06 Jun 2010 08:51:48 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Add warning stuff											 */
+/*				(WarningTitle, MiscFlags, -mf command line switch)			 */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1698                                                         */
 /* Updated:     Mon, 22 Mar 2010 11:26:58 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
 /* Description: New file stamp.                                              */

@@ -2,9 +2,14 @@
 /* File:        SfxDialogs.h                                                 */
 /* Created:     Sat, 13 Jan 2007 12:01:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Mon, 22 Mar 2010 11:32:27 GMT                                */
+/* Last update: Sun, 06 Jun 2010 08:48:12 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1164                                                         */
+/* Revision:    1240                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1240                                                         */
+/* Updated:     Sun, 06 Jun 2010 08:48:12 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Add CSfxDialog_Warning                                       */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1164                                                         */
 /* Updated:     Mon, 22 Mar 2010 11:32:27 GMT                                */

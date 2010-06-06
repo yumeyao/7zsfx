@@ -2,9 +2,9 @@
 /* File:        config.cpp                                                   */
 /* Created:     Tue, 23 Feb 2010 05:32:49 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Mon, 22 Mar 2010 11:11:30 GMT                                */
+/* Last update: Sun, 06 Jun 2010 08:50:18 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    28                                                           */
+/* Revision:    104                                                          */
 /*---------------------------------------------------------------------------*/
 /* Revision:    28                                                           */
 /* Updated:     Mon, 22 Mar 2010 11:11:30 GMT                                */
