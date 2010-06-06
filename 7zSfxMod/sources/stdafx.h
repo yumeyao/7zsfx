@@ -2,9 +2,9 @@
 /* File:        stdafx.h                                                     */
 /* Created:     Sun, 29 Oct 2006 13:32:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Mon, 22 Mar 2010 11:33:37 GMT                                */
+/* Last update: Sat, 29 May 2010 08:09:12 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1240                                                         */
+/* Revision:    1308                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1240                                                         */
 /* Updated:     Mon, 22 Mar 2010 11:33:37 GMT                                */
@@ -17,6 +17,16 @@
 #if !defined(UNICODE) || !defined(_UNICODE)
 	#error "UNICODE and _UNICODE must be defined"
 #endif // UNICODE && _UNICODE
+
+#define _MSC_VER_MIN	1400
+#define _MSC_VER_MAX	1600
+
+#if defined(_MSC_VER) && (_MSC_VER < _MSC_VER_MIN || _MSC_VER > _MSC_VER_MAX)
+	#pragma message( "Warning: This MS compiler is not tested" )
+	#undef _MSC_VER_OK
+#else
+	#define _MSC_VER_OK	
+#endif // _MSC_VER
 
 // All possible defines
 #ifdef _DEBUGALL
@@ -55,7 +65,15 @@
 #define WIN32_LEAN_AND_MEAN
 #define _WIN32_WINNT 0x0500
 #define _RICHEDIT_VER	0x0200
+
+#if defined(_MSC_VER) && _MSC_VER == 1200
+	#pragma warning(disable:4068)
+#endif // _MSC_VER && _MSC_VER == 1200
 #include <windows.h>
+#if defined(_MSC_VER) && _MSC_VER == 1200
+	#pragma warning(default:4068)
+#endif // _MSC_VER && _MSC_VER == 1200
+
 #include <commctrl.h>
 #include <shlobj.h>
 #include <shellapi.h>

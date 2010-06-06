@@ -1,7 +1,7 @@
 @Echo off
 rem SetLocal enabledelayedexpansion
 
-Set SfxBuild=1704
+Set SfxBuild=1773
 Set SfxVersion=140
 
 Set tm=%time%

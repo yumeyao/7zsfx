@@ -2,9 +2,9 @@
 /* File:        7zSfxMod.h                                                   */
 /* Created:     Thu, 28 Jul 2005 02:44:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Mon, 22 Mar 2010 11:00:15 GMT                                */
+/* Last update: Sun, 06 Jun 2010 07:21:55 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1699                                                         */
+/* Revision:    1775                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1699                                                         */
 /* Updated:     Mon, 22 Mar 2010 11:00:15 GMT                                */
@@ -20,8 +20,12 @@
 
 #define CFG_TITLE						_CFG_PARAM_TYPE"Title"
 #define CFG_ERRORTITLE					_CFG_PARAM_TYPE"ErrorTitle"
+#ifdef _SFX_USE_WARNINGS
+	#define CFG_WARNINGTITLE			_CFG_PARAM_TYPE"WarningTitle"
+#endif // _SFX_USE_WARNINGS
 #define CFG_GUIMODE						_CFG_PARAM_TYPE"GUIMode"
 #define CFG_GUIFLAGS					_CFG_PARAM_TYPE"GUIFlags"
+#define CFG_MISCFLAGS					_CFG_PARAM_TYPE"MiscFlags"
 #define CFG_BEGINPROMPT					_CFG_PARAM_TYPE"BeginPrompt"
 #define CFG_INSTALLPATH					_CFG_PARAM_TYPE"InstallPath"
 #define CFG_EXTRACT_TITLE				_CFG_PARAM_TYPE"ExtractTitle"
@@ -33,7 +37,6 @@
 #define CFG_SHORTCUT					_CFG_PARAM_TYPE"Shortcut"
 #define CFG_DELETE						_CFG_PARAM_TYPE"Delete"
 #define CFG_SELFDELETE					_CFG_PARAM_TYPE"SelfDelete"
-#define CFG_7ZSTOOLSTEST				_CFG_PARAM_TYPE"7zSToolsTest"
 #define CFG_EXTRACT_PATH_TITLE			_CFG_PARAM_TYPE"ExtractPathTitle"
 #define CFG_EXTRACT_PATH_TEXT			_CFG_PARAM_TYPE"ExtractPathText"
 #define CFG_HELP_TEXT					_CFG_PARAM_TYPE"HelpText"
@@ -78,6 +81,9 @@
 #define	GUIFLAGS_NO_WIN7_PROGRESSBAR	0x2000
 #define GUIFLAGS_MASK					0x1FFF
 
+#define MISCFLAGS_NO_CHECK_DISK_FREE	0x0001
+#define MISCFLAGS_NO_CHECK_RAM			0x0002
+
 #define ERRC_NONE						0
 #define ERRC_GET_PATHNAME				1
 #define ERRC_OPEN_ARCHIVE				2
@@ -112,6 +118,8 @@
 	#define TSD_HELPTEXT_FORCE		L'H'
 	#define TSD_EXTRACTPATH			L'p'
 	#define TSD_EXTRACTPATH_FORCE	L'P'
+	#define TSD_WARNING				L'w'
+	#define TSD_WARNING_FORCE		L'W'
 	#define TSD_ERROR				L'z'
 	#define TSD_ERROR_FORCE			L'Z'
 

@@ -2,9 +2,14 @@
 /* File:        Exceptions.cpp                                               */
 /* Created:     Mon, 15 Mar 2010 11:26:32 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Mon, 22 Mar 2010 11:14:04 GMT                                */
+/* Last update: Fri, 28 May 2010 22:43:01 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    7                                                            */
+/* Revision:    75                                                           */
+/*---------------------------------------------------------------------------*/
+/* Revision:    75                                                           */
+/* Updated:     Fri, 28 May 2010 22:41:25 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Update to support MSVC 16 (VS2010)                           */
 /*---------------------------------------------------------------------------*/
 /* Revision:    7                                                            */
 /* Updated:     Mon, 22 Mar 2010 11:14:04 GMT                                */
@@ -25,11 +30,11 @@
 #if defined(_MSC_VER) && defined(_WIN32) && !defined(_DEBUG)
 	#ifdef _SFX_USE_CUSTOM_EXCEPTIONS
 		#undef _SFX_USE_CUSTOM_EXCEPTIONS
-		#if defined(_M_IX86) && !defined(_WIN64) && _MSC_VER >= 1400 && _MSC_VER < 1500 && defined(_SFX_USE_CUSTOM_MSVCRT)
+		#if defined(_M_IX86) && !defined(_WIN64) && defined(_MSC_VER_OK) && defined(_SFX_USE_CUSTOM_MSVCRT)
 			// VC2005, x86, old msvcrt.dll from VC6
 			#define _SFX_USE_CUSTOM_EXCEPTIONS_I386
 			#define _SFX_USE_CUSTOM_EXCEPTIONS
-		#endif // defined(_M_IX86) && !defined(_WIN64) && _MSC_VER >= 1400 && _MSC_VER < 1500 && defined(_SFX_USE_CUSTOM_MSVCRT)
+		#endif // defined(_M_IX86) && !defined(_WIN64) && defined(_MSC_VER_OK) && defined(_SFX_USE_CUSTOM_MSVCRT)
 		#ifdef _WIN64
 			#define _SFX_USE_CUSTOM_EXCEPTIONS_VECTORED_WIN64
 			#define _SFX_USE_CUSTOM_EXCEPTIONS

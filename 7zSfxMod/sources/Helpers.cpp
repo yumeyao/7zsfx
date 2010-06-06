@@ -2,9 +2,9 @@
 /* File:        Helpers.cpp                                                  */
 /* Created:     Sat, 30 Jul 2005 11:10:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Mon, 22 Mar 2010 11:16:07 GMT                                */
+/* Last update: Sun, 06 Jun 2010 01:55:50 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1697                                                         */
+/* Revision:    1772                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1697                                                         */
 /* Updated:     Mon, 22 Mar 2010 11:16:07 GMT                                */
@@ -759,44 +759,55 @@ int MyStrincmp( LPCWSTR str1, LPCWSTR str2, int nLength )
 	return (j == nLength) ? 0 : 1;
 }
 
+BOOL checkAlloc(size_t size)
+{
+	if (size == 0)
+		return FALSE;
+#ifdef _SFX_USE_CHECK_RAM
+	MEMORYSTATUSEX	ms;
+	ms.dwLength = sizeof(ms);
+#ifdef _DEBUG
+	if( size > 20*1024*1024 )
+#else
+	if( (MiscFlags&MISCFLAGS_NO_CHECK_RAM) == 0 &&
+			::GlobalMemoryStatusEx(&ms) != FALSE && ms.ullAvailPhys < size )
+#endif // _DEBUG
+	{
+		if( ShowSfxWarningDialog( GetLanguageString(STR_PHYSICAL_MEMORY) ) != IDOK )
+		{
+			MiscFlags = -1;
+			return FALSE;
+		}
+		MiscFlags |= MISCFLAGS_NO_CHECK_RAM;
+	}
+#endif // _SFX_USE_CHECK_RAM
+	return TRUE;
+}
+
 // from alloc.c
-extern "C" void *MidAlloc(size_t size)
-{
-  if (size == 0)
-    return 0;
-  return VirtualAlloc(0, size, MEM_COMMIT, PAGE_READWRITE);
-}
-
-extern "C" void MidFree(void *address)
-{
-  VirtualFree(address, 0, MEM_RELEASE);
-}
-
-extern "C" void MyFree(void *address)
-{
-  free(address);
-}
-
-extern "C" void *MyAlloc(size_t size)
-{
-  if (size == 0)
-    return 0;
-  return malloc(size);
-}
-
 extern "C" void *BigAlloc(size_t size)
 {
-  if (size == 0)
-    return 0;
-  return VirtualAlloc(0, size, MEM_COMMIT, PAGE_READWRITE);
+	if( checkAlloc(size) == FALSE )
+		return NULL;
+	return VirtualAlloc(0, size, MEM_COMMIT, PAGE_READWRITE);
 }
 
-extern "C" void BigFree(void *address)
+extern "C" void *MidAlloc(size_t size)
 {
-  if (address == 0)
-    return;
-  VirtualFree(address, 0, MEM_RELEASE);
+	if( checkAlloc(size) == FALSE )
+		return NULL;
+	return VirtualAlloc(0, size, MEM_COMMIT, PAGE_READWRITE);
 }
+extern "C" void *MyAlloc(size_t size)
+{
+	if( checkAlloc(size) == FALSE )
+		return NULL;
+	return malloc(size);
+}
+
+extern "C" void BigFree(void *address)	{ VirtualFree(address, 0, MEM_RELEASE); }
+extern "C" void MidFree(void *address)	{ VirtualFree(address, 0, MEM_RELEASE); }
+extern "C" void MyFree(void *address)	{ free(address); }
 
 int GetDirectorySeparatorPos( UString& ustrPath )
 {

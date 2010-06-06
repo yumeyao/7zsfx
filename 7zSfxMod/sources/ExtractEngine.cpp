@@ -2,9 +2,9 @@
 /* File:        ExtractEngine.cpp                                            */
 /* Created:     Wed, 05 Oct 2005 07:36:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Mon, 22 Mar 2010 11:14:29 GMT                                */
+/* Last update: Sun, 06 Jun 2010 01:51:02 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1630                                                         */
+/* Revision:    1705                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1630                                                         */
 /* Updated:     Mon, 22 Mar 2010 11:14:29 GMT                                */
@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "7zSfxModInt.h"
 #include "ExtractEngine.h"
+#include "SfxDialogs.h"
 
 CSfxExtractEngine * SfxExtractEngine;
 
@@ -25,6 +26,19 @@ using namespace NWindows;
 
 STDMETHODIMP CSfxExtractEngine::SetTotal( UInt64 size )
 {
+#ifdef _SFX_USE_CHECK_FREE_SPACE
+	UInt64 ui64Free;
+	if( (MiscFlags&MISCFLAGS_NO_CHECK_DISK_FREE) == 0 &&
+			::GetDiskFreeSpaceEx( extractPath, (PULARGE_INTEGER)&ui64Free, NULL, NULL ) != FALSE && ui64Free < size )
+	{
+		if( ShowSfxWarningDialog( GetLanguageString(STR_DISK_FREE_SPACE) ) != IDOK )
+		{
+			m_ErrorCode = SfxErrors::seCreateFile; // fake error code for prevent "Internal error" dialog
+			return E_FAIL;
+		}
+		MiscFlags |= MISCFLAGS_NO_CHECK_DISK_FREE;
+	}
+#endif // _SFX_USE_CHECK_FREE_SPACE
 	::SendMessage( hwndExtractDlg, WM_7ZSFX_SETTOTAL, 0, (LPARAM)&size );
 	return S_OK;
 }
@@ -233,8 +247,11 @@ HRESULT CSfxExtractEngine::Extract(IInArchive *archive, LPCWSTR lpwszFolderName)
 				SfxErrorDialog( FALSE, ERR_7Z_EXTRACT_ERROR1, dwExitCode );
 			else
 			{
-				::SetLastError( dwExitCode&0xffff );
-				SfxErrorDialog( TRUE, ERR_7Z_EXTRACT_ERROR2, dwExitCode );
+				if( (dwExitCode&0xffff) != ERROR_OUTOFMEMORY || MiscFlags != -1 )
+				{
+					::SetLastError( dwExitCode&0xffff );
+					SfxErrorDialog( TRUE, ERR_7Z_EXTRACT_ERROR2, dwExitCode );
+				}
 			}
 			return E_FAIL;
 		}

@@ -2,9 +2,9 @@
 /* File:        SfxDialogs.cpp                                               */
 /* Created:     Sat, 13 Jan 2007 02:03:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Mon, 22 Mar 2010 11:30:01 GMT                                */
+/* Last update: Sat, 05 Jun 2010 23:45:36 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1165                                                         */
+/* Revision:    1240                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1165                                                         */
 /* Updated:     Mon, 22 Mar 2010 11:30:01 GMT                                */
@@ -330,6 +330,11 @@ BOOL CSfxDialog::OnInitDialog()
 	case SD_ICONINFORMATION:
 		hIcon = ::LoadIcon( NULL, MAKEINTRESOURCE(IDI_INFORMATION) );
 		break;
+#ifdef _SFX_USE_WARNINGS
+	case SD_ICONWARNING:
+		hIcon = ::LoadIcon( NULL, MAKEINTRESOURCE(IDI_WARNING) );
+		break;
+#endif // _SFX_USE_WARNINGS
 	}
 	if( hIcon != NULL )
 	{
@@ -620,6 +625,19 @@ BOOL CSfxDialog_Error::OnInitDialog()
 	MessageBeep( MB_ICONHAND );
 	return FALSE;
 }
+
+#ifdef _SFX_USE_WARNINGS
+/*--------------------------------------------------------------------------*/
+// CSfxDialog_Warning
+/*--------------------------------------------------------------------------*/
+BOOL CSfxDialog_Warning::OnInitDialog()
+{
+	CSfxDialog::OnInitDialog();
+	SetDefaultButton( SDC_BUTTON2 );
+	MessageBeep( MB_ICONEXCLAMATION );
+	return FALSE;
+}
+#endif // _SFX_USE_WARNINGS
 
 /*--------------------------------------------------------------------------*/
 // CSfxDialog_CancelPrompt
@@ -1198,6 +1216,18 @@ void ShowSfxErrorDialog( LPCWSTR lpwszMessage )
 #endif // _SFX_USE_WIN7_PROGRESSBAR
 	dlg.Show( SD_OK|SD_ICONSTOP, lpwszErrorTitle, lpwszMessage, hwndExtractDlg );
 }
+
+#ifdef _SFX_USE_WARNINGS
+	INT_PTR ShowSfxWarningDialog( LPCWSTR lpwszMessage )
+	{
+		CSfxDialog_Warning	dlg;
+	#ifdef _SFX_USE_WIN7_PROGRESSBAR
+		if( ::IsWindow(hwndExtractDlg) != FALSE && ::IsBadReadPtr(pwndExtractDialog,sizeof(CSfxDialog_Extract)) == FALSE )
+			pwndExtractDialog->SetTaskbarState( TBPF_ERROR );
+	#endif // _SFX_USE_WIN7_PROGRESSBAR
+		return dlg.Show( SD_YESNO|SD_ICONWARNING, lpwszWarningTitle, lpwszMessage, hwndExtractDlg );
+	}
+#endif // _SFX_USE_WARNINGS
 
 void SfxErrorDialog( BOOL fUseLastError, UINT idFormat, ... )
 {

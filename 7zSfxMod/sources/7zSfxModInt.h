@@ -2,9 +2,9 @@
 /* File:        7zSfxModInt.h                                                */
 /* Created:     Wed, 25 Jul 2007 09:54:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Mon, 22 Mar 2010 11:08:53 GMT                                */
+/* Last update: Sat, 05 Jun 2010 23:45:53 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    972                                                          */
+/* Revision:    1047                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    972                                                          */
 /* Updated:     Mon, 22 Mar 2010 11:08:53 GMT                                */
@@ -51,6 +51,7 @@ extern LPCWSTR	lpwszExtractDialogText;
 extern LPCWSTR	lpwszCancelPrompt;
 extern int		GUIMode;
 extern int		GUIFlags;
+extern int		MiscFlags;
 extern LANGID	idSfxLang;
 extern int		ExtractDialogWidth;
 extern int		ExtractPathWidth;
@@ -69,6 +70,10 @@ class CSfxExtractEngine;
 extern CSfxExtractEngine * SfxExtractEngine;
 extern CObjectVector<CTextConfigPair> Variables;
 
+#ifdef _SFX_USE_WARNINGS
+	extern LPCWSTR lpwszWarningTitle;
+	INT_PTR ShowSfxWarningDialog( LPCWSTR lpwszMessage );
+#endif // _SFX_USE_WARNINGS
 void	ShowSfxErrorDialog( LPCWSTR lpwszMessage );
 void	SfxErrorDialog( BOOL fUseLastError, UINT idFormat, ... );
 BOOL	DeleteFileOrDirectoryAlways( LPCWSTR lpwszPathName );

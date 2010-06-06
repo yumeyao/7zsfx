@@ -2,9 +2,9 @@
 /* File:        SfxTest.cpp                                                  */
 /* Created:     Sun, 25 Feb 2007 09:13:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Mon, 22 Mar 2010 11:32:53 GMT                                */
+/* Last update: Sun, 06 Jun 2010 07:24:24 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1122                                                         */
+/* Revision:    1197                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1122                                                         */
 /* Updated:     Mon, 22 Mar 2010 11:32:53 GMT                                */
@@ -102,9 +102,23 @@ int TestSfxDialogs( CObjectVector<CTextConfigPair>& config )
 			{
 				lpwszValue = GetLanguageString( STR_DEFAULT_HELP_TEXT );
 			}
-			if( lpwszValue == NULL ) nExitCode = ERRC_SFXTEST;
-			CSfxDialog_HelpText	dlg;
-			dlg.Show( SD_OK|SD_ICONINFORMATION, lpwszTitle, lpwszValue );
+			if( lpwszValue == NULL )
+				nExitCode = ERRC_SFXTEST;
+			{
+				CSfxDialog_HelpText	dlg;
+				dlg.Show( SD_OK|SD_ICONINFORMATION, lpwszTitle, lpwszValue );
+			}
+			break;
+		case TSD_WARNING:
+		case TSD_WARNING_FORCE:
+			if( (lpwszValue = GetTextConfigValue( config, CFG_WARNINGTITLE)) != NULL ||
+				*lpwszFlags == TSD_WARNING_FORCE )
+			{
+				ShowSfxWarningDialog( GetLanguageString(STR_DISK_FREE_SPACE) );
+			}
+			else
+				nExitCode = ERRC_SFXTEST;
+			break;
 		}
 		lpwszFlags++;
 	}
@@ -135,6 +149,8 @@ int TestSfxDialogsToStdout( CObjectVector<CTextConfigPair>& config )
 	// TSD_HELPTEXT:
 	if( GetTextConfigValue( config, CFG_HELP_TEXT ) != NULL )
 		WriteStdoutChar( TSD_HELPTEXT );
+	if( GetTextConfigValue( config, CFG_WARNINGTITLE) != NULL )
+		WriteStdoutChar( TSD_WARNING );
 	return ERRC_NONE;
 }
 

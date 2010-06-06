@@ -134,5 +134,22 @@ LANGSTRING SfxLangStrings[] = {
 	{ ERR_SFX_EXCEPTION,		"Application error:\n\nException code:\n\t0x%08x\nAddress:\n\t0x%08x\nException data:\n",
 								"Ошибка приложения:\n\nКод исключения:\n\t0x%08x\nАдрес:\n\t0x%08x\nДанные исключения:\n" },
 #endif // _SFX_USE_CUSTOM_EXCEPTIONS
+
+// Added June 6, 2010: warnings dialogs
+#ifdef _SFX_USE_WARNINGS
+	{ STR_WARNING_TITLE,		"7z SFX: warning",
+								"7z SFX: предупреждение", NULL },
+	{ STR_WARNING_SUFFIX,		": warning",
+								": предупреждение", NULL },
+#ifdef _SFX_USE_CHECK_FREE_SPACE
+	{ STR_DISK_FREE_SPACE,		"Not enough free space for extracting.\n\nAre you want to continue?",
+								"На диске недостаточно места для распаковки.\n\nВы хотите продолжить?", NULL },
+#endif // _SFX_USE_CHECK_FREE_SPACE
+#ifdef _SFX_USE_CHECK_RAM
+	{ STR_PHYSICAL_MEMORY,		"Insufficient physical memory.\nExtracting may take a long time.\n\nAre you want to continue?",
+								"Недостаточно физической памяти.\nРаспаковка может занять продолжительное время.\n\nВы хотите продолжить?", NULL },
+#endif // _SFX_USE_CHECK_FREE_SPACE
+#endif // _SFX_USE_WARNINGS
+
 	{ 0, "", "", NULL }
 };

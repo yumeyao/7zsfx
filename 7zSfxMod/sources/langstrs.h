@@ -67,6 +67,18 @@
 	#define ERR_SFX_EXCEPTION		39
 #endif // _SFX_USE_CUSTOM_EXCEPTIONS
 
+// added June 6, 2010
+#ifdef _SFX_USE_WARNINGS
+	#define STR_WARNING_TITLE		40
+	#define STR_WARNING_SUFFIX		41
+#ifdef _SFX_USE_CHECK_FREE_SPACE
+	#define STR_DISK_FREE_SPACE		42
+#endif // _SFX_USE_CHECK_FREE_SPACE
+#ifdef _SFX_USE_CHECK_RAM
+	#define STR_PHYSICAL_MEMORY		43
+#endif // _SFX_USE_CHECK_RAM
+#endif // _SFX_USE_WARNINGS
+
 LPCWSTR GetLanguageString( UINT id );
 void FreeLanguageStrings();
 

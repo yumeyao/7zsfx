@@ -24,6 +24,7 @@
 #define SD_ICONQUESTION			0x08
 #define SD_ICONSTOP				0x0C
 #define SD_ICONINFORMATION		0x10
+#define SD_ICONWARNING			0x14
 #define SD_ICON_MASK			0x1C
 
 #ifdef _SFX_USE_WIN7_PROGRESSBAR
@@ -177,6 +178,14 @@ class CSfxDialog_Error : public CSfxDialog_WithoutCancelPrompt
 protected:
 	virtual BOOL OnInitDialog();
 };
+
+#ifdef _SFX_USE_WARNINGS
+class CSfxDialog_Warning : public CSfxDialog_WithoutCancelPrompt
+{
+protected:
+	virtual BOOL OnInitDialog();
+};
+#endif // _SFX_USE_WARNINGS
 
 class CSfxDialog_HelpText : public CSfxDialog_WithoutCancelPrompt
 {

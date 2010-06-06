@@ -2,11 +2,10 @@
 /* File:        main.cpp                                                     */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Mon, 22 Mar 2010 11:26:58 GMT                                */
+/* Last update: Sat, 05 Jun 2010 23:44:37 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1698                                                         */
 /*---------------------------------------------------------------------------*/
-/* Revision:    1698                                                         */
+/* Revision:    1773                                                         */
 /* Updated:     Mon, 22 Mar 2010 11:26:58 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
 /* Description: New file stamp.                                              */
@@ -24,6 +23,7 @@
 #define METHOD_PPMD			0x08
 #define METHOD_BCJ			0x10
 #define METHOD_BCJ2			0x20
+#define METHOD_LZMA2		0x40
 
 #ifndef _DLL
 	#undef	SFX_USE_DLL
@@ -55,6 +55,10 @@
 	#define	METHOD_BCJ2		0x00
 #endif // BCJ2
 
+#ifndef COMPRESS_LZMA2
+	#undef	METHOD_LZMA2
+	#define	METHOD_LZMA2	0x00
+#endif // LZMA2
 
 #pragma warning( default:4005 )
 
@@ -74,6 +78,10 @@ static char kSignatureConfigEnd[] = ",!@InstallEnd@!";
 
 
 LPCWSTR	lpwszErrorTitle;
+#ifdef _SFX_USE_WARNINGS
+	LPCWSTR lpwszWarningTitle;
+	UString	strWarningTitle;
+#endif // _SFX_USE_WARNINGS
 LPCWSTR	lpwszTitle;
 LPCWSTR lpwszExtractTitle;
 LPCWSTR lpwszExtractPathTitle;
@@ -84,6 +92,7 @@ LPCWSTR	lpwszExtractDialogText;
 
 int		GUIMode = 0;
 int		GUIFlags = -1;
+int		MiscFlags = 0;
 int		ExtractDialogWidth = 300;
 int		ExtractPathWidth = 300;
 int		OverwriteMode = OVERWRITE_MODE_ALL;
@@ -119,9 +128,14 @@ ENVALIAS EnvAliases [] = {
 
 void SfxInit()
 {
+#ifdef _SFX_USE_LANG
 	GetUILanguage();
+#endif // _SFX_USE_LANG
 
 	lpwszErrorTitle = GetLanguageString( STR_ERROR_TITLE );
+#ifdef _SFX_USE_WARNINGS
+	lpwszWarningTitle = GetLanguageString( STR_WARNING_TITLE );
+#endif // _SFX_USE_WARNINGS
 	lpwszTitle = GetLanguageString( STR_TITLE );
 	lpwszExtractTitle = GetLanguageString( STR_EXTRACT_TITLE );
 	lpwszExtractPathTitle = GetLanguageString( STR_EXTRACT_PATH_TITLE );
@@ -281,6 +295,14 @@ LPCWSTR UpdateGUIFlags( LPCWSTR lpwszText )
 	return UpdateFlagsCommon( lpwszText, &GUIFlags );
 }
 
+LPCWSTR UpdateMiscFlags( LPCWSTR lpwszText )
+{
+	if( *lpwszText != L'+' && *lpwszText != L'-' )
+		MiscFlags = 0;
+
+	return UpdateFlagsCommon( lpwszText, &MiscFlags );
+}
+
 LPCWSTR UpdateOverwriteMode( LPCWSTR lpwszText )
 {
 	int nValue = OverwriteMode | OverwriteFlags;
@@ -412,8 +434,12 @@ LPCWSTR ParseConfigOverride( LPCWSTR lpwszCommandLine, CObjectVector<CTextConfig
 	static LPCWSTR ConfigParams[] = {
 		CFG_TITLE,
 		CFG_ERRORTITLE,
+#ifdef _SFX_USE_WARNINGS
+		CFG_WARNINGTITLE,
+#endif // _SFX_USE_WARNINGS
 		CFG_GUIMODE,
 		CFG_GUIFLAGS,
+		CFG_MISCFLAGS,
 		CFG_BEGINPROMPT,
 		CFG_INSTALLPATH,
 		CFG_EXTRACT_TITLE,
@@ -421,7 +447,6 @@ LPCWSTR ParseConfigOverride( LPCWSTR lpwszCommandLine, CObjectVector<CTextConfig
 		CFG_EXTRACT_DIALOGTEXT,
 		CFG_EXTRACT_DIALOGWIDTH,
 		CFG_SELFDELETE,
-		CFG_7ZSTOOLSTEST,
 		CFG_EXTRACT_PATH_TITLE,
 		CFG_EXTRACT_PATH_TEXT,
 		CFG_HELP_TEXT,
@@ -487,11 +512,20 @@ void SetConfigVariables( CObjectVector<CTextConfigPair>& pairs )
 	{
 		strErrorTitle = lpwszValue; strErrorTitle += GetLanguageString( STR_ERROR_SUFFIX );
 		lpwszErrorTitle = strErrorTitle;
+#ifdef _SFX_USE_WARNINGS
+		strWarningTitle = lpwszValue; strWarningTitle += GetLanguageString( STR_WARNING_SUFFIX );
+		lpwszWarningTitle = strWarningTitle;
+#endif // _SFX_USE_WARNINGS
 		lpwszTitle = lpwszValue;
 	}
 	// Update error title
 	if( (lpwszValue = GetTextConfigValue( pairs, CFG_ERRORTITLE )) != NULL )
 		lpwszErrorTitle = lpwszValue;
+#ifdef _SFX_USE_WARNINGS
+	// Update warnings title
+	if( (lpwszValue = GetTextConfigValue( pairs, CFG_WARNINGTITLE )) != NULL )
+		lpwszWarningTitle = lpwszValue;
+#endif // _SFX_USE_WARNINGS
 	// Extract title
 	if( (lpwszValue = GetTextConfigValue( pairs, CFG_EXTRACT_TITLE )) != NULL )
 		lpwszExtractTitle = lpwszValue;
@@ -516,6 +550,13 @@ void SetConfigVariables( CObjectVector<CTextConfigPair>& pairs )
 	{
 		from++;
 		UpdateGUIFlags( lpwszValue );
+	}
+	// Load MiscFlags
+	from = 0;
+	while( (lpwszValue = GetTextConfigValue( pairs, CFG_MISCFLAGS, &from )) != NULL )
+	{
+		from++;
+		UpdateMiscFlags( lpwszValue );
 	}
 	
 	lpwszCancelText = GetTextConfigValue( pairs, CFG_EXTRACT_CANCELTEXT );
@@ -727,7 +768,7 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 
 #ifdef _DEBUG
 	strModulePathName = L"..\\snapshots\\7zsd_tools_140_1652_x86.exe";
-	strModulePathName = L"C:\\tmp\\20100315\\ThemeDef.exe";
+	strModulePathName = L"C:\\Office2003.exe";
 #else
 	if( ::GetModuleFileName( NULL, strModulePathName.GetBuffer(MAX_PATH*2), MAX_PATH*2 ) == 0 )
 	{
@@ -957,6 +998,13 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 			continue;
 		}
 
+		// 'mf' - Misc flags
+		if( IsCommandLineSwitch( str, L"mf" ) != FALSE )
+		{
+			OverrideConfigParam( CFG_MISCFLAGS,str+3,pairs );
+			continue;
+		}
+
 		// 'sd' - self delete
 		if( IsCommandLineSwitch( str, L"sd" ) != FALSE )
 		{
@@ -1145,6 +1193,8 @@ Loc_BeginPrompt:
 		extractPath.ReleaseBuffer( extractPath.Length()-1 );
 	}
 
+	if( fAssumeYes != false )
+		MiscFlags |= MISCFLAGS_NO_CHECK_DISK_FREE | MISCFLAGS_NO_CHECK_RAM;
 #ifdef _SFX_USE_TEST
 	HRESULT hrStatus;
 	if( TSD_ExtractTimeout == 0 )

@@ -14,13 +14,15 @@
 #include "stdafx.h"
 #include "7zSfxModInt.h"
 
-#if defined(_MSC_VER) && defined(_WIN32) && !defined(_DEBUG)
-	// only MS VC, only release versions
-	#ifdef _SFX_USE_CUSTOM_MSVCRT
+#ifdef _MSC_VER
+	#if defined(_WIN32) && !defined(_DEBUG) && defined(_MSC_VER_OK) && defined(_SFX_USE_CUSTOM_MSVCRT)
+		// only MS VC, only release versions
 		#if !defined(_WIN64) && defined(_M_IX86)
 			#pragma comment( lib, "C:/MyLibs/Lib/i386/msvcrt.lib" )
 		#elif defined(_WIN64) && defined(_M_X64)
 			#pragma comment( lib, "C:/MyLibs/Lib/amd64/msvcrt.lib" )
-		#endif
-	#endif // _SFX_USE_CUSTOM_MSVCRT
-#endif // defined(_MSC_VER) && defined(_WIN32) && !defined(_DEBUG)
+		#endif // platform
+	#else
+		#pragma comment( lib, "msvcrt.lib" )
+	#endif // defined(_WIN32) && !defined(_DEBUG) && defined(_MSC_VER_OK) && defined(_SFX_USE_CUSTOM_MSVCRT)
+#endif // _MSC_VER
