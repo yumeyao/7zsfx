@@ -2,9 +2,14 @@
 /* File:        version.h                                                    */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 06 Jun 2010 09:41:35 GMT                                */
+/* Last update: Wed, 23 Jun 2010 11:41:59 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1774                                                         */
+/* Revision:    1791                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1791                                                         */
+/* Updated:     Wed, 23 Jun 2010 11:33:43 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Update 7-Zip sources up to 9.15 beta                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1774                                                         */
 /* Updated:     Sun, 06 Jun 2010 08:49:42 GMT                                */
@@ -37,7 +42,7 @@
 /*						Correct 'x86' and 'x64' prefixes workflow			 */
 /*						for 'RunProgram'									 */
 /*---------------------------------------------------------------------------*/
-#define VERSION_H_REVISION 1774
+#define VERSION_H_REVISION 1791
 #define VERSION_REVISION VERSION_H_REVISION
 
 #ifndef _VERSION_H_INCLUDED_
@@ -45,14 +50,14 @@
 
 #define VERSION_SFX_NUM_TEXT	"1.4.0"
 #define VERSION_SFX_NUM_BIN		1,4,0,VERSION_REVISION
-#define VERSION_SFX_DATE_EN		"June 6, 2010"
-#define VERSION_SFX_DATE_RU		"6 θώνÿ 2010 γ."
-#define VERSION_SFX_BRANCH_EN	"alpha"
+#define VERSION_SFX_DATE_EN		"June 23, 2010"
+#define VERSION_SFX_DATE_RU		"23 θώνÿ 2010 γ."
+#define VERSION_SFX_BRANCH_EN	"beta"
 #define VERSION_SFX_BRANCH_RU	VERSION_SFX_BRANCH_EN
 
-#define VERSION_7ZIP_NUM_TEXT	"9.14"
-#define VERSION_7ZIP_DATE_EN	"June 4, 2010"
-#define VERSION_7ZIP_DATE_RU	"4 θώνÿ 2010 γ."
+#define VERSION_7ZIP_NUM_TEXT	"9.15"
+#define VERSION_7ZIP_DATE_EN	"June 20, 2010"
+#define VERSION_7ZIP_DATE_RU	"20 θώνÿ 2010 γ."
 #define VERSION_7ZIP_BRANCH_EN	"beta"
 #define VERSION_7ZIP_BRANCH_RU	VERSION_7ZIP_BRANCH_EN
 

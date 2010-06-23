@@ -1,7 +1,7 @@
 @Echo off
 rem SetLocal enabledelayedexpansion
 
-Set SfxBuild=1774
+Set SfxBuild=1791
 Set SfxVersion=140
 set archive_name=snapshots\7zsd_%SfxVersion%_%SfxBuild%_sources
 

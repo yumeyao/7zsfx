@@ -1,0 +1,1 @@
+cd 7-Zip && 7za a -r ..\save_svn .svn\ && cd .. && rd /s/q 7-Zip && md 7-Zip && cd 7-Zip && 7za x ..\save_svn.7z && cd .. && del save_svn.7z && echo . && echo Unpack new sources to 7-Zip folder
