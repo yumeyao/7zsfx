@@ -2,9 +2,14 @@
 /* File:        7zSfxModInt.h                                                */
 /* Created:     Wed, 25 Jul 2007 09:54:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 06 Jun 2010 07:47:34 GMT                                */
+/* Last update: Sat, 26 Jun 2010 04:22:23 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1047                                                         */
+/* Revision:    1067                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1067                                                         */
+/* Updated:     Sat, 26 Jun 2010 04:22:23 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: New prefix 'waitall' stuf                                    */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1047                                                         */
 /* Updated:     Sun, 06 Jun 2010 07:47:34 GMT                                */
@@ -163,6 +168,11 @@ UString MyGetEnvironmentVariable( LPCWSTR lpwszName );
 	#endif // defined(_WIN64) && defined(_M_X64)
 #endif // _SFX_USE_PREFIX_PLATFORM
 
+#define SFXEXEC_HIDCON		0x1
+#define SFXEXEC_RUNAS		0x2
+#define SFXEXEC_EXT_MASC	0x07
+#define SFXEXEC_NOWAIT		0x10000
+
 #define SetLastWriteTime	SetMTime
 
 #ifdef _USE_SFXVOLUMES
@@ -183,5 +193,7 @@ UString MyGetEnvironmentVariable( LPCWSTR lpwszName );
 	#define SFX_EXECUTE_PLATFORM_I386		1
 	#define SFX_EXECUTE_PLATFORM_AMD64		2
 #endif // _SFX_USE_PREFIX_PLATFORM
+
+#define CMDLINE_SFXWAITALL			_CFG_PARAM_TYPE"sfxwaitall"
 
 #endif // _7ZSFXMODINT_H_INCLUDED_

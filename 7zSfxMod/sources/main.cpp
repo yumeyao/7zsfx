@@ -2,9 +2,16 @@
 /* File:        main.cpp                                                     */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 06 Jun 2010 09:41:00 GMT                                */
+/* Last update: Sat, 26 Jun 2010 04:42:41 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1774                                                         */
+/* Revision:    1794                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1794                                                         */
+/* Updated:     Sat, 26 Jun 2010 04:23:10 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Execution of external programs was rewritten to support		 */
+/*				'wait all childs' of the executed process					 */
+/*				new execution prefix 'waitall'								 */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1774                                                         */
 /* Updated:     Sun, 06 Jun 2010 08:51:48 GMT                                */
@@ -110,6 +117,8 @@ UString strSfxFolder;
 UString strSfxName;
 UString	strErrorTitle;
 UString	strTitle;
+
+bool	fUseInstallPath;
 
 UString	strModulePathName;
 
@@ -678,17 +687,10 @@ void ShowSfxVersion()
 			ustrVersion += L", ";
 		ustrVersion += g_Codecs[ki]->Name;
 	}
-	ustrVersion += L"\n";
+	ustrVersion += L"\n\n\n";
+	ustrVersion += GetLanguageString( STR_COPYRIGHT );
 	dlg.Show( SD_OK|SD_ICONINFORMATION, lpwszTitle, ustrVersion );
 }
-
-LONG WINAPI MyExceptions( __in struct _EXCEPTION_POINTERS *ExceptionInfo )
-{
-	MessageBoxA( NULL, "5", "6", MB_OK );
-	return EXCEPTION_EXECUTE_HANDLER;
-}
-
-bool	fUseInstallPath;
 
 void SfxCleanup()
 {
@@ -696,6 +698,109 @@ void SfxCleanup()
 		DeleteFileOrDirectoryAlways( extractPath );
 }
 
+#ifdef _SFX_USE_PREFIX_WAITALL
+	DWORD Parent_ExecuteSfxWaitAll( LPCWSTR lpwszApp, LPCWSTR lpwszCmdLine, int flags )
+	{
+		UString sfxPath;
+		UString executeString;
+		LoadQuotedString( ::GetCommandLine(), sfxPath );
+		executeString = L'\"' + sfxPath + L"\" -" + CMDLINE_SFXWAITALL + L':' + (WCHAR)(flags+'0') + L' ' +
+						L'\"' + lpwszApp + L"\" " + lpwszCmdLine;
+		STARTUPINFO	si;
+		PROCESS_INFORMATION pi;
+		si.cb = sizeof(si);
+		::GetStartupInfo(&si);
+		if( ::CreateProcess(NULL, (LPWSTR)(LPCWSTR)executeString,NULL,NULL,TRUE,
+					CREATE_BREAKAWAY_FROM_JOB|CREATE_SUSPENDED,NULL,NULL,&si,&pi) == FALSE )
+			return ERRC_EXECUTE_CHILD;
+		bool fWaitProcess = true;
+		HANDLE hJob = NULL;
+		HANDLE hIocp = NULL;
+		if( (hJob = ::CreateJobObject( NULL, CMDLINE_SFXWAITALL ))!= NULL &&
+			AssignProcessToJobObject( hJob,pi.hProcess ) != FALSE &&
+			(hIocp = CreateIoCompletionPort( INVALID_HANDLE_VALUE, 0, 1, 0 )) != NULL )
+		{
+			JOBOBJECT_ASSOCIATE_COMPLETION_PORT	iop;
+			iop.CompletionKey = (PVOID)1;
+			iop.CompletionPort = hIocp;
+			SetInformationJobObject( hJob, JobObjectAssociateCompletionPortInformation, &iop, sizeof(iop) );
+			::ResumeThread( pi.hThread );
+			// Wait for events
+			while( WaitForSingleObject( hIocp, INFINITE ) == WAIT_OBJECT_0 )
+			{
+				DWORD dwBytes;
+				ULONG_PTR completionkey;
+				LPOVERLAPPED ove;
+				if( GetQueuedCompletionStatus( hIocp, &dwBytes, &completionkey, &ove, INFINITE) == FALSE )
+					break;
+				if( dwBytes == JOB_OBJECT_MSG_ACTIVE_PROCESS_ZERO )
+				{
+					fWaitProcess = false;
+					break;
+				}
+			}
+		}
+		if( fWaitProcess != false )
+		{
+			::ResumeThread( pi.hThread );
+			::WaitForSingleObject( pi.hProcess, INFINITE );
+		}
+		::CloseHandle( pi.hThread );
+		DWORD dwExitCode = ERRC_EXECUTE_CHILD;
+		::GetExitCodeProcess( pi.hProcess, &dwExitCode );
+		::CloseHandle( pi.hProcess );
+		if( hIocp != NULL ) :: CloseHandle( hIocp );
+		if( hJob != NULL ) ::CloseHandle( hJob );
+		return dwExitCode;
+	}
+
+	BOOL SfxExecute( LPCWSTR lpwszCmdLine, DWORD dwFlags )
+	{
+		UString filePath;
+		UString fileParams;
+		SHELLEXECUTEINFO execInfo;
+		memset( &execInfo, 0, sizeof(execInfo) );
+		execInfo.cbSize = sizeof(execInfo);
+		execInfo.lpDirectory = NULL;
+
+		execInfo.fMask = SEE_MASK_NOASYNC | SEE_MASK_NOCLOSEPROCESS | SEE_MASK_FLAG_DDEWAIT | SEE_MASK_DOENVSUBST | SEE_MASK_FLAG_NO_UI;
+		execInfo.nShow = SW_SHOWNORMAL;
+
+		if( (dwFlags&SFXEXEC_HIDCON) != 0 )
+		{
+			// use hidcon
+			execInfo.nShow = SW_HIDE;
+			execInfo.fMask |= SEE_MASK_NO_CONSOLE;
+		}
+
+		// second: fetch filename
+		fileParams = LoadQuotedString( lpwszCmdLine, filePath );
+		execInfo.lpFile = filePath;
+		execInfo.lpParameters = fileParams;
+		if( ::ShellExecuteEx( &execInfo ) != FALSE )
+		{
+			if( (dwFlags&SFXEXEC_NOWAIT) == 0 )
+				::WaitForSingleObject( execInfo.hProcess, INFINITE );
+			::CloseHandle( execInfo.hProcess );
+			return TRUE;
+		}
+		return FALSE;
+	}
+
+	DWORD Child_ExecuteSfxWaitAll( LPCWSTR lpwszCmdLine )
+	{
+		DWORD dwFlags = 0;
+		if( lpwszCmdLine[0] == L':' && lpwszCmdLine[1] >= L'0' && lpwszCmdLine[1] <= L'9' )
+		{
+			dwFlags=StringToLong( lpwszCmdLine+1 );
+			while( ((unsigned)*lpwszCmdLine) > L' ' ) lpwszCmdLine++;
+			SKIP_WHITESPACES_W( lpwszCmdLine);
+		}
+		if( SfxExecute( lpwszCmdLine, dwFlags ) == FALSE )
+			return ERRC_EXECUTE_CHILD;
+		return ERRC_NONE;
+	}
+#endif // _SFX_USE_PREFIX_WAITALL
 
 #ifdef _SFX_USE_CUSTOM_EXCEPTIONS
 int APIENTRY WinMain2( HINSTANCE hInstance,
@@ -773,9 +878,15 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 		return ERRC_NONE;
 	}
 
+#ifdef _SFX_USE_PREFIX_WAITALL
+	if( (lpwszValue = IsSfxSwitch( str, CMDLINE_SFXWAITALL )) != NULL )
+	{
+		return Child_ExecuteSfxWaitAll( lpwszValue );
+	}
+#endif // _SFX_USE_PREFIX_WAITALL
+
 #ifdef _DEBUG
-	strModulePathName = L"..\\snapshots\\7zsd_tools_140_1652_x86.exe";
-	strModulePathName = L"C:\\Office2003.exe";
+	strModulePathName = L"C:\\util\\test.exe";
 #else
 	if( ::GetModuleFileName( NULL, strModulePathName.GetBuffer(MAX_PATH*2), MAX_PATH*2 ) == 0 )
 	{
@@ -1241,10 +1352,12 @@ Loc_BeginPrompt:
 			#ifdef _SFX_USE_PREFIX_PLATFORM
 				int	nPlatform = SFX_EXECUTE_PLATFORM_ANY;
 			#endif // _SFX_USE_PREFIX_PLATFORM
-			bool	fUseHidcon = false;
-			bool	fUseNoWait = false;
+#ifdef _SFX_USE_PREFIX_WAITALL
+			bool	fUseWaitAll = false;
+#endif // _SFX_USE_PREFIX_WAITALL
 			UString	ustrRunProgram;
 			UString	ustrConfigString;
+			DWORD dwExecFlags = 0;
 
 			if( executeName.IsEmpty() != false )
 			{
@@ -1286,24 +1399,39 @@ Loc_BeginPrompt:
 			while( 1 )
 			{
 				LPCWSTR lpwszTmp;
+#ifdef _SFX_USE_PREFIX_WAITALL
+				if( (lpwszTmp = CheckPrefix( lpwszValue, L"waitall", CPF_NONE )) != NULL )
+				{
+					lpwszValue = lpwszTmp;
+					fUseWaitAll = true;
+					continue;
+				}
+#endif // _SFX_USE_PREFIX_WAITALL
+#ifdef _SFX_USE_PREFIX_HIDCON
 				if( (lpwszTmp = CheckPrefix( lpwszValue, L"hidcon", CPF_NONE )) != NULL )
 				{
 					lpwszValue = lpwszTmp;
-					fUseHidcon = true;
+					dwExecFlags |= SFXEXEC_HIDCON;
 					continue;
 				}
+#endif // _SFX_USE_PREFIX_HIDCON
+#ifdef _SFX_USE_PREFIX_NOWAIT
 				if( (lpwszTmp = CheckPrefix( lpwszValue, L"nowait", CPF_NONE )) != NULL )
 				{
 					lpwszValue = lpwszTmp;
-					fUseNoWait = fUseInstallPath; // work only with InstallPath
+					// work only with InstallPath
+					if( fUseInstallPath != false ) dwExecFlags |= SFXEXEC_NOWAIT;
 					continue;
 				}
+#endif // _SFX_USE_PREFIX_NOWAIT
+#ifdef _SFX_USE_PREFIX_FORCENOWAIT
 				if( (lpwszTmp = CheckPrefix( lpwszValue, L"forcenowait", CPF_NONE )) != NULL )
 				{
 					lpwszValue = lpwszTmp;
-					fUseNoWait = true;
+					dwExecFlags |= SFXEXEC_NOWAIT;
 					continue;
 				}
+#endif // _SFX_USE_PREFIX_FORCENOWAIT
 				if( (lpwszTmp = CheckPrefix( lpwszValue, L"fm", CPF_NUMBER )) != NULL )
 				{
 					if( FinishMessage == -1 ) FinishMessage = StringToLong( lpwszValue+2 );
@@ -1361,27 +1489,8 @@ Loc_BeginPrompt:
 			}
 
 			UString filePath;
-			UString fileParams;
-			SHELLEXECUTEINFO execInfo;
-			memset( &execInfo, 0, sizeof(execInfo) );
-			execInfo.cbSize = sizeof(execInfo);
-			execInfo.lpDirectory = extractPath;
-	
-			execInfo.fMask = SEE_MASK_NOCLOSEPROCESS | SEE_MASK_FLAG_DDEWAIT | SEE_MASK_DOENVSUBST | SEE_MASK_FLAG_NO_UI;
-			execInfo.nShow = SW_SHOWNORMAL;
-		
-			// first of all check for hidcon
-			if( fUseHidcon != false )
-			{
-				// use hidcon
-				execInfo.nShow = SW_HIDE;
-				execInfo.fMask |= SEE_MASK_NO_CONSOLE;
-			}
-	
-			// second: fetch filename
-			fileParams = LoadQuotedString( ustrRunProgram, filePath );
+			UString fileParams = LoadQuotedString( ustrRunProgram, filePath );
 			ReplaceVariablesEx( filePath );
-			execInfo.lpFile = filePath;
 #ifdef _SFX_USE_TEST
 			if( nTestModeType == 0 )
 			{
@@ -1397,16 +1506,23 @@ Loc_BeginPrompt:
 					while( *str != L'\0' ) str++;
 				}
 				ReplaceVariablesEx( fileParams );
-				if( fileParams.IsEmpty() == false )
-					execInfo.lpParameters = fileParams;
-				if( ::ShellExecuteEx( &execInfo ) != FALSE )
+				while( 1 )
 				{
-					if( fUseNoWait == false )
-						::WaitForSingleObject( execInfo.hProcess, INFINITE );
-					::CloseHandle( execInfo.hProcess );
-				}
-				else
-				{
+#ifdef _SFX_USE_PREFIX_WAITALL
+					if( fUseWaitAll == false )
+					{
+#endif // _SFX_USE_PREFIX_WAITALL
+						UString strExecuteString = L'\"'+filePath + L"\" " + fileParams;
+						if( SfxExecute( strExecuteString, dwExecFlags ) != FALSE )
+							break;
+#ifdef _SFX_USE_PREFIX_WAITALL
+					}
+					else
+					{
+						Parent_ExecuteSfxWaitAll( filePath, fileParams, dwExecFlags );
+						break;
+					}
+#endif // _SFX_USE_PREFIX_WAITALL
 					SfxErrorDialog( TRUE, ERR_EXECUTE, (LPCWSTR)ustrRunProgram );
 					SfxCleanup();
 					return ERRC_EXECUTE;

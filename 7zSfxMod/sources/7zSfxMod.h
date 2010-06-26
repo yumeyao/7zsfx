@@ -2,9 +2,9 @@
 /* File:        7zSfxMod.h                                                   */
 /* Created:     Thu, 28 Jul 2005 02:44:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 06 Jun 2010 07:47:08 GMT                                */
+/* Last update: Sat, 26 Jun 2010 04:22:58 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1775                                                         */
+/* Revision:    1795                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1775                                                         */
 /* Updated:     Sun, 06 Jun 2010 07:46:34 GMT                                */
@@ -100,13 +100,13 @@
 #define ERRC_EXTRACT					8
 #define ERRC_EXECUTE					9
 #define ERRC_EXCEPTION					10
+#define ERRC_EXECUTE_CHILD				11
 #define ERRC_PLATFORM					20
 #define ERRC_SFXTEST					100
 
 #define CMDLINE_SFXCONFIG			_CFG_PARAM_TYPE"sfxconfig"
 #define CMDLINE_SFXVERSION			_CFG_PARAM_TYPE"sfxversion"
 #define CMDLINE_SFXLANG				_CFG_PARAM_TYPE"sfxlang"
-
 #define	CMDLINE_SFXTEST				_CFG_PARAM_TYPE"sfxtest"
 
 #ifdef _SFX_USE_TEST
@@ -148,15 +148,15 @@
 #define IDD_FINISHMESSAGE               2005
 #define IDD_HELPTEXT                    2006
 
-#define SDC_ICON				1201
-#define SDC_TEXT				1202
-#define SDC_BUTTON1				1203
-#define SDC_BUTTON2				1204
-#define SDC_TEXT2				1205
-#define SDC_EXTRACTPATHEDIT		1206
-#define SDC_EXTRACTPATHBROWSE	1207
-#define SDC_PROGRESS			1208
-#define SDC_BACK				1209
+#define SDC_ICON						1201
+#define SDC_TEXT						1202
+#define SDC_BUTTON1						1203
+#define SDC_BUTTON2						1204
+#define SDC_TEXT2						1205
+#define SDC_EXTRACTPATHEDIT				1206
+#define SDC_EXTRACTPATHBROWSE			1207
+#define SDC_PROGRESS					1208
+#define SDC_BACK						1209
 
 #define IDC_NEXT                        SDC_BUTTON1
 #define IDC_BACK						SDC_BACK

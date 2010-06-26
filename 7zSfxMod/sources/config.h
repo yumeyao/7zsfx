@@ -2,9 +2,16 @@
 /* File:        config.h                                                     */
 /* Created:     Sat, 23 Jan 2010 11:11:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 06 Jun 2010 08:46:48 GMT                                */
+/* Last update: Sat, 26 Jun 2010 04:20:11 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    134                                                          */
+/* Revision:    154                                                          */
+/*---------------------------------------------------------------------------*/
+/* Revision:    154                                                          */
+/* Updated:     Sat, 26 Jun 2010 04:15:20 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: New prefix 'waitall',										 */
+/*				make old prefixes as selectable for build:					 */
+/*					'hidcon','nowait','forcenowait'							 */
 /*---------------------------------------------------------------------------*/
 /* Revision:    134                                                          */
 /* Updated:     Sun, 06 Jun 2010 07:47:47 GMT                                */
@@ -30,6 +37,11 @@
 #define _SFX_USE_TEST					/* internal use */
 #define _SFX_USE_LANG					/* use -sfxlang:XXXX command line switch */
 #define _SFX_USE_PREFIX_PLATFORM		/* use x86 & x64 prefixes for execution parameters */
+#define _SFX_USE_PREFIX_WAITALL			/* external programs: 'wait all child processes' trick */
+#define _SFX_USE_PREFIX_HIDCON			/* external programs: 'hide console' trick */
+#define _SFX_USE_PREFIX_NOWAIT			/* external programs: 'don't wait end of the execution' trick */
+#define _SFX_USE_PREFIX_FORCENOWAIT		/* external programs: 'don't wait end of the execution' trick */
+										/* even unpacking to temporary folder */
 #define _SFX_USE_CUSTOM_EXCEPTIONS		/* use custom realization of exceptions handlers */
 										/* see realization in 'config.cpp' */
 

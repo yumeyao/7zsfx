@@ -9,7 +9,7 @@
 /* Revision:    1794                                                         */
 /* Updated:     Sat, 26 Jun 2010 04:09:32 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Description: Execution of external programs was rewritten for support	 */
+/* Description: Execution of external programs was rewritten to support		 */
 /*				'wait all childs' of the executed process					 */
 /*				new execution prefix 'waitall'								 */
 /*---------------------------------------------------------------------------*/
