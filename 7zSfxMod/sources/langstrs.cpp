@@ -2,9 +2,14 @@
 /* File:        langstrs.cpp                                                 */
 /* Created:     Wed, 10 Jan 2007 23:44:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 06 Jun 2010 10:54:57 GMT                                */
+/* Last update: Sat, 26 Jun 2010 04:44:01 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1243                                                         */
+/* Revision:    1263                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1263                                                         */
+/* Updated:     Sat, 26 Jun 2010 04:44:01 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Add 'copyright' strings                                      */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1167                                                         */
 /* Updated:     Mon, 22 Mar 2010 11:17:07 GMT                                */
@@ -27,6 +32,9 @@ LANGSTRING SfxLangStrings[] = {
 							"Версия модуля SFX:\n\t"VERSION_SFX_TEXT_RU"\n"
 							"\nВерсия 7-Zip:\n\t"VERSION_7ZIP_TEXT_RU"\n"
 							"\nПоддерживаемые методы и фильтры:\n\t", NULL },
+// Copyright
+	{ STR_COPYRIGHT,		"Copyright (c) 2005-2010 Oleg Scherbakov\n",
+							"Copyright (c) 2005-2010 Олег Щербаков\n", NULL },
 // Заголовок окон сообщений по умолчанию, отображаемое, если
 // модуль не смог определить имя exe-файла.
 // Если SFX модуль смог распознать свое имя (а это практически 100%), вместо него

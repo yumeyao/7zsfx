@@ -2,9 +2,14 @@
 /* File:        langstrs.h                                                   */
 /* Created:     Fri, 29 Jul 2005 23:10:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 06 Jun 2010 08:47:19 GMT                                */
+/* Last update: Sat, 26 Jun 2010 04:44:45 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1773                                                         */
+/* Revision:    1793                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1793                                                         */
+/* Updated:     Sat, 26 Jun 2010 04:44:45 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Add 'copyright' string id                                    */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1773                                                         */
 /* Updated:     Sun, 06 Jun 2010 08:47:19 GMT                                */
@@ -83,6 +88,9 @@
 	#define STR_PHYSICAL_MEMORY		43
 #endif // _SFX_USE_CHECK_RAM
 #endif // _SFX_USE_WARNINGS
+
+// added June 26, 2010
+#define STR_COPYRIGHT				44
 
 LPCWSTR GetLanguageString( UINT id );
 void FreeLanguageStrings();

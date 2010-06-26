@@ -2,9 +2,14 @@
 /* File:        main.cpp                                                     */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 06 Jun 2010 09:41:00 GMT                                */
+/* Last update: Sat, 26 Jun 2010 10:46:07 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1774                                                         */
+/* Revision:    1794                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1794                                                         */
+/* Updated:     Sat, 26 Jun 2010 10:45:08 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Add copyrights to -sfxversion                                */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1774                                                         */
 /* Updated:     Sun, 06 Jun 2010 08:51:48 GMT                                */
@@ -112,6 +117,7 @@ UString	strErrorTitle;
 UString	strTitle;
 
 UString	strModulePathName;
+bool	fUseInstallPath;
 
 CObjectVector<CTextConfigPair> Variables;
 bool fUseBackward = false;
@@ -678,17 +684,10 @@ void ShowSfxVersion()
 			ustrVersion += L", ";
 		ustrVersion += g_Codecs[ki]->Name;
 	}
-	ustrVersion += L"\n";
+	ustrVersion += L"\n\n\n";
+	ustrVersion += GetLanguageString( STR_COPYRIGHT );
 	dlg.Show( SD_OK|SD_ICONINFORMATION, lpwszTitle, ustrVersion );
 }
-
-LONG WINAPI MyExceptions( __in struct _EXCEPTION_POINTERS *ExceptionInfo )
-{
-	MessageBoxA( NULL, "5", "6", MB_OK );
-	return EXCEPTION_EXECUTE_HANDLER;
-}
-
-bool	fUseInstallPath;
 
 void SfxCleanup()
 {
