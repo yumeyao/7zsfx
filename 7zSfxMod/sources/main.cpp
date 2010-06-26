@@ -2,7 +2,7 @@
 /* File:        main.cpp                                                     */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sat, 26 Jun 2010 04:42:41 GMT                                */
+/* Last update: Sat, 26 Jun 2010 09:36:26 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
 /* Revision:    1794                                                         */
 /*---------------------------------------------------------------------------*/
@@ -716,7 +716,7 @@ void SfxCleanup()
 		bool fWaitProcess = true;
 		HANDLE hJob = NULL;
 		HANDLE hIocp = NULL;
-		if( (hJob = ::CreateJobObject( NULL, CMDLINE_SFXWAITALL ))!= NULL &&
+		if( (hJob = ::CreateJobObject( NULL, NULL))!= NULL &&
 			AssignProcessToJobObject( hJob,pi.hProcess ) != FALSE &&
 			(hIocp = CreateIoCompletionPort( INVALID_HANDLE_VALUE, 0, 1, 0 )) != NULL )
 		{

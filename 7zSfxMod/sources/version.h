@@ -2,7 +2,7 @@
 /* File:        version.h                                                    */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sat, 26 Jun 2010 04:11:39 GMT                                */
+/* Last update: Sat, 26 Jun 2010 10:11:38 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
 /* Revision:    1794                                                         */
 /*---------------------------------------------------------------------------*/
@@ -56,7 +56,7 @@
 #define _VERSION_H_INCLUDED_
 
 #define VERSION_SFX_NUM_TEXT	"1.5.0"
-#define VERSION_SFX_NUM_BIN		1,4,0,VERSION_REVISION
+#define VERSION_SFX_NUM_BIN		1,5,0,VERSION_REVISION
 #define VERSION_SFX_DATE_EN		"June 26, 2010"
 #define VERSION_SFX_DATE_RU		"26 θώνÿ 2010 γ."
 #define VERSION_SFX_BRANCH_EN	"develop"
