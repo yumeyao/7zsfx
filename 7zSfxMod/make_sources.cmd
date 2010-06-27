@@ -1,9 +1,9 @@
 @Echo off
 rem SetLocal enabledelayedexpansion
 
-Set SfxBuild=1794
+Set SfxBuild=1795
 Set SfxVersion=150
-set archive_name=snapshots\7zsd_%SfxVersion%_%SfxBuild%_sources
+set archive_name=snapshots\7zsd_src_%SfxVersion%_%SfxBuild%
 
 cd ..
 set sources_7zip=7-Zip\Asm\* 7-Zip\C\* 7-Zip\CPP\* 7-Zip\DOC\*

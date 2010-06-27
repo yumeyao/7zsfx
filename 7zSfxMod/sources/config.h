@@ -29,7 +29,10 @@
 										/* or new for x64 from the latest DDK */
 										/* see realization in 'config.cpp' */
 #define _SFX_OPTIMIZE_SIZE				/* section optimizations, was used in VC6 */
+#define _SFX_USE_CUSTOM_EXCEPTIONS		/* use custom realization of exceptions handlers */
+/* see realization in 'config.cpp' */
 
+/* Begin of options to build */
 #define _SFX_USE_WIN7_PROGRESSBAR		/* Windows 7 progress bar on taskbar button */
 										/* require latest SDK */
 #define _SFX_USE_RTF_CONTROL			/* Enable RTF in texts */
@@ -37,18 +40,17 @@
 
 #define _SFX_USE_TEST					/* internal use */
 #define _SFX_USE_LANG					/* use -sfxlang:XXXX command line switch */
+#define _SFX_USE_ELEVATION				/* Elevate user rights on start */
 #define _SFX_USE_PREFIX_PLATFORM		/* use x86 & x64 prefixes for execution parameters */
 #define _SFX_USE_PREFIX_WAITALL			/* external programs: 'wait all child processes' trick */
 #define _SFX_USE_PREFIX_HIDCON			/* external programs: 'hide console' trick */
 #define _SFX_USE_PREFIX_NOWAIT			/* external programs: 'don't wait end of the execution' trick */
 #define _SFX_USE_PREFIX_FORCENOWAIT		/* external programs: 'don't wait end of the execution' trick */
 										/* even unpacking to temporary folder */
-#define _SFX_USE_CUSTOM_EXCEPTIONS		/* use custom realization of exceptions handlers */
-										/* see realization in 'config.cpp' */
 
-// check RAM before decompression: feature, may be later
 #define _SFX_USE_CHECK_RAM				/* check available physical memory to prevent swap */
 #define _SFX_USE_CHECK_FREE_SPACE		/* check available free space on destination drive */
+/* End of options to build */
 
 #ifdef _7ZSFX_LITE
 	#undef _SFX_USE_RTF_CONTROL

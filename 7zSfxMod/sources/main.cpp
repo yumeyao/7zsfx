@@ -2,9 +2,9 @@
 /* File:        main.cpp                                                     */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 27 Jun 2010 01:08:48 GMT                                */
+/* Last update: Sun, 27 Jun 2010 06:26:59 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1794                                                         */
+/* Revision:    1795                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1794                                                         */
 /* Updated:     Sat, 26 Jun 2010 04:23:10 GMT                                */
@@ -720,6 +720,8 @@ BOOL SfxExecute( LPCWSTR lpwszCmdLine, DWORD dwFlags )
 		execInfo.nShow = SW_HIDE;
 		execInfo.fMask |= SEE_MASK_NO_CONSOLE;
 	}
+	if( (dwFlags&SFXEXEC_RUNAS) != 0 )
+		execInfo.lpVerb = L"runas";
 
 	fileParams = LoadQuotedString( lpwszCmdLine, filePath );
 	execInfo.lpFile = filePath;
@@ -733,6 +735,7 @@ BOOL SfxExecute( LPCWSTR lpwszCmdLine, DWORD dwFlags )
 	}
 	return FALSE;
 }
+
 
 #ifdef _SFX_USE_PREFIX_WAITALL
 	DWORD Parent_ExecuteSfxWaitAll( LPCWSTR lpwszApp, LPCWSTR lpwszCmdLine, int flags )
@@ -881,14 +884,23 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 	}
 
 #ifdef _SFX_USE_PREFIX_WAITALL
-	if( (lpwszValue = IsSfxSwitch( str, CMDLINE_SFXWAITALL )) != NULL )
+	if( (lpwszValue = IsSfxSwitch(str,CMDLINE_SFXWAITALL )) != NULL )
 	{
 		return Child_ExecuteSfxWaitAll( lpwszValue );
 	}
 #endif // _SFX_USE_PREFIX_WAITALL
 
+#ifdef _SFX_USE_ELEVATION
+	bool fInElevation = false;
+	if( (lpwszValue = IsSfxSwitch(str,CMDLINE_SFXELEVATION)) != NULL )
+	{
+		fInElevation = true;
+		SKIP_WHITESPACES_W( lpwszValue );
+		str = lpwszValue;
+	}
+#endif // _SFX_USE_ELEVATION
 #ifdef _DEBUG
-	strModulePathName = L"C:\\util\\test.exe";
+	strModulePathName = L"C:\\tmp\\test_100625_14-38.exe";
 #else
 	if( ::GetModuleFileName( NULL, strModulePathName.GetBuffer(MAX_PATH*2), MAX_PATH*2 ) == 0 )
 	{
@@ -1182,6 +1194,20 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 	}
 
 	SetConfigVariables( pairs );
+
+#ifdef _SFX_USE_ELEVATION
+// Check elevation
+	if( fInElevation == false && (MiscFlags&MISCFLAGS_ELEVATE) != 0 && IsRunAsAdmin() == FALSE )
+	{
+		UString sfxPath;
+		UString executeString;
+		UString strCmdLine = LoadQuotedString( ::GetCommandLine(), sfxPath );
+		executeString = L'\"' + sfxPath + L"\" -" + CMDLINE_SFXELEVATION + L' ' + strCmdLine;
+		if( SfxExecute( executeString, SFXEXEC_RUNAS ) == FALSE )
+			return ERRC_ELEVATE;
+		return ERRC_NONE;
+	}
+#endif // _SFX_USE_ELEVATION
 
 	// extra environment variables
 	int		nIndex = 0;

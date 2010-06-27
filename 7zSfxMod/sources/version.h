@@ -2,9 +2,17 @@
 /* File:        version.h                                                    */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sat, 26 Jun 2010 10:11:38 GMT                                */
+/* Last update: Sun, 27 Jun 2010 07:15:53 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1794                                                         */
+/* Revision:    1795                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1795                                                         */
+/* Updated:     Sun, 27 Jun 2010 03:46:18 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Small changes in 'waitall' prefix,							 */
+/*				add new MiscFlag '4' - run as administaror					 */
+/*				Fix incorrect work of '-mf' switch							 */
+/*				some changes in errors reports (see SfxDialog.cpp)			 */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1794                                                         */
 /* Updated:     Sat, 26 Jun 2010 04:09:32 GMT                                */
@@ -49,7 +57,7 @@
 /*						Correct 'x86' and 'x64' prefixes workflow			 */
 /*						for 'RunProgram'									 */
 /*---------------------------------------------------------------------------*/
-#define VERSION_H_REVISION 1794
+#define VERSION_H_REVISION 1795
 #define VERSION_REVISION VERSION_H_REVISION
 
 #ifndef _VERSION_H_INCLUDED_

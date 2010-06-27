@@ -2,9 +2,9 @@
 /* File:        7zSfxModInt.h                                                */
 /* Created:     Wed, 25 Jul 2007 09:54:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sat, 26 Jun 2010 04:22:23 GMT                                */
+/* Last update: Sun, 27 Jun 2010 01:49:39 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1067                                                         */
+/* Revision:    1068                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1067                                                         */
 /* Updated:     Sat, 26 Jun 2010 04:22:23 GMT                                */
@@ -151,6 +151,7 @@ BOOL CancelInstall( HWND hwnd );
 
 #endif // _SFX_USE_TEST
 
+BOOL IsRunAsAdmin();
 int GetDirectorySeparatorPos( UString& ustrPath );
 void CreateDummyWindow();
 void SfxCleanup();
@@ -168,7 +169,8 @@ UString MyGetEnvironmentVariable( LPCWSTR lpwszName );
 	#endif // defined(_WIN64) && defined(_M_X64)
 #endif // _SFX_USE_PREFIX_PLATFORM
 
-#define SFXEXEC_HIDCON		0x1
+#define SFXEXEC_HIDCON		0x01
+#define SFXEXEC_RUNAS		0x02
 #define SFXEXEC_EXT_MASC	0x07
 #define SFXEXEC_NOWAIT		0x10000
 
@@ -194,5 +196,6 @@ UString MyGetEnvironmentVariable( LPCWSTR lpwszName );
 #endif // _SFX_USE_PREFIX_PLATFORM
 
 #define CMDLINE_SFXWAITALL			_CFG_PARAM_TYPE"sfxwaitall"
+#define CMDLINE_SFXELEVATION		_CFG_PARAM_TYPE"sfxelevation"
 
 #endif // _7ZSFXMODINT_H_INCLUDED_

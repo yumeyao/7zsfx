@@ -88,6 +88,7 @@
 
 #define MISCFLAGS_NO_CHECK_DISK_FREE	0x0001
 #define MISCFLAGS_NO_CHECK_RAM			0x0002
+#define MISCFLAGS_ELEVATE				0x0004
 
 #define ERRC_NONE						0
 #define ERRC_GET_PATHNAME				1
@@ -100,6 +101,7 @@
 #define ERRC_EXTRACT					8
 #define ERRC_EXECUTE					9
 #define ERRC_EXCEPTION					10
+#define ERRC_ELEVATE					11
 #define ERRC_PLATFORM					20
 #define ERRC_SFXTEST					100
 

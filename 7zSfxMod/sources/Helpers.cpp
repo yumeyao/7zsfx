@@ -2,9 +2,9 @@
 /* File:        Helpers.cpp                                                  */
 /* Created:     Sat, 30 Jul 2005 11:10:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 06 Jun 2010 01:55:50 GMT                                */
+/* Last update: Sun, 27 Jun 2010 02:41:04 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1772                                                         */
+/* Revision:    1793                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1697                                                         */
 /* Updated:     Mon, 22 Mar 2010 11:16:07 GMT                                */
@@ -431,7 +431,7 @@ Loc_RTF:
 		else
 		{
 			CTextConfigPair * pPair = GetConfigPair( pairs, pair.ID, NULL );
-			if( pPair != NULL && lstrcmp( pair.ID, CFG_GUIFLAGS ) != 0 )
+			if( pPair != NULL && lstrcmp( pair.ID, CFG_GUIFLAGS ) != 0 && lstrcmp( pair.ID, CFG_MISCFLAGS ) != 0 )
 				pPair->String = (LPCWSTR)(pair.String);
 			else
 				pairs.Add( pair );
@@ -1240,3 +1240,25 @@ static CLangStrings __lsf;
 	#endif
 
 #endif // _SFX_USE_PREFIX_PLATFORM
+
+#ifdef _SFX_USE_ELEVATION
+	BOOL IsRunAsAdmin()
+	{
+		BOOL fIsRunAsAdmin = FALSE;
+		PSID pAdministratorsGroup = NULL;
+
+		// Allocate and initialize a SID of the administrators group.
+		SID_IDENTIFIER_AUTHORITY NtAuthority = SECURITY_NT_AUTHORITY;
+		if( !AllocateAndInitializeSid( &NtAuthority, 2, SECURITY_BUILTIN_DOMAIN_RID, DOMAIN_ALIAS_RID_ADMINS,
+										0, 0, 0, 0, 0, 0, &pAdministratorsGroup) )
+		{
+			return FALSE;
+		}
+
+		// Determine whether the SID of administrators group is enabled in the primary access token of the process.
+		CheckTokenMembership( NULL, pAdministratorsGroup, &fIsRunAsAdmin );
+
+		FreeSid( pAdministratorsGroup );
+		return fIsRunAsAdmin;
+	}
+#endif // _SFX_USE_ELEVATION
