@@ -2,9 +2,15 @@
 /* File:        SfxDialogs.cpp                                               */
 /* Created:     Sat, 13 Jan 2007 02:03:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 06 Jun 2010 09:04:54 GMT                                */
+/* Last update: Sun, 27 Jun 2010 07:00:31 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1241                                                         */
+/* Revision:    1262                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1262                                                         */
+/* Updated:     Sun, 27 Jun 2010 06:55:56 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Change 'fErrorShown' variable location						 */
+/*				(incorrect work on files overwrites)						 */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1241                                                         */
 /* Updated:     Sun, 06 Jun 2010 09:04:54 GMT                                */
@@ -1214,6 +1220,12 @@ BOOL SfxExtractPathDialog( LPCWSTR lpwszTitle, LPCWSTR lpwszText )
 
 void ShowSfxErrorDialog( LPCWSTR lpwszMessage )
 {
+	static bool fErrorShown = false;
+
+	if( fErrorShown != false )
+		return;
+	fErrorShown = true;
+
 	CSfxDialog_Error	dlg;
 #ifdef _SFX_USE_WIN7_PROGRESSBAR
 	if( ::IsWindow(hwndExtractDlg) != FALSE && ::IsBadReadPtr(pwndExtractDialog,sizeof(CSfxDialog_Extract)) == FALSE )
@@ -1238,13 +1250,7 @@ void SfxErrorDialog( BOOL fUseLastError, UINT idFormat, ... )
 {
 	WCHAR buf[1024];
 	va_list va;
-	static bool fErrorShown = false;
 
-#ifndef _SFX_FEATURES_TEST
-	if( fErrorShown != false )
-		return;
-#endif // _SFX_FEATURES_TEST
-	fErrorShown = true;
 	LPCWSTR lpwszFormat = GetLanguageString( idFormat );
 	va_start( va, idFormat );
 	wvsprintf( buf, lpwszFormat, va );

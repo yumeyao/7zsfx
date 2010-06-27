@@ -2,9 +2,14 @@
 /* File:        Helpers.cpp                                                  */
 /* Created:     Sat, 30 Jul 2005 11:10:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 06 Jun 2010 01:55:50 GMT                                */
+/* Last update: Sun, 27 Jun 2010 03:37:50 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1772                                                         */
+/* Revision:    1793                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1793                                                         */
+/* Updated:     Sun, 27 Jun 2010 03:37:50 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Fix incorrect work of '-mf' switch                           */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1697                                                         */
 /* Updated:     Mon, 22 Mar 2010 11:16:07 GMT                                */
@@ -431,7 +436,7 @@ Loc_RTF:
 		else
 		{
 			CTextConfigPair * pPair = GetConfigPair( pairs, pair.ID, NULL );
-			if( pPair != NULL && lstrcmp( pair.ID, CFG_GUIFLAGS ) != 0 )
+			if( pPair != NULL && lstrcmp( pair.ID, CFG_GUIFLAGS ) != 0 && lstrcmp( pair.ID, CFG_MISCFLAGS ) != 0 )
 				pPair->String = (LPCWSTR)(pair.String);
 			else
 				pairs.Add( pair );
