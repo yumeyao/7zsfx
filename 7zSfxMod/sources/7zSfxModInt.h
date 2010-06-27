@@ -169,7 +169,6 @@ UString MyGetEnvironmentVariable( LPCWSTR lpwszName );
 #endif // _SFX_USE_PREFIX_PLATFORM
 
 #define SFXEXEC_HIDCON		0x1
-#define SFXEXEC_RUNAS		0x2
 #define SFXEXEC_EXT_MASC	0x07
 #define SFXEXEC_NOWAIT		0x10000
 

@@ -28,11 +28,12 @@
 										/* require msvcrt.lib from old VC6 for x86 */
 										/* or new for x64 from the latest DDK */
 										/* see realization in 'config.cpp' */
+#define _SFX_OPTIMIZE_SIZE				/* section optimizations, was used in VC6 */
+
 #define _SFX_USE_WIN7_PROGRESSBAR		/* Windows 7 progress bar on taskbar button */
 										/* require latest SDK */
 #define _SFX_USE_RTF_CONTROL			/* Enable RTF in texts */
 #define _SFX_USE_IMAGES					/* Enable images in custom dialogs */
-#define _SFX_OPTIMIZE_SIZE				/* section optimizations, was used in VC6 */
 
 #define _SFX_USE_TEST					/* internal use */
 #define _SFX_USE_LANG					/* use -sfxlang:XXXX command line switch */

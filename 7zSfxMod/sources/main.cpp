@@ -2,7 +2,7 @@
 /* File:        main.cpp                                                     */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sat, 26 Jun 2010 09:36:26 GMT                                */
+/* Last update: Sun, 27 Jun 2010 01:08:48 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
 /* Revision:    1794                                                         */
 /*---------------------------------------------------------------------------*/
@@ -698,6 +698,42 @@ void SfxCleanup()
 		DeleteFileOrDirectoryAlways( extractPath );
 }
 
+BOOL SfxExecute( LPCWSTR lpwszCmdLine, DWORD dwFlags )
+{
+	UString filePath;
+	UString fileParams;
+	SHELLEXECUTEINFO execInfo;
+	memset( &execInfo, 0, sizeof(execInfo) );
+	execInfo.cbSize = sizeof(execInfo);
+	execInfo.lpDirectory = NULL;
+
+	execInfo.fMask = 
+		SEE_MASK_NOCLOSEPROCESS |
+		SEE_MASK_FLAG_DDEWAIT |
+		SEE_MASK_DOENVSUBST |
+		SEE_MASK_FLAG_NO_UI;
+	execInfo.nShow = SW_SHOWNORMAL;
+
+	if( (dwFlags&SFXEXEC_HIDCON) != 0 )
+	{
+		// use hidcon
+		execInfo.nShow = SW_HIDE;
+		execInfo.fMask |= SEE_MASK_NO_CONSOLE;
+	}
+
+	fileParams = LoadQuotedString( lpwszCmdLine, filePath );
+	execInfo.lpFile = filePath;
+	execInfo.lpParameters = fileParams;
+	if( ::ShellExecuteEx( &execInfo ) != FALSE )
+	{
+		if( (dwFlags&SFXEXEC_NOWAIT) == 0 )
+			::WaitForSingleObject( execInfo.hProcess, INFINITE );
+		::CloseHandle( execInfo.hProcess );
+		return TRUE;
+	}
+	return FALSE;
+}
+
 #ifdef _SFX_USE_PREFIX_WAITALL
 	DWORD Parent_ExecuteSfxWaitAll( LPCWSTR lpwszApp, LPCWSTR lpwszCmdLine, int flags )
 	{
@@ -712,7 +748,7 @@ void SfxCleanup()
 		::GetStartupInfo(&si);
 		if( ::CreateProcess(NULL, (LPWSTR)(LPCWSTR)executeString,NULL,NULL,TRUE,
 					CREATE_BREAKAWAY_FROM_JOB|CREATE_SUSPENDED,NULL,NULL,&si,&pi) == FALSE )
-			return ERRC_EXECUTE_CHILD;
+			return ::GetLastError();
 		bool fWaitProcess = true;
 		HANDLE hJob = NULL;
 		HANDLE hIocp = NULL;
@@ -726,13 +762,11 @@ void SfxCleanup()
 			SetInformationJobObject( hJob, JobObjectAssociateCompletionPortInformation, &iop, sizeof(iop) );
 			::ResumeThread( pi.hThread );
 			// Wait for events
-			while( WaitForSingleObject( hIocp, INFINITE ) == WAIT_OBJECT_0 )
+			DWORD dwBytes;
+			ULONG_PTR completionkey;
+			LPOVERLAPPED ove;
+			while( GetQueuedCompletionStatus( hIocp, &dwBytes, &completionkey, &ove, INFINITE) != FALSE )
 			{
-				DWORD dwBytes;
-				ULONG_PTR completionkey;
-				LPOVERLAPPED ove;
-				if( GetQueuedCompletionStatus( hIocp, &dwBytes, &completionkey, &ove, INFINITE) == FALSE )
-					break;
 				if( dwBytes == JOB_OBJECT_MSG_ACTIVE_PROCESS_ZERO )
 				{
 					fWaitProcess = false;
@@ -746,45 +780,13 @@ void SfxCleanup()
 			::WaitForSingleObject( pi.hProcess, INFINITE );
 		}
 		::CloseHandle( pi.hThread );
-		DWORD dwExitCode = ERRC_EXECUTE_CHILD;
-		::GetExitCodeProcess( pi.hProcess, &dwExitCode );
+		DWORD dwExitCode;
+		if( ::GetExitCodeProcess( pi.hProcess, &dwExitCode ) == FALSE )
+			dwExitCode = ::GetLastError();
 		::CloseHandle( pi.hProcess );
 		if( hIocp != NULL ) :: CloseHandle( hIocp );
 		if( hJob != NULL ) ::CloseHandle( hJob );
 		return dwExitCode;
-	}
-
-	BOOL SfxExecute( LPCWSTR lpwszCmdLine, DWORD dwFlags )
-	{
-		UString filePath;
-		UString fileParams;
-		SHELLEXECUTEINFO execInfo;
-		memset( &execInfo, 0, sizeof(execInfo) );
-		execInfo.cbSize = sizeof(execInfo);
-		execInfo.lpDirectory = NULL;
-
-		execInfo.fMask = SEE_MASK_NOASYNC | SEE_MASK_NOCLOSEPROCESS | SEE_MASK_FLAG_DDEWAIT | SEE_MASK_DOENVSUBST | SEE_MASK_FLAG_NO_UI;
-		execInfo.nShow = SW_SHOWNORMAL;
-
-		if( (dwFlags&SFXEXEC_HIDCON) != 0 )
-		{
-			// use hidcon
-			execInfo.nShow = SW_HIDE;
-			execInfo.fMask |= SEE_MASK_NO_CONSOLE;
-		}
-
-		// second: fetch filename
-		fileParams = LoadQuotedString( lpwszCmdLine, filePath );
-		execInfo.lpFile = filePath;
-		execInfo.lpParameters = fileParams;
-		if( ::ShellExecuteEx( &execInfo ) != FALSE )
-		{
-			if( (dwFlags&SFXEXEC_NOWAIT) == 0 )
-				::WaitForSingleObject( execInfo.hProcess, INFINITE );
-			::CloseHandle( execInfo.hProcess );
-			return TRUE;
-		}
-		return FALSE;
 	}
 
 	DWORD Child_ExecuteSfxWaitAll( LPCWSTR lpwszCmdLine )
@@ -797,8 +799,8 @@ void SfxCleanup()
 			SKIP_WHITESPACES_W( lpwszCmdLine);
 		}
 		if( SfxExecute( lpwszCmdLine, dwFlags ) == FALSE )
-			return ERRC_EXECUTE_CHILD;
-		return ERRC_NONE;
+			return GetLastError();
+		return ERROR_SUCCESS;
 	}
 #endif // _SFX_USE_PREFIX_WAITALL
 
@@ -1519,8 +1521,10 @@ Loc_BeginPrompt:
 					}
 					else
 					{
-						Parent_ExecuteSfxWaitAll( filePath, fileParams, dwExecFlags );
-						break;
+						DWORD dwExitCode = Parent_ExecuteSfxWaitAll( filePath, fileParams, dwExecFlags );
+						if( dwExitCode == ERROR_SUCCESS )
+							break;
+						::SetLastError( dwExitCode );
 					}
 #endif // _SFX_USE_PREFIX_WAITALL
 					SfxErrorDialog( TRUE, ERR_EXECUTE, (LPCWSTR)ustrRunProgram );

@@ -2,7 +2,7 @@
 /* File:        7zSfxMod.h                                                   */
 /* Created:     Thu, 28 Jul 2005 02:44:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sat, 26 Jun 2010 04:22:58 GMT                                */
+/* Last update: Sat, 26 Jun 2010 22:14:58 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
 /* Revision:    1795                                                         */
 /*---------------------------------------------------------------------------*/
@@ -100,7 +100,6 @@
 #define ERRC_EXTRACT					8
 #define ERRC_EXECUTE					9
 #define ERRC_EXCEPTION					10
-#define ERRC_EXECUTE_CHILD				11
 #define ERRC_PLATFORM					20
 #define ERRC_SFXTEST					100
 
