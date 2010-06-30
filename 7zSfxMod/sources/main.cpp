@@ -2,9 +2,9 @@
 /* File:        main.cpp                                                     */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 27 Jun 2010 06:26:59 GMT                                */
+/* Last update: Wed, 30 Jun 2010 08:49:01 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1795                                                         */
+/* Revision:    1798                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1794                                                         */
 /* Updated:     Sat, 26 Jun 2010 04:23:10 GMT                                */
@@ -698,14 +698,14 @@ void SfxCleanup()
 		DeleteFileOrDirectoryAlways( extractPath );
 }
 
-BOOL SfxExecute( LPCWSTR lpwszCmdLine, DWORD dwFlags )
+BOOL SfxExecute( LPCWSTR lpwszCmdLine, DWORD dwFlags, LPCWSTR lpwszDirectory )
 {
 	UString filePath;
 	UString fileParams;
 	SHELLEXECUTEINFO execInfo;
 	memset( &execInfo, 0, sizeof(execInfo) );
 	execInfo.cbSize = sizeof(execInfo);
-	execInfo.lpDirectory = NULL;
+	execInfo.lpDirectory = lpwszDirectory;
 
 	execInfo.fMask = 
 		SEE_MASK_NOCLOSEPROCESS |
@@ -801,7 +801,7 @@ BOOL SfxExecute( LPCWSTR lpwszCmdLine, DWORD dwFlags )
 			while( ((unsigned)*lpwszCmdLine) > L' ' ) lpwszCmdLine++;
 			SKIP_WHITESPACES_W( lpwszCmdLine);
 		}
-		if( SfxExecute( lpwszCmdLine, dwFlags ) == FALSE )
+		if( SfxExecute( lpwszCmdLine, dwFlags, NULL ) == FALSE )
 			return GetLastError();
 		return ERROR_SUCCESS;
 	}
@@ -900,7 +900,7 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 	}
 #endif // _SFX_USE_ELEVATION
 #ifdef _DEBUG
-	strModulePathName = L"C:\\tmp\\test_100625_14-38.exe";
+	strModulePathName = L"C:\\tmp\\SetTools.exe";
 #else
 	if( ::GetModuleFileName( NULL, strModulePathName.GetBuffer(MAX_PATH*2), MAX_PATH*2 ) == 0 )
 	{
@@ -1203,7 +1203,7 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 		UString executeString;
 		UString strCmdLine = LoadQuotedString( ::GetCommandLine(), sfxPath );
 		executeString = L'\"' + sfxPath + L"\" -" + CMDLINE_SFXELEVATION + L' ' + strCmdLine;
-		if( SfxExecute( executeString, SFXEXEC_RUNAS ) == FALSE )
+		if( SfxExecute( executeString, SFXEXEC_RUNAS, NULL ) == FALSE )
 			return ERRC_ELEVATE;
 		return ERRC_NONE;
 	}
@@ -1541,7 +1541,7 @@ Loc_BeginPrompt:
 					{
 #endif // _SFX_USE_PREFIX_WAITALL
 						UString strExecuteString = L'\"'+filePath + L"\" " + fileParams;
-						if( SfxExecute( strExecuteString, dwExecFlags ) != FALSE )
+						if( SfxExecute( strExecuteString, dwExecFlags, extractPath ) != FALSE )
 							break;
 #ifdef _SFX_USE_PREFIX_WAITALL
 					}
