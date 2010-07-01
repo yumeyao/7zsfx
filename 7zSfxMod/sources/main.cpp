@@ -2,9 +2,15 @@
 /* File:        main.cpp                                                     */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Wed, 30 Jun 2010 08:49:01 GMT                                */
+/* Last update: Thu, 01 Jul 2010 09:26:57 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Revision:    1799                                                         */
+/*---------------------------------------------------------------------------*/
 /* Revision:    1798                                                         */
+/* Updated:		Wed, 30 Jun 2010 09:24:36 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Fix: extraction folder was not set as default				 */
+/*				for external programs										 */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1794                                                         */
 /* Updated:     Sat, 26 Jun 2010 04:23:10 GMT                                */

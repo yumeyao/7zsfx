@@ -1,7 +1,7 @@
 @Echo off
 rem SetLocal enabledelayedexpansion
 
-Set SfxBuild=1798
+Set SfxBuild=1799
 Set SfxVersion=150
 
 set source_dir=%CD%
