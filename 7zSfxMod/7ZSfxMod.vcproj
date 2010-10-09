@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="8,00"
 	Name="7zSfxMod"
 	ProjectGUID="{60FC2AAC-F2C7-48E6-A78D-ACDC6988B8C4}"
 	RootNamespace="7zSfxMod"
@@ -935,7 +935,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG,_SFXTOOLS"
+				PreprocessorDefinitions="_DEBUG"
 				Culture="1049"
 			/>
 			<Tool

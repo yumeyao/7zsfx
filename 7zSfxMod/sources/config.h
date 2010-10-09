@@ -2,9 +2,9 @@
 /* File:        config.h                                                     */
 /* Created:     Sat, 23 Jan 2010 11:11:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sat, 26 Jun 2010 04:20:11 GMT                                */
+/* Last update: Fri, 08 Oct 2010 20:48:26 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    154                                                          */
+/* Revision:    259                                                          */
 /*---------------------------------------------------------------------------*/
 /* Revision:    154                                                          */
 /* Updated:     Sat, 26 Jun 2010 04:15:20 GMT                                */
@@ -50,6 +50,9 @@
 
 #define _SFX_USE_CHECK_RAM				/* check available physical memory to prevent swap */
 #define _SFX_USE_CHECK_FREE_SPACE		/* check available free space on destination drive */
+
+// October 9, 2010
+#define _SFX_USE_BEGINPROMPTTIMEOUT		/* BeginPrompt default button timeout */
 /* End of options to build */
 
 #ifdef _7ZSFX_LITE

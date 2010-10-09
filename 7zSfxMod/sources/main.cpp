@@ -2,9 +2,9 @@
 /* File:        main.cpp                                                     */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Thu, 01 Jul 2010 09:26:57 GMT                                */
+/* Last update: Sat, 09 Oct 2010 00:14:45 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1799                                                         */
+/* Revision:    1898                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1798                                                         */
 /* Updated:		Wed, 30 Jun 2010 09:24:36 GMT                                */
@@ -118,6 +118,9 @@ int		ExtractPathWidth = 300;
 int		OverwriteMode = OVERWRITE_MODE_ALL;
 int		OverwriteFlags = 0;
 int		FinishMessage = -1;
+#ifdef _SFX_USE_BEGINPROMPTTIMEOUT
+	int		BeginPromptTimeout = 0;
+#endif // _SFX_USE_BEGINPROMPTTIMEOUT
 UString	extractPath;
 UString strSfxFolder;
 UString strSfxName;
@@ -481,6 +484,9 @@ LPCWSTR ParseConfigOverride( LPCWSTR lpwszCommandLine, CObjectVector<CTextConfig
 		CFG_DIRECTORY,
 		CFG_PROGRESS,
 		CFG_SETENVIRONMENT,
+#ifdef _SFX_USE_BEGINPROMPTTIMEOUT
+		CFG_BEGINPROMPTTIMEOUT,
+#endif // _SFX_USE_BEGINPROMPTTIMEOUT
 		NULL
 	};
 
@@ -906,7 +912,7 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 	}
 #endif // _SFX_USE_ELEVATION
 #ifdef _DEBUG
-	strModulePathName = L"C:\\tmp\\SetTools.exe";
+	strModulePathName = L"C:\\7zSfxMod\\1.5.0-develop\\snapshots\\7zsd_tools_150_1898_x86.exe";
 #else
 	if( ::GetModuleFileName( NULL, strModulePathName.GetBuffer(MAX_PATH*2), MAX_PATH*2 ) == 0 )
 	{
@@ -1021,8 +1027,8 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 
 #ifdef _SFX_USE_LANG
 	CreateLanguageSignature( idSfxLang, strSignatureBegin, strSignatureEnd );
-#endif // _SFX_USE_LANG
 	if( ReadConfig( inStream, strSignatureBegin, strSignatureEnd, config ) == false )
+#endif // _SFX_USE_LANG
 	{
 		if( ReadConfig( inStream, kSignatureConfigStart, kSignatureConfigEnd, config ) == false )
 		{
@@ -1176,6 +1182,16 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 			break;
 		}
 
+#ifdef _SFX_USE_BEGINPROMPTTIMEOUT
+		// 'bpt' - BeginPrompt timeout
+		if( IsCommandLineSwitch( str, L"bpt" ) != FALSE )
+		{
+			OverrideConfigParam( CFG_BEGINPROMPTTIMEOUT,str+4, pairs );
+			continue;
+			break;
+		}
+#endif // _SFX_USE_BEGINPROMPTTIMEOUT
+
 		// assume 'yes'
 		if( (str[1] == L'y' || str[1] == L'Y') && ((unsigned)str[2]) <= L' ' )
 		{
@@ -1256,6 +1272,11 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 
 	ReplaceVariables( extractPath );
 
+#ifdef _SFX_USE_BEGINPROMPTTIMEOUT
+	if( (lpwszValue = GetTextConfigValue( pairs, CFG_BEGINPROMPTTIMEOUT)) != NULL )
+		BeginPromptTimeout = StringToLong( lpwszValue );
+#endif // _SFX_USE_BEGINPROMPTTIMEOUT
+
 #ifdef _SFX_USE_TEST
 	if( TSD_Flags.IsEmpty() == false )
 	{
@@ -1278,6 +1299,10 @@ Loc_BeginPrompt:
 			}
 			if( GetKeyState(VK_SHIFT)&0x8000 )
 				fUseAutoInstall = true;
+#ifdef _SFX_USE_BEGINPROMPTTIMEOUT
+			if( CSfxDialog::IsTimedOut() != FALSE )
+				GUIFlags &= ~GUIFLAGS_EXTRACT_PATH2;
+#endif // _SFX_USE_BEGINPROMPTTIMEOUT
 		}
 	}
 
@@ -1596,9 +1621,9 @@ Loc_BeginPrompt:
 	}
 	if( FinishMessage == -1 && fAssumeYes == false )
 	{
-			FinishMessage = 1;
+			FinishMessage++;
 	}
-	if( FinishMessage > 0 && (lpwszValue = GetTextConfigValue( pairs, CFG_FINISHMESSAGE )) != NULL )
+	if( FinishMessage >= 0 && (lpwszValue = GetTextConfigValue( pairs, CFG_FINISHMESSAGE )) != NULL )
 	{
 		if( FinishMessage > FINISHMESSAGE_MAX_TIMEOUT )
 			FinishMessage = FINISHMESSAGE_MAX_TIMEOUT;

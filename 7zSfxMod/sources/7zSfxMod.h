@@ -2,9 +2,9 @@
 /* File:        7zSfxMod.h                                                   */
 /* Created:     Thu, 28 Jul 2005 02:44:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sat, 26 Jun 2010 22:14:58 GMT                                */
+/* Last update: Fri, 08 Oct 2010 23:05:55 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1795                                                         */
+/* Revision:    1899                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1775                                                         */
 /* Updated:     Sun, 06 Jun 2010 07:46:34 GMT                                */
@@ -54,6 +54,8 @@
 #define CFG_DIRECTORY					_CFG_PARAM_TYPE"Directory"
 #define CFG_PROGRESS					_CFG_PARAM_TYPE"Progress"
 #define CFG_SETENVIRONMENT				_CFG_PARAM_TYPE"SetEnvironment"
+#define CFG_BEGINPROMPTTIMEOUT			_CFG_PARAM_TYPE"BeginPromptTimeout"
+
 
 #define GUIMODE_STANDARD				0
 #define GUIMODE_NOCANCEL				1
@@ -160,6 +162,7 @@
 #define SDC_BACK						1209
 
 #define IDC_NEXT                        SDC_BUTTON1
+#define IDC_CANCEL						SDC_BUTTON2
 #define IDC_BACK						SDC_BACK
 #define IDC_MAIN_TEXT					SDC_TEXT
 #define IDC_EXTRA_TEXT					SDC_TEXT2

@@ -135,4 +135,6 @@ OverwriteMode="2"
 ;RunProgram="fm20:nowait:7zSD_RU.chm"
 Shortcut="Du,{%%T\\7zSD_RU.chm},{},{},{Описание модифицированного 7z SFX модуля},{Все о 7z SFX модуле},{},{%%T\\7zsd_LZMA.sfx}"
 Delete="%%T\\7zSD_EN.chm"
+MiscFlags="4"
+BeginPromptTimeout="30"
 ;!@InstallEnd@:Language:1049!

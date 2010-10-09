@@ -1,8 +1,9 @@
 @Echo off
 rem SetLocal enabledelayedexpansion
 
-Set SfxBuild=1799
 Set SfxVersion=150
+
+For /F %%i In (SfxBuild.txt) Do Set %%i
 
 Set tm=%time%
 Set HH=%tm:~0,2%

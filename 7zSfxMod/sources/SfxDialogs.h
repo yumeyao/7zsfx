@@ -2,9 +2,9 @@
 /* File:        SfxDialogs.h                                                 */
 /* Created:     Sat, 13 Jan 2007 12:01:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 06 Jun 2010 08:48:12 GMT                                */
+/* Last update: Sat, 09 Oct 2010 03:17:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1240                                                         */
+/* Revision:    1365                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1240                                                         */
 /* Updated:     Sun, 06 Jun 2010 08:48:12 GMT                                */
@@ -41,10 +41,14 @@ class CSfxDialog
 public:
 	INT_PTR	Show( UINT uType, LPCWSTR lpwszCaption, LPCWSTR lpwszText, HWND hwndParent = NULL );
 	HWND	GetHwnd() { return m_hWnd; };
+	static BOOL IsTimedOut() { return m_fTimedOut; }
 	CSfxDialog();
 	virtual ~CSfxDialog();
 
 protected:
+	void	SetButtonTimerText();
+	void	SetButtonTimer( int nTimer );
+	void	DisableTimer();
 	virtual INT_PTR	ShowImpl( HWND hwndParent );
 	void	ResizeAndPositionButton( int nButtonID, LPCWSTR lpwszText );
 	void	SetDialogPos();
@@ -52,6 +56,7 @@ protected:
 	virtual BOOL	CalculateTextRect( LPCWSTR lpwszText, LPRECT lpRect, HFONT hFont, UINT uFormat ) sealed;
 	BOOL	EndDialog( INT_PTR nResult ) { return ::EndDialog( GetHwnd(), nResult ); };
 	HWND	GetDlgItem( int nItemID ) { return ::GetDlgItem( m_hWnd, nItemID );	};
+	UString	GetDlgItemText( int nItemID ) { return ::GetWindowUString(GetDlgItem(nItemID)); }
 	void	SetDlgItemText( int nItemID, LPCWSTR lpwszText )
 						{ SetWindowText( GetDlgItem( nItemID ), lpwszText ); };
 	void	SetWindowText( HWND hwnd, LPCWSTR lpwszText );
@@ -70,6 +75,7 @@ protected:
 	virtual void	OnCommand( int nControlID );
 	virtual void	OnOK() { EndDialog(TRUE); };
 	virtual void	OnCancel();
+	virtual void	OnTimer();
 	virtual void	ResizeAndPosition();
 	virtual void	CalculateDialogSize();
 	virtual INT_PTR DialogProc( UINT uMsg, WPARAM wParam, LPARAM lParam );
@@ -83,6 +89,17 @@ protected:
 	BOOL	m_fUseIcon;
 	HFONT	m_hFont;
 	UINT	m_uDlgResourceId;
+// Def button timer
+	UString m_strDefButtonText;
+	int		m_nTimer;
+	int		m_nDefButtonID;
+	static	BOOL m_fTimedOut;
+	static CSfxDialog * m_pActiveDialog;
+	static LRESULT CALLBACK hookMouseProc( int nCode, WPARAM wParam, LPARAM lParam );
+	static LRESULT CALLBACK hookKeyboardProc( int nCode, WPARAM wParam, LPARAM lParam );
+	static HHOOK	m_hMouseHook;
+	static HHOOK	m_hKeyboardHook;
+
 	static POINT	m_ptCenter;
 	static BYTE m_DialogsTemplate[];
 	static INT_PTR CALLBACK SfxDialogProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
@@ -98,6 +115,10 @@ class CSfxDialog_BeginPromptClassic : public CSfxDialog
 {
 public:
 	CSfxDialog_BeginPromptClassic() { m_uDlgResourceId = IDD_BEGINPROMT_CLASSIC; };
+#ifdef _SFX_USE_BEGINPROMPTTIMEOUT
+protected:
+	virtual BOOL	OnInitDialog();
+#endif // _SFX_USE_BEGINPROMPTTIMEOUT
 };
 
 class CSfxDialog_ExtractPath : public CSfxDialog
@@ -163,11 +184,7 @@ class CSfxDialog_FinishMessage : public CSfxDialog_WithoutCancelPrompt
 public:
 	CSfxDialog_FinishMessage() { m_uDlgResourceId = IDD_FINISHMESSAGE; };
 protected:
-	void CreateButtonText( UString& str );
 	virtual BOOL OnInitDialog();
-	virtual INT_PTR DialogProc( UINT uMsg, WPARAM wParam, LPARAM lParam );
-
-	UString m_ustrInitialText;
 };
 
 class CSfxDialog_CancelPrompt : public CSfxDialog_WithoutCancelPrompt

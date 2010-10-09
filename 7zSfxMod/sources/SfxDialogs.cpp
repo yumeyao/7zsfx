@@ -2,9 +2,9 @@
 /* File:        SfxDialogs.cpp                                               */
 /* Created:     Sat, 13 Jan 2007 02:03:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 27 Jun 2010 07:00:31 GMT                                */
+/* Last update: Sat, 09 Oct 2010 10:06:42 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1262                                                         */
+/* Revision:    1366                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1262                                                         */
 /* Updated:     Sun, 27 Jun 2010 06:55:56 GMT                                */
@@ -77,7 +77,11 @@ BYTE CSfxDialog::m_DialogsTemplate[] = {
 };
 
 
-POINT CSfxDialog::m_ptCenter={0,0};
+POINT	CSfxDialog::m_ptCenter={0,0};
+CSfxDialog * CSfxDialog::m_pActiveDialog = NULL;
+HHOOK	CSfxDialog::m_hMouseHook = NULL;
+HHOOK	CSfxDialog::m_hKeyboardHook = NULL;
+BOOL	CSfxDialog::m_fTimedOut = FALSE;
 
 CSfxDialog::CSfxDialog()
 {
@@ -97,6 +101,101 @@ CSfxDialog::~CSfxDialog()
 {
 }
 
+void CSfxDialog::SetButtonTimerText()
+{
+	UString strButtonText = m_strDefButtonText;
+	WCHAR wszTimer[256];
+	if( m_nTimer > 0 )
+	{
+		wsprintf( wszTimer, L" (%d%s)", m_nTimer, GetLanguageString(STR_SECONDS) );
+		strButtonText += wszTimer;
+	}
+	SetDlgItemText( m_nDefButtonID, strButtonText );
+}
+
+LRESULT CALLBACK CSfxDialog::hookMouseProc( int code, WPARAM wParam, LPARAM lParam )
+{
+	static UINT uHookCodes[] = {
+		WM_LBUTTONUP, WM_LBUTTONDOWN, WM_LBUTTONDBLCLK,
+		WM_RBUTTONUP, WM_RBUTTONDOWN, WM_RBUTTONDBLCLK,
+		WM_MBUTTONUP, WM_MBUTTONDOWN, WM_MBUTTONDBLCLK,
+		0
+	};
+	if( m_pActiveDialog != NULL )
+	{
+		if( m_pActiveDialog->m_nTimer > 0 )
+		{
+			UINT * msg = uHookCodes;
+			while( *msg != 0 )
+			{
+				if( *msg == wParam )
+				{
+					RECT rc;
+					LPMOUSEHOOKSTRUCT lpmhs = (LPMOUSEHOOKSTRUCT)lParam;
+					ScreenToClient( m_pActiveDialog->GetHwnd(), &lpmhs->pt );
+					m_pActiveDialog->GetClientRect( &rc );
+					if( PtInRect(&rc, lpmhs->pt) != FALSE )
+						m_pActiveDialog->DisableTimer();
+					break;
+				}
+				msg++;
+			}
+		}
+		return CallNextHookEx( m_pActiveDialog->m_hMouseHook, code, wParam, lParam );
+	}
+	return FALSE;
+}
+
+LRESULT CALLBACK CSfxDialog::hookKeyboardProc( int code, WPARAM wParam, LPARAM lParam )
+{
+	if( m_pActiveDialog != NULL )
+	{
+		m_pActiveDialog->DisableTimer();
+		return CallNextHookEx( m_pActiveDialog->m_hKeyboardHook, code, wParam, lParam );
+	}
+	return FALSE;
+}
+
+void CSfxDialog::SetButtonTimer( int nTimer )
+{
+	if( nTimer == 0 || m_hMouseHook != NULL || m_hKeyboardHook != NULL || m_pActiveDialog != NULL )
+		return;
+	UINT uButtonID = SDC_BUTTON1;
+	if( nTimer < 0 )
+	{
+		uButtonID = SDC_BUTTON2;
+		nTimer = -nTimer;
+	}
+	m_pActiveDialog = this;
+	m_nTimer = nTimer;
+	m_nDefButtonID = uButtonID;
+	m_strDefButtonText = GetDlgItemText( uButtonID );
+	SetButtonTimerText();
+	SetDefaultButton( uButtonID );
+	if( m_uDlgResourceId == 0 )
+	{
+		UString str = GetDlgItemText( uButtonID );
+		ResizeAndPositionButton( uButtonID, str );
+	}
+	SetTimer( GetHwnd(), 1, 1000, NULL );
+}
+
+void CSfxDialog::OnTimer()
+{
+	m_nTimer--;
+	if( m_hMouseHook == NULL )
+		m_hMouseHook = ::SetWindowsHookEx( WH_MOUSE, hookMouseProc, NULL, ::GetCurrentThreadId() );
+	if( m_hKeyboardHook == NULL )
+		m_hKeyboardHook = ::SetWindowsHookEx( WH_KEYBOARD, hookKeyboardProc, NULL, ::GetCurrentThreadId() );
+	if( m_nTimer == 0 )
+	{
+		m_fTimedOut = TRUE;
+		EndDialog( m_nDefButtonID == SDC_BUTTON2 ? FALSE : TRUE );
+	}
+	else
+		SetButtonTimerText();
+}
+
 INT_PTR CALLBACK CSfxDialog::SfxDialogProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
 	CSfxDialog * pThis = (CSfxDialog *)::GetWindowLongPtr( hwnd, GWLP_USERDATA );
@@ -114,6 +213,15 @@ INT_PTR CALLBACK CSfxDialog::SfxDialogProc( HWND hwnd, UINT uMsg, WPARAM wParam,
 	return 0;
 }
 
+void CSfxDialog::DisableTimer()
+{
+	if( m_nTimer == 0 )
+		return;
+	::KillTimer( GetHwnd(), 1 );
+	m_nTimer = 0;
+	SetButtonTimerText();
+}
+
 INT_PTR CSfxDialog::DialogProc(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch( uMsg )
@@ -124,7 +232,21 @@ INT_PTR CSfxDialog::DialogProc(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		OnCommand( LOWORD(wParam) );
 		break;
 	case WM_DESTROY:
+		if( m_hMouseHook != NULL )
+		{
+			::UnhookWindowsHookEx( m_hMouseHook );
+			m_hMouseHook = NULL;
+		}
+		if( m_hKeyboardHook != NULL )
+		{
+			::UnhookWindowsHookEx( m_hKeyboardHook );
+			m_hKeyboardHook = NULL;
+		}
+		m_pActiveDialog = NULL;
 		OnDestroy();
+		break;
+	case WM_TIMER:
+		OnTimer();
 		break;
 	}
 	return 0;
@@ -446,7 +568,7 @@ void CSfxDialog::ResizeAndPosition()
 {
 	RECT	rc;
 
-	int nOneButtonID;
+	int nOneButtonID = 0;
 	int nButton1width, nButton2width;
 	int nButtonsWidth, nButtonsHeight;
 	nButton1width = nButton2width = nButtonsWidth = 0;
@@ -464,15 +586,25 @@ void CSfxDialog::ResizeAndPosition()
 		nButtonsHeight = rc.bottom - rc.top;
 		nOneButtonID = SDC_BUTTON2;
 	}
-	if( nButton1width != 0 && nButton2width != 0 )
+	if( nButton1width > 0 && nButton2width > 0 )
 	{
-		// 2 buttons
-		nButtonsWidth = nButton1width + nButton2width + SDM_BUTTONS_CX_SPACING;
+		if( nButton2width > nButton1width )
+			nButton1width = nButton2width;
+		else
+			nButton2width = nButton1width;
 	}
-	else
+	if( nOneButtonID != 0 )
 	{
-		// 1 button
-		nButtonsWidth = (nButton1width == 0) ? nButton2width : nButton1width;
+		if( nButton1width != 0 && nButton2width != 0 )
+		{
+			// 2 buttons
+			nButtonsWidth = nButton1width + nButton2width + SDM_BUTTONS_CX_SPACING;
+		}
+		else
+		{
+			// 1 button
+			nButtonsWidth = (nButton1width == 0) ? nButton2width : nButton1width;
+		}
 	}
 	nButtonsWidth += (SDM_BORDER_LEFT + SDM_BORDER_RIGHT);
 	if( nButtonsWidth > m_dlgSize.cx )
@@ -518,18 +650,25 @@ void CSfxDialog::ResizeAndPosition()
 	}
 
 	// Reposition button(s)
-	GetClientRect( &rc );
-	if( nButton1width != 0 && nButton2width != 0 )
+	if( nOneButtonID != 0 )
 	{
-		// 2 buttons
-		SetDlgItemPos( SDC_BUTTON1, (rc.right-nButtonsWidth)/2, rc.bottom-SDM_BORDER_BOTTOM-nButtonsHeight, 0,0, SWP_NOSIZE );
-		GetDlgItemRect( SDC_BUTTON1, &rc );
-		SetDlgItemPos( SDC_BUTTON2, rc.right+SDM_BUTTONS_CX_SPACING, rc.top, 0,0, SWP_NOSIZE );
-	}
-	else
-	{
-		// 1 button
-		SetDlgItemPos( nOneButtonID, (rc.right-nButtonsWidth)/2, rc.bottom-SDM_BORDER_BOTTOM-nButtonsHeight, 0,0, SWP_NOSIZE );
+		GetClientRect( &rc );
+		if( nButton1width != 0 && nButton2width != 0 )
+		{
+			// 2 buttons
+			SetDlgItemPos( SDC_BUTTON1,
+				(rc.right-nButtonsWidth)/2, rc.bottom-SDM_BORDER_BOTTOM-nButtonsHeight,
+				nButton1width, nButtonsHeight, 0 );
+			GetDlgItemRect( SDC_BUTTON1, &rc );
+			SetDlgItemPos( SDC_BUTTON2,
+				rc.right+SDM_BUTTONS_CX_SPACING, rc.top,
+				nButton2width, nButtonsHeight, 0 );
+		}
+		else
+		{
+			// 1 button
+			SetDlgItemPos( nOneButtonID, (rc.right-nButtonsWidth)/2, rc.bottom-SDM_BORDER_BOTTOM-nButtonsHeight, 0,0, SWP_NOSIZE );
+		}
 	}
 	m_dlgSize.cx -= ::GetSystemMetrics( SM_CYDLGFRAME );
 	m_dlgSize.cy -= ::GetSystemMetrics( SM_CXDLGFRAME );
@@ -626,7 +765,15 @@ void CSfxDialog::SetCaption( LPCWSTR lpwszCaption )
 /*--------------------------------------------------------------------------*/
 // CSfxDialog_BeginPromptClassic
 /*--------------------------------------------------------------------------*/
-
+#ifdef _SFX_USE_BEGINPROMPTTIMEOUT
+BOOL CSfxDialog_BeginPromptClassic::OnInitDialog()
+{
+	CSfxDialog::OnInitDialog();
+	SetButtonTimer( BeginPromptTimeout );
+	ResizeAndPosition();
+	return FALSE;
+}
+#endif // _SFX_USE_BEGINPROMPTTIMEOUT
 /*--------------------------------------------------------------------------*/
 // CSfxDialog_Error
 /*--------------------------------------------------------------------------*/
@@ -775,7 +922,7 @@ void CSfxDialog_ExtractPath::OnCommand( int nControlID )
 	else
 		if( nControlID == SDC_BUTTON1 )
 		{
-			extractPath = GetWindowUString( GetDlgItem(SDC_EXTRACTPATHEDIT) );
+			extractPath = GetDlgItemText(SDC_EXTRACTPATHEDIT);
 		}
 	CSfxDialog::OnCommand( nControlID );
 }
@@ -820,7 +967,12 @@ BOOL CSfxDialog_BeginPromptWithExtractPath::OnInitDialog()
 	SetDlgItemText( SDC_TEXT2, lpwszExtractPathText );
 	SetPathText();
 
-	return CSfxDialog_ExtractPath::OnInitDialog();
+	CSfxDialog_ExtractPath::OnInitDialog();
+
+	SetButtonTimer( BeginPromptTimeout );
+	ResizeAndPosition();
+
+	return FALSE;
 }
 
 void CSfxDialog_BeginPromptWithExtractPath::CalculateDialogSize()
@@ -829,7 +981,8 @@ void CSfxDialog_BeginPromptWithExtractPath::CalculateDialogSize()
 
 	m_rcExtractPathText.left = m_rcExtractPathText.top =
 		m_rcExtractPathText.right = m_rcExtractPathText.bottom = 0;
-	if( CalculateTextRect( lpwszExtractPathText, &m_rcExtractPathText, m_hFont, DT_LEFT|DT_NOPREFIX|DT_WORDBREAK|DT_EXPANDTABS ) != FALSE )
+	UString ustrExtractPathText = GetDlgItemText(SDC_TEXT2);
+	if( CalculateTextRect( (LPCWSTR)ustrExtractPathText, &m_rcExtractPathText, m_hFont, DT_LEFT|DT_NOPREFIX|DT_WORDBREAK|DT_EXPANDTABS ) != FALSE )
 	{
 		if( (m_rcExtractPathText.right+SDM_BORDER_LEFT+SDM_BORDER_RIGHT) > m_dlgSize.cx )
 			m_dlgSize.cx = m_rcExtractPathText.right+SDM_BORDER_LEFT+SDM_BORDER_RIGHT;
@@ -856,48 +1009,12 @@ void CSfxDialog_BeginPromptWithExtractPath::ResizeAndPosition()
 /*--------------------------------------------------------------------------*/
 BOOL CSfxDialog_FinishMessage::OnInitDialog()
 {
-	if( FinishMessage > 1 )
-	{
-		UString str;
-		CreateButtonText( str );
-		if( m_uDlgResourceId == 0 )
-			ResizeAndPositionButton( SDC_BUTTON1, str );
-		SetTimer( GetHwnd(), 1, 1000, NULL );
-	}
 	CSfxDialog::OnInitDialog();
+	SetButtonTimer( FinishMessage );
 	MessageBeep( MB_ICONASTERISK );
 	return FALSE;
 }
 
-INT_PTR CSfxDialog_FinishMessage::DialogProc( UINT uMsg, WPARAM wParam, LPARAM lParam )
-{
-	if( uMsg == WM_TIMER )
-	{
-		FinishMessage--;
-		if( FinishMessage == 0 )
-			EndDialog( TRUE );
-		else
-		{
-			UString tmp;
-			CreateButtonText( tmp );
-		}
-	}
-	return CSfxDialog::DialogProc( uMsg, wParam, lParam );
-}
-
-void CSfxDialog_FinishMessage::CreateButtonText( UString& str )
-{
-	if( m_ustrInitialText.Length() == 0 )
-	{
-		SetButtonText( SDC_BUTTON1, GetLanguageString( STR_BUTTON_OK ) );
-		m_ustrInitialText = GetWindowUString( GetDlgItem(SDC_BUTTON1) );
-	}
-	str = m_ustrInitialText;
-	WCHAR wszTimer[256];
-	wsprintf( wszTimer, L" (%u%s)", FinishMessage, GetLanguageString(STR_SECONDS) );
-	str += wszTimer;
-	SetDlgItemText( SDC_BUTTON1, str );
-}
 
 /*--------------------------------------------------------------------------*/
 // CSfxDialog_Extract

@@ -2,9 +2,9 @@
 /* File:        7zSfxModInt.h                                                */
 /* Created:     Wed, 25 Jul 2007 09:54:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 27 Jun 2010 01:49:39 GMT                                */
+/* Last update: Fri, 08 Oct 2010 22:54:49 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1068                                                         */
+/* Revision:    1172                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1067                                                         */
 /* Updated:     Sat, 26 Jun 2010 04:22:23 GMT                                */
@@ -68,6 +68,9 @@ extern int		ExtractPathWidth;
 extern HWND		hwndExtractDlg;
 extern int		FinishMessage;
 extern bool		fUseBackward;
+#ifdef _SFX_USE_BEGINPROMPTTIMEOUT
+	extern int		BeginPromptTimeout;
+#endif // _SFX_USE_BEGINPROMPTTIMEOUT
 
 extern UString	extractPath;
 extern int		OverwriteMode, OverwriteFlags;

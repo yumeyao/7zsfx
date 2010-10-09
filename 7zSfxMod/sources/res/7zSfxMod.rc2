@@ -2,9 +2,9 @@
 /* File:        7zSfxMod.rc2                                                 */
 /* Created:     Sun, 26 Jul 2009 18:21:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Mon, 22 Mar 2010 11:08:22 GMT                                */
+/* Last update: Fri, 08 Oct 2010 23:12:09 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    239                                                          */
+/* Revision:    440                                                          */
 /*---------------------------------------------------------------------------*/
 /* Revision:    239                                                          */
 /* Updated:     Mon, 22 Mar 2010 11:08:22 GMT                                */
@@ -23,18 +23,18 @@
 	CONTROL         "",IDC_BANNER,"Static",SS_BITMAP,0,0,16,15
 
 #define DLG_7ZSFXTOOLS_END(back_style,next_style,cancel_style,next_text)								\
-	PUSHBUTTON      "%7zSfxString35%",IDC_BACK,141,180,50,14,back_style									\
-    DEFPUSHBUTTON   next_text,IDC_NEXT,192,180,50,14,next_style											\
-    PUSHBUTTON      "%7zSfxString38%",IDCANCEL,254,180,50,14,cancel_style								\
+	PUSHBUTTON      "%7zSfxString35%",IDC_BACK,96,180,65,14,back_style									\
+    DEFPUSHBUTTON   next_text,IDC_NEXT,161,180,65,14,next_style											\
+    PUSHBUTTON      "%7zSfxString38%",IDC_CANCEL,238,180,65,14,cancel_style								\
     CONTROL         "",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,0,170,312,2,WS_EX_STATICEDGE	\
-    LTEXT           "%sfx_homepage%",IDC_STATIC,7,180,91,14,WS_VISIBLE									\
+    LTEXT           "%sfx_homepage%",IDC_STATIC,7,180,85,14,WS_VISIBLE									\
 	END
 
 #define DLG_7ZSFXTOOLS_END_SIMPLE(ctext,bid,btext)														\
     CTEXT           ctext,IDC_MAIN_TEXT,0,44,311,119,SS_CENTERIMAGE										\
-    DEFPUSHBUTTON   btext,bid,254,180,50,14																\
+    DEFPUSHBUTTON   btext,bid,254,180,60,14																\
     CONTROL         "",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,0,170,312,2,WS_EX_STATICEDGE	\
-    LTEXT           "%sfx_homepage%",IDC_STATIC,7,180,91,14,WS_VISIBLE									\
+    LTEXT           "%sfx_homepage%",IDC_STATIC,7,180,85,14,WS_VISIBLE									\
 	END
 
 #define DLG_7ZSFXTOOLS_BEGINPROMPT_INTERIOR									\
@@ -121,7 +121,7 @@ END
 	DLG_7ZSFXTOOLS_END(WS_DISABLED,WS_VISIBLE,WS_DISABLED,"%7zSfxString37%")
 	// HelpText
 	DLG_7ZSFXTOOLS_BEGIN(IDD_HELPTEXT,"HelpText")
-	DLG_7ZSFXTOOLS_END_SIMPLE("HelpText",IDCANCEL,"%7zSfxString25%")
+	DLG_7ZSFXTOOLS_END_SIMPLE("HelpText",IDC_CANCEL,"%7zSfxString25%")
 #endif
 
 
