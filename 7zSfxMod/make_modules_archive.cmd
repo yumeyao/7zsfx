@@ -1,8 +1,9 @@
 @Echo off
 rem SetLocal enabledelayedexpansion
 
-Set SfxBuild=1799
 Set SfxVersion=140
+
+For /F %%i In (SfxBuild.txt) Do Set %%i
 
 set source_dir=%CD%
 set sfx_name=%source_dir%\..\snapshots\7zsd_%SfxVersion%_%SfxBuild%

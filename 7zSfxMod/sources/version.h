@@ -2,9 +2,19 @@
 /* File:        version.h                                                    */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Thu, 01 Jul 2010 09:43:18 GMT                                */
+/* Last update: Fri, 08 Oct 2010 19:46:10 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1799                                                         */
+/* Revision:    1898                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1898                                                         */
+/* Updated:     Fri, 08 Oct 2010 19:46:10 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Tag 1.4.0 as 'Release Candidate 1'                           */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1896                                                         */
+/* Updated:     Wed, 06 Oct 2010 09:45:22 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Update 7-Zip sources up to 9.17 beta                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1799                                                         */
 /* Updated:     Thu, 01 Jul 2010 09:42:49 GMT                                */
@@ -58,7 +68,7 @@
 /*						Correct 'x86' and 'x64' prefixes workflow			 */
 /*						for 'RunProgram'									 */
 /*---------------------------------------------------------------------------*/
-#define VERSION_H_REVISION 1799
+#define VERSION_H_REVISION 1898
 #define VERSION_REVISION VERSION_H_REVISION
 
 #ifndef _VERSION_H_INCLUDED_
@@ -66,14 +76,14 @@
 
 #define VERSION_SFX_NUM_TEXT	"1.4.0"
 #define VERSION_SFX_NUM_BIN		1,4,0,VERSION_REVISION
-#define VERSION_SFX_DATE_EN		"July 1, 2010"
-#define VERSION_SFX_DATE_RU		"1 июл€ 2010 г."
-#define VERSION_SFX_BRANCH_EN	"beta"
+#define VERSION_SFX_DATE_EN		"October 9, 2010"
+#define VERSION_SFX_DATE_RU		"9 окт€бр€ 2010 г."
+#define VERSION_SFX_BRANCH_EN	"RC1"
 #define VERSION_SFX_BRANCH_RU	VERSION_SFX_BRANCH_EN
 
-#define VERSION_7ZIP_NUM_TEXT	"9.15"
-#define VERSION_7ZIP_DATE_EN	"June 20, 2010"
-#define VERSION_7ZIP_DATE_RU	"20 июн€ 2010 г."
+#define VERSION_7ZIP_NUM_TEXT	"9.17"
+#define VERSION_7ZIP_DATE_EN	"October 4, 2010"
+#define VERSION_7ZIP_DATE_RU	"4 окт€бр€ 2010 г."
 #define VERSION_7ZIP_BRANCH_EN	"beta"
 #define VERSION_7ZIP_BRANCH_RU	VERSION_7ZIP_BRANCH_EN
 

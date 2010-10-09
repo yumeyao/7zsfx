@@ -2,9 +2,14 @@
 /* File:        SfxDialogs.cpp                                               */
 /* Created:     Sat, 13 Jan 2007 02:03:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 27 Jun 2010 07:00:31 GMT                                */
+/* Last update: Wed, 06 Oct 2010 11:18:57 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1262                                                         */
+/* Revision:    1363                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1363                                                         */
+/* Updated:     Wed, 06 Oct 2010 11:17:57 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Fix width calculation of 'ExtractPathText'                   */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1262                                                         */
 /* Updated:     Sun, 27 Jun 2010 06:55:56 GMT                                */
@@ -829,7 +834,8 @@ void CSfxDialog_BeginPromptWithExtractPath::CalculateDialogSize()
 
 	m_rcExtractPathText.left = m_rcExtractPathText.top =
 		m_rcExtractPathText.right = m_rcExtractPathText.bottom = 0;
-	if( CalculateTextRect( lpwszExtractPathText, &m_rcExtractPathText, m_hFont, DT_LEFT|DT_NOPREFIX|DT_WORDBREAK|DT_EXPANDTABS ) != FALSE )
+	UString ustrExtractPathText = GetWindowUString( GetDlgItem(SDC_TEXT2) );
+	if( CalculateTextRect( (LPCWSTR)ustrExtractPathText, &m_rcExtractPathText, m_hFont, DT_LEFT|DT_NOPREFIX|DT_WORDBREAK|DT_EXPANDTABS ) != FALSE )
 	{
 		if( (m_rcExtractPathText.right+SDM_BORDER_LEFT+SDM_BORDER_RIGHT) > m_dlgSize.cx )
 			m_dlgSize.cx = m_rcExtractPathText.right+SDM_BORDER_LEFT+SDM_BORDER_RIGHT;
