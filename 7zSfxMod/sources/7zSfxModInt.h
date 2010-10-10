@@ -2,9 +2,9 @@
 /* File:        7zSfxModInt.h                                                */
 /* Created:     Wed, 25 Jul 2007 09:54:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Fri, 08 Oct 2010 22:54:49 GMT                                */
+/* Last update: Sat, 09 Oct 2010 22:50:22 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1172                                                         */
+/* Revision:    1173                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1067                                                         */
 /* Updated:     Sat, 26 Jun 2010 04:22:23 GMT                                */
@@ -50,6 +50,9 @@ namespace SfxErrors
 		seCreateFile,
 	};
 }
+
+extern char kSignatureConfigStart[];
+extern char kSignatureConfigEnd[];
 
 extern LPCWSTR	lpwszTitle;
 extern LPCWSTR	lpwszErrorTitle;
@@ -171,6 +174,17 @@ UString MyGetEnvironmentVariable( LPCWSTR lpwszName );
 		void SfxFinalizeExecute();
 	#endif // defined(_WIN64) && defined(_M_X64)
 #endif // _SFX_USE_PREFIX_PLATFORM
+
+void CreateConfigSignature(
+#ifdef _SFX_USE_LANG
+			DWORD dwLangId,
+#endif // _SFX_USE_LANG
+#ifdef _SFX_USE_CONFIG_PLATFORM
+			LPCSTR lpszPlatformName,
+#endif // _SFX_USE_CONFIG_PLATFORM
+			AString& strBegin, AString& strEnd );
+bool LoadConfigs( IInStream * inStream, AString& result );
+
 
 #define SFXEXEC_HIDCON		0x01
 #define SFXEXEC_RUNAS		0x02

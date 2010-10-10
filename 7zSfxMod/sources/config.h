@@ -2,9 +2,9 @@
 /* File:        config.h                                                     */
 /* Created:     Sat, 23 Jan 2010 11:11:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Fri, 08 Oct 2010 20:48:26 GMT                                */
+/* Last update: Sat, 09 Oct 2010 21:53:45 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    259                                                          */
+/* Revision:    260                                                          */
 /*---------------------------------------------------------------------------*/
 /* Revision:    154                                                          */
 /* Updated:     Sat, 26 Jun 2010 04:15:20 GMT                                */
@@ -39,7 +39,7 @@
 #define _SFX_USE_IMAGES					/* Enable images in custom dialogs */
 
 #define _SFX_USE_TEST					/* internal use */
-#define _SFX_USE_LANG					/* use -sfxlang:XXXX command line switch */
+#define _SFX_USE_LANG					/* use -sfxlang:XXXX command line switch, localized resources and configs */
 #define _SFX_USE_ELEVATION				/* Elevate user rights on start */
 #define _SFX_USE_PREFIX_PLATFORM		/* use x86 & x64 prefixes for execution parameters */
 #define _SFX_USE_PREFIX_WAITALL			/* external programs: 'wait all child processes' trick */
@@ -53,6 +53,7 @@
 
 // October 9, 2010
 #define _SFX_USE_BEGINPROMPTTIMEOUT		/* BeginPrompt default button timeout */
+#define _SFX_USE_CONFIG_PLATFORM		/* Separate configs for different platforms */
 /* End of options to build */
 
 #ifdef _7ZSFX_LITE

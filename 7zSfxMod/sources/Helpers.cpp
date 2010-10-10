@@ -2,9 +2,9 @@
 /* File:        Helpers.cpp                                                  */
 /* Created:     Sat, 30 Jul 2005 11:10:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 27 Jun 2010 02:41:04 GMT                                */
+/* Last update: Sun, 10 Oct 2010 00:09:49 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1793                                                         */
+/* Revision:    1898                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1697                                                         */
 /* Updated:     Mon, 22 Mar 2010 11:16:07 GMT                                */
@@ -329,6 +329,18 @@ void ReplaceHexChars( UString& str )
 
 bool GetTextConfig( const AString &string, CObjectVector<CTextConfigPair> &pairs, bool fromCmdLine )
 {
+	static LPCWSTR MultipleParameters[] = {
+		CFG_GUIFLAGS,
+		CFG_MISCFLAGS,
+		CFG_RUNPROGRAM,
+		CFG_AUTOINSTALL,
+		CFG_SHORTCUT,
+		CFG_DELETE,
+		CFG_EXECUTEFILE,
+		CFG_SETENVIRONMENT,
+		NULL
+	};
+
 	int pos = 0;
 
 	/////////////////////
@@ -417,21 +429,43 @@ Loc_RTF:
 		{
 			if( pair.String.Find( L'=') <= 0 )
 				return ReportCfgError( string, startPos, fromCmdLine );
-			else
+		}
+		LPCWSTR * mp = MultipleParameters;
+		while( *mp != NULL )
+		{
+			if( wcsncmp( pair.ID, *mp, lstrlen(*mp) ) == 0 )
+				break;
+			mp++;
+		}
+		if( *mp != NULL )
+		{
+			// Multiple parameter, check more for deletion
+			if( pair.String.Length() == 0 )
 			{
-				if( fromCmdLine != false )
+				for( int  i = 0; i < pairs.Size(); i++ )
 				{
-					pairs.Add( pair );
-					return true;
+					if( lstrcmp( pairs[i].ID, pair.ID ) == 0 )
+					{
+						// delete all previous parameters
+						for( int j = i; j < pairs.Size(); j++ )
+						{
+							if( lstrcmp( pairs[j].ID, pair.ID ) == 0 )
+							{
+								pairs.Delete(j);
+								j--;
+							}
+						}
+						break;
+					}
 				}
 			}
+			pairs.Add( pair );
 		}
-		if( fromCmdLine == false )
-			pairs.Add(pair);
 		else
 		{
-			CTextConfigPair * pPair = GetConfigPair( pairs, pair.ID, NULL );
-			if( pPair != NULL && lstrcmp( pair.ID, CFG_GUIFLAGS ) != 0 && lstrcmp( pair.ID, CFG_MISCFLAGS ) != 0 )
+			// Single parameter
+			CTextConfigPair * pPair;
+			if( (pPair=GetConfigPair(pairs, pair.ID, NULL)) != NULL )
 				pPair->String = (LPCWSTR)(pair.String);
 			else
 				pairs.Add( pair );
@@ -1168,6 +1202,19 @@ public:
 
 static CLangStrings __lsf;
 
+DWORD GetPlatform()
+{
+	typedef void (WINAPI * GetNativeSystemInfo_Proc)( __out  LPSYSTEM_INFO lpSystemInfo );
+	GetNativeSystemInfo_Proc pfnGetNativeSystemInfo;
+	if( (pfnGetNativeSystemInfo = (GetNativeSystemInfo_Proc)::GetProcAddress( ::LoadLibraryA("kernel32"), "GetNativeSystemInfo" )) != NULL )
+	{
+		SYSTEM_INFO si;
+		pfnGetNativeSystemInfo( &si );
+		return si.wProcessorArchitecture;
+	}
+	return PROCESSOR_ARCHITECTURE_INTEL;
+}
+
 #ifdef _SFX_USE_PREFIX_PLATFORM
 	#if defined(_WIN64) && defined(_M_X64)
 		/* exclude x86 (i386) prefixes */
@@ -1182,7 +1229,6 @@ static CLangStrings __lsf;
 			return FALSE;
 		}
 	#elif defined(_WIN32) && defined(_M_IX86)
-		typedef void (WINAPI * GetNativeSystemInfo_Proc)( __out  LPSYSTEM_INFO lpSystemInfo );
 		typedef BOOL (WINAPI * Wow64DisableWow64FsRedirection_Proc)( __out  PVOID *OldValue );
 		typedef BOOL (WINAPI * Wow64RevertWow64FsRedirection_Proc)( __in  PVOID OldValue );
 
@@ -1219,21 +1265,13 @@ static CLangStrings __lsf;
 		{
 			if( nPlatform == SFX_EXECUTE_PLATFORM_ANY )
 				return TRUE;
-			GetNativeSystemInfo_Proc pfnGetNativeSystemInfo;
-			if( (pfnGetNativeSystemInfo = (GetNativeSystemInfo_Proc)::GetProcAddress( ::LoadLibraryA("kernel32"), "GetNativeSystemInfo" )) == NULL )
-			{
-				if( nPlatform == SFX_EXECUTE_PLATFORM_I386 )
-					return TRUE;
-				return FALSE;
-			}
-			SYSTEM_INFO si;
-			pfnGetNativeSystemInfo( &si );
-			if( si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64 && nPlatform == SFX_EXECUTE_PLATFORM_AMD64 )
+			DWORD dwPlatform = GetPlatform();
+			if( dwPlatform == PROCESSOR_ARCHITECTURE_AMD64 && nPlatform == SFX_EXECUTE_PLATFORM_AMD64 )
 			{
 				SfxDisableWow64FsRedirection();
 				return TRUE;
 			}
-			if( si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_INTEL && nPlatform == SFX_EXECUTE_PLATFORM_I386 )
+			if( dwPlatform == PROCESSOR_ARCHITECTURE_INTEL && nPlatform == SFX_EXECUTE_PLATFORM_I386 )
 				return TRUE;
 			return FALSE;
 		}
@@ -1262,3 +1300,144 @@ static CLangStrings __lsf;
 		return fIsRunAsAdmin;
 	}
 #endif // _SFX_USE_ELEVATION
+
+#if defined(_SFX_USE_CONFIG_PLATFORM) || defined(_SFX_USE_LANG)
+void CreateConfigSignature(
+#ifdef _SFX_USE_LANG
+						   DWORD dwLangId,
+#endif // _SFX_USE_LANG
+#ifdef _SFX_USE_CONFIG_PLATFORM
+						   LPCSTR lpszPlatformName,
+#endif // _SFX_USE_CONFIG_PLATFORM
+						   AString& strBegin, AString& strEnd )
+{
+	strBegin = kSignatureConfigStart;
+	strEnd = kSignatureConfigEnd;
+	strBegin = strBegin.Left( strBegin.Length()-1 );
+	strEnd = strEnd.Left( strEnd.Length()-1 );
+
+	CHAR Buf[100];
+
+#ifdef _SFX_USE_CONFIG_PLATFORM
+	if( lpszPlatformName != NULL && *lpszPlatformName != 0 )
+	{
+		wsprintfA( Buf, ":%hs", lpszPlatformName );
+		strBegin += Buf;
+		strEnd += Buf;
+	}
+#endif // _SFX_USE_CONFIG_PLATFORM
+
+#ifdef _SFX_USE_LANG
+	if( dwLangId != 0 )
+	{
+		wsprintfA( Buf, ":Language:%u", dwLangId );
+		strBegin += Buf;
+		strEnd += Buf;
+	}
+#endif // _SFX_USE_LANG
+
+	strBegin += "!";
+	strEnd += "!";
+}
+
+bool LoadConfigs( IInStream * inStream, AString& result )
+{
+#ifdef _SFX_USE_CONFIG_PLATFORM
+	LPCSTR pPlatforms[3];
+	#if defined(_WIN64) && defined(_M_X64)
+		pPlatforms[0] = "x64";
+		pPlatforms[1] = "amd64";
+		pPlatforms[2] = NULL;
+	#elif defined(_WIN32) && defined(_M_IX86)
+		DWORD dwPlatform = GetPlatform();
+		switch( dwPlatform )
+		{
+		case PROCESSOR_ARCHITECTURE_INTEL:
+			pPlatforms[0] = "x86";
+			pPlatforms[1] = "i386";
+			pPlatforms[2] = NULL;
+			break;
+		case PROCESSOR_ARCHITECTURE_AMD64:
+			pPlatforms[0] = "x64";
+			pPlatforms[1] = "amd64";
+			pPlatforms[2] = NULL;
+			break;
+		default:
+			pPlatforms[0] = NULL;
+		}
+	#else
+		#error "Unknown platform"
+	#endif // Win32/Win64
+#endif // _SFX_USE_CONFIG_PLATFORM
+
+	AString sigBegin;
+	AString sigEnd;
+	AString config;
+	bool	fResult = false;
+
+	// Load default config
+	CreateConfigSignature(
+#ifdef _SFX_USE_LANG
+		0,
+#endif // _SFX_USE_LANG
+#ifdef _SFX_USE_CONFIG_PLATFORM
+		NULL,
+#endif // _SFX_USE_CONFIG_PLATFORM
+		sigBegin, sigEnd );
+	if( ReadConfig( inStream, sigBegin, sigEnd, config ) != false )
+		fResult = true;
+	result = config;
+
+#ifdef _SFX_USE_CONFIG_PLATFORM
+	LPCSTR * platform = pPlatforms;
+	while( *platform != NULL )
+	{
+		CreateConfigSignature(
+#ifdef _SFX_USE_LANG
+			0,
+#endif // _SFX_USE_LANG
+			*platform, sigBegin, sigEnd );
+		if( ReadConfig( inStream, sigBegin, sigEnd, config ) != false )
+		{
+			if( result.Length() != 0 )
+				result += "\r\n";
+			result += config;
+			fResult = true;
+		}
+		platform++;
+	}
+#endif // _SFX_USE_CONFIG_PLATFORM
+
+#ifdef _SFX_USE_LANG
+	// Selected language, all platforms
+	CreateConfigSignature(
+		idSfxLang,
+	#ifdef _SFX_USE_CONFIG_PLATFORM
+		NULL,
+	#endif // _SFX_USE_CONFIG_PLATFORM
+		sigBegin, sigEnd );
+	if( ReadConfig( inStream, sigBegin, sigEnd, config ) != false )
+		fResult = true;
+	result += config;
+
+	#ifdef _SFX_USE_CONFIG_PLATFORM
+		platform = pPlatforms;
+		while( *platform != NULL )
+		{
+			CreateConfigSignature( idSfxLang, *platform, sigBegin, sigEnd );
+			if( ReadConfig( inStream, sigBegin, sigEnd, config ) != false )
+			{
+				if( result.Length() != 0 )
+					result += "\r\n";
+				result += config;
+				fResult = true;
+			}
+			platform++;
+		}
+	#endif // _SFX_USE_CONFIG_PLATFORM
+#endif // _SFX_USE_LANG
+
+	return fResult;
+}
+#endif // defined(_SFX_USE_CONFIG_PLATFORM) || defined(_SFX_USE_LANG)
+

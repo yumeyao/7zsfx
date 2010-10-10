@@ -2,9 +2,9 @@
 /* File:        main.cpp                                                     */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sat, 09 Oct 2010 00:14:45 GMT                                */
+/* Last update: Sat, 09 Oct 2010 23:41:38 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1898                                                         */
+/* Revision:    1899                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1798                                                         */
 /* Updated:		Wed, 30 Jun 2010 09:24:36 GMT                                */
@@ -93,8 +93,8 @@ AString UnicodeStringToMultiByte( const UString &srcString, UINT codePage );
 
 const UInt64 kMaxCheckStartPosition = 1 << 20;
 
-static char kSignatureConfigStart[] = ",!@Install@!UTF-8!";
-static char kSignatureConfigEnd[] = ",!@InstallEnd@!";
+char kSignatureConfigStart[] = ",!@Install@!UTF-8!";
+char kSignatureConfigEnd[] = ",!@InstallEnd@!";
 
 
 LPCWSTR	lpwszErrorTitle;
@@ -439,19 +439,6 @@ LPCWSTR IsSfxSwitch( LPCWSTR lpwszCommandLine, LPCWSTR lpwszSwitch )
 	}
 	
 	return NULL;
-}
-
-void CreateLanguageSignature( DWORD dwLangId, AString& strBegin, AString& strEnd )
-{
-	strBegin = kSignatureConfigStart;
-	strEnd = kSignatureConfigEnd;
-	strBegin = strBegin.Left( strBegin.Length()-1 );
-	strEnd = strEnd.Left( strEnd.Length()-1 );
-
-	CHAR Buf[100];
-	wsprintfA( Buf, ":Language:%u!", dwLangId );
-	strBegin += Buf;
-	strEnd += Buf;
 }
 
 LPCWSTR ParseConfigOverride( LPCWSTR lpwszCommandLine, CObjectVector<CTextConfigPair> & pairs )
@@ -912,7 +899,7 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 	}
 #endif // _SFX_USE_ELEVATION
 #ifdef _DEBUG
-	strModulePathName = L"C:\\7zSfxMod\\1.5.0-develop\\snapshots\\7zsd_tools_150_1898_x86.exe";
+	strModulePathName = L"C:\\7zSfxMod\\1.5.0-develop\\snapshots\\7zsd_tools_150_1899_x86.exe";
 #else
 	if( ::GetModuleFileName( NULL, strModulePathName.GetBuffer(MAX_PATH*2), MAX_PATH*2 ) == 0 )
 	{
@@ -1022,19 +1009,14 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 	// Read SFX config
 	AString	config;
 
-	AString strSignatureBegin;
-	AString strSignatureEnd;
-
-#ifdef _SFX_USE_LANG
-	CreateLanguageSignature( idSfxLang, strSignatureBegin, strSignatureEnd );
-	if( ReadConfig( inStream, strSignatureBegin, strSignatureEnd, config ) == false )
-#endif // _SFX_USE_LANG
+#if defined(_SFX_USE_CONFIG_PLATFORM) || defined(_SFX_USE_LANG)
+	if( LoadConfigs( inStream, config ) == false )
+#else
+	if( ReadConfig( inStream, kSignatureConfigStart, kSignatureConfigEnd, config ) == false )
+#endif // defined(_SFX_USE_CONFIG_PLATFORM) || defined(_SFX_USE_LANG)
 	{
-		if( ReadConfig( inStream, kSignatureConfigStart, kSignatureConfigEnd, config ) == false )
-		{
-			SfxErrorDialog( FALSE, ERR_READ_CONFIG );
-			return ERRC_READ_CONFIG;
-		}
+		SfxErrorDialog( FALSE, ERR_READ_CONFIG );
+		return ERRC_READ_CONFIG;
 	}
 
 #ifdef _SFX_USE_TEST

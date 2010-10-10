@@ -2,7 +2,7 @@
 /* File:        SfxDialogs.cpp                                               */
 /* Created:     Sat, 13 Jan 2007 02:03:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sat, 09 Oct 2010 10:06:42 GMT                                */
+/* Last update: Sat, 09 Oct 2010 21:50:15 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
 /* Revision:    1366                                                         */
 /*---------------------------------------------------------------------------*/
@@ -770,7 +770,8 @@ BOOL CSfxDialog_BeginPromptClassic::OnInitDialog()
 {
 	CSfxDialog::OnInitDialog();
 	SetButtonTimer( BeginPromptTimeout );
-	ResizeAndPosition();
+	if( m_uDlgResourceId == 0 )
+		ResizeAndPosition();
 	return FALSE;
 }
 #endif // _SFX_USE_BEGINPROMPTTIMEOUT
@@ -970,7 +971,8 @@ BOOL CSfxDialog_BeginPromptWithExtractPath::OnInitDialog()
 	CSfxDialog_ExtractPath::OnInitDialog();
 
 	SetButtonTimer( BeginPromptTimeout );
-	ResizeAndPosition();
+	if( m_uDlgResourceId == 0 )
+		ResizeAndPosition();
 
 	return FALSE;
 }

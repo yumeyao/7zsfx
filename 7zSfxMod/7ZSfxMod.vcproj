@@ -935,7 +935,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
+				PreprocessorDefinitions="_DEBUG, _SFXTOOLS"
 				Culture="1049"
 			/>
 			<Tool

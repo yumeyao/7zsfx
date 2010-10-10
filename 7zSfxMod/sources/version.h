@@ -2,9 +2,17 @@
 /* File:        version.h                                                    */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Fri, 08 Oct 2010 20:50:24 GMT                                */
+/* Last update: Sat, 09 Oct 2010 20:02:06 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Revision:    1899                                                         */
+/*---------------------------------------------------------------------------*/
 /* Revision:    1898                                                         */
+/* Updated:     Fri, 08 Oct 2010 19:46:10 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Update 7-Zip sources up to 9.17 beta                         */
+/*				Incorrect size of dialogs that use text with				 */
+/*				  environment variables										 */
+/*				BeginPrompt timeout											 */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1799                                                         */
 /* Updated:     Thu, 01 Jul 2010 09:30:09 GMT                                */
@@ -68,7 +76,7 @@
 /*						Correct 'x86' and 'x64' prefixes workflow			 */
 /*						for 'RunProgram'									 */
 /*---------------------------------------------------------------------------*/
-#define VERSION_H_REVISION 1898
+#define VERSION_H_REVISION 1899
 #define VERSION_REVISION VERSION_H_REVISION
 
 #ifndef _VERSION_H_INCLUDED_
@@ -76,8 +84,8 @@
 
 #define VERSION_SFX_NUM_TEXT	"1.5.0"
 #define VERSION_SFX_NUM_BIN		1,5,0,VERSION_REVISION
-#define VERSION_SFX_DATE_EN		"October 9, 2010"
-#define VERSION_SFX_DATE_RU		"9 окт€бр€ 2010 г."
+#define VERSION_SFX_DATE_EN		"October 10, 2010"
+#define VERSION_SFX_DATE_RU		"10 окт€бр€ 2010 г."
 #define VERSION_SFX_BRANCH_EN	"develop"
 #define VERSION_SFX_BRANCH_RU	VERSION_SFX_BRANCH_EN
 
