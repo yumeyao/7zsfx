@@ -38,13 +38,13 @@ GUIFlags="8+32+128+256+4096"
 GUIMode="1"
 InstallPath="%ProgramFiles%\\7z SFX Tools"
 OverwriteMode="2"
-RunProgram="mspaint"
-;RunProgram="fm20:nowait:7zSD_EN.chm"
+RunProgram="fm20:nowait:7zSD_EN.chm"
 Shortcut="Du,{%%T\\7zSD_EN.chm},{},{},{Help file for 7z SFX modified module},{Everything about 7-zip SFX modified module},{},{%%T\\7zsd_LZMA.sfx}"
 Delete="%%T\\7zSD_RU.chm"
 ;!@InstallEnd@!
 
 ;!@Install@!UTF-8:Language:1058!
+SetEnvironment="sfx_homepage={\rtf1{\fonttbl{\f0\froman\fprq2\fcharset0 Times New Roman;}}{\colortbl ;\red128\green128\blue128;}\viewkind4\uc1\pard\cf1\i\f0\fs18 http://7zsfx.info\lang1049\f1\fs20\par}"
 Title="Інструменти для 7z SFX"
 BeginPrompt="{\rtf1\ansi\ansicpg1251\deff0\deflang1049{\fonttbl{\f0\fswiss\fprq2\fcharset204 Century Gothic;}{\f1\fswiss\fprq2\fcharset204 Tahoma;}}
 {\colortbl ;\red36\green88\blue178;\red255\green0\blue0;}
@@ -82,12 +82,17 @@ FinishMessage="{\rtf1\ansi\ansicpg1251\deff0\deflang1049{\fonttbl{\f0\fswiss\fpr
 }"
 CancelPrompt="Ви бажаєте перервати видобування?"
 ExtractTitle="Видобування..."
+GUIFlags="8+32+128+256+4096"
+GUIMode="1"
+InstallPath="%ProgramFiles%\\7z SFX Tools"
+OverwriteMode="2"
 RunProgram="fm20:nowait:7zSD_RU.chm"
 Shortcut="Du,{%%T\\7zSD_RU.chm},{},{},{Опис модифікованого 7z SFX модуля},{Все про 7z SFX модуль},{},{%%T\\7zsd_LZMA.sfx}"
 Delete="%%T\\7zSD_EN.chm"
 ;!@InstallEnd@:Language:1058!
 
 ;!@Install@!UTF-8:Language:1049!
+SetEnvironment="sfx_homepage={\rtf1{\fonttbl{\f0\froman\fprq2\fcharset0 Times New Roman;}}{\colortbl ;\red128\green128\blue128;}\viewkind4\uc1\pard\cf1\i\f0\fs18 http://7zsfx.info\lang1049\f1\fs20\par}"
 Title="Инструменты для 7z SFX"
 BeginPrompt="{\rtf1\ansi\ansicpg1251\deff0\deflang1049{\fonttbl{\f0\fswiss\fprq2\fcharset204 Century Gothic;}{\f1\fswiss\fprq2\fcharset204 Tahoma;}}
 {\colortbl ;\red36\green88\blue178;\red255\green0\blue0;}
@@ -122,22 +127,14 @@ FinishMessage="{\rtf1\ansi\ansicpg1251\deff0\deflang1049{\fonttbl{\f0\fswiss\fpr
 }"
 CancelPrompt="Вы хотите прервать распаковку?"
 ExtractTitle="Распаковка..."
+GUIFlags="8+32+128+256+4096"
+GUIMode="1"
+InstallPath="%ProgramFiles%\\7z SFX Tools"
+;InstallPath="C:\\tmp\\test"
+OverwriteMode="2"
 ;RunProgram="fm20:nowait:7zSD_RU.chm"
 Shortcut="Du,{%%T\\7zSD_RU.chm},{},{},{Описание модифицированного 7z SFX модуля},{Все о 7z SFX модуле},{},{%%T\\7zsd_LZMA.sfx}"
 Delete="%%T\\7zSD_EN.chm"
+MiscFlags="4"
+BeginPromptTimeout="30"
 ;!@InstallEnd@:Language:1049!
-
-;!@Install@!UTF-8:x64!
-InstallPath="%ProgramW6432%\\7z SFX Tools"
-Title="7z SFX Tools [x64]"
-;!@InstallEnd@:x64!
-
-;!@Install@!UTF-8:x64:Language:1049!
-Title="Инструменты для 7z SFX [x64]"
-RunProgram=""
-RunProgram="fm20:notepad.exe"
-;!@InstallEnd@:x64:Language:1049!
-
-;!@Install@!UTF-8:x64:Language:1058!
-Title="Інструменти для 7z SFX [x64]"
-;!@InstallEnd@:x64:Language:1058!

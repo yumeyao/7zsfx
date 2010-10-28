@@ -935,7 +935,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG, _SFXTOOLS"
+				PreprocessorDefinitions="_DEBUG"
 				Culture="1049"
 			/>
 			<Tool
@@ -1054,7 +1054,7 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/STUB:sources/small.stub"
 				AdditionalDependencies="comctl32.lib"
-				OutputFile="$(OutDir)\7zsd_$(ConfigurationName)_x64.sfx"
+				OutputFile="$(OutDir)\7zsd_$(ConfigurationName)_x64.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				GenerateManifest="true"
@@ -8333,7 +8333,11 @@
 			</Filter>
 		</Filter>
 		<File
-			RelativePath=".\changes.txt"
+			RelativePath=".\changes_draft.txt"
+			>
+		</File>
+		<File
+			RelativePath=".\changes_ru.txt"
 			>
 		</File>
 	</Files>

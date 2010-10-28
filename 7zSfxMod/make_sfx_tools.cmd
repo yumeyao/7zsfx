@@ -16,6 +16,8 @@ set archive_name=%sfx_name%_%timestamp%
 
 cd ..\output
 7z a -mx=9 %archive_name%.7z -xr!7zsd_Debug* win32/*.sfx win64/*.sfx
+copy /b win32\7zsd_LZMA_Dialogs.sfx + ..\7zSfxMod\configs\test_config.txt +%archive_name%.7z %sfx_name%_x86_test.exe
 copy /b win32\7zsd_LZMA_Dialogs.sfx + ..\7zSfxMod\configs\7zsd_tools_RTF_uk_ru.txt +%archive_name%.7z %sfx_name%_x86.exe
 copy /b win64\7zsd_LZMA_Dialogs_x64.sfx + ..\7zSfxMod\configs\7zsd_tools_RTF_uk_ru.txt +%archive_name%.7z %sfx_name%_x64.exe
+copy /b win32\7zsd_LZMA_Dialogs.sfx + ..\7zSfxMod\configs\+%archive_name%.7z %sfx_name%_x86_2.exe
 del %archive_name%.7z

@@ -135,7 +135,7 @@ Title="7z SFX Tools [x64]"
 ;!@Install@!UTF-8:x64:Language:1049!
 Title="Инструменты для 7z SFX [x64]"
 RunProgram=""
-RunProgram="fm20:notepad.exe"
+RunProgram="notepad.exe"
 ;!@InstallEnd@:x64:Language:1049!
 
 ;!@Install@!UTF-8:x64:Language:1058!

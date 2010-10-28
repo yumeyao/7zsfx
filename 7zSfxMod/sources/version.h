@@ -2,9 +2,29 @@
 /* File:        version.h                                                    */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sat, 09 Oct 2010 20:02:06 GMT                                */
+/* Last update: Mon, 25 Oct 2010 09:24:36 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1899                                                         */
+/* Revision:    1915                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1915                                                         */
+/* Updated:     Mon, 25 Oct 2010 09:18:54 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Move branch from 'develop' to 'alpha'                        */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1912                                                         */
+/* Updated:     Fri, 22 Oct 2010 09:48:34 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Fix incorrect work of '-fm0' switch                          */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1903                                                         */
+/* Updated:     Wed, 13 Oct 2010 10:02:01 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Catch 'new' allocations errors                               */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1902                                                         */
+/* Updated:     Tue, 12 Oct 2010 09:20:45 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Fix MidFree/BigFree/free with NULL pointers                  */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1898                                                         */
 /* Updated:     Fri, 08 Oct 2010 19:46:10 GMT                                */
@@ -76,7 +96,7 @@
 /*						Correct 'x86' and 'x64' prefixes workflow			 */
 /*						for 'RunProgram'									 */
 /*---------------------------------------------------------------------------*/
-#define VERSION_H_REVISION 1899
+#define VERSION_H_REVISION 1915
 #define VERSION_REVISION VERSION_H_REVISION
 
 #ifndef _VERSION_H_INCLUDED_
@@ -84,9 +104,9 @@
 
 #define VERSION_SFX_NUM_TEXT	"1.5.0"
 #define VERSION_SFX_NUM_BIN		1,5,0,VERSION_REVISION
-#define VERSION_SFX_DATE_EN		"October 10, 2010"
-#define VERSION_SFX_DATE_RU		"10 окт€бр€ 2010 г."
-#define VERSION_SFX_BRANCH_EN	"develop"
+#define VERSION_SFX_DATE_EN		"October 25, 2010"
+#define VERSION_SFX_DATE_RU		"25 окт€бр€ 2010 г."
+#define VERSION_SFX_BRANCH_EN	"alpha"
 #define VERSION_SFX_BRANCH_RU	VERSION_SFX_BRANCH_EN
 
 #define VERSION_7ZIP_NUM_TEXT	"9.17"

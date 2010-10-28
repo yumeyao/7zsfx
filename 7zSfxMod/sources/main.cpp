@@ -2,9 +2,9 @@
 /* File:        main.cpp                                                     */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sat, 09 Oct 2010 23:41:38 GMT                                */
+/* Last update: Fri, 22 Oct 2010 10:33:32 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1899                                                         */
+/* Revision:    1912                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1798                                                         */
 /* Updated:		Wed, 30 Jun 2010 09:24:36 GMT                                */
@@ -218,6 +218,7 @@ UString CreateTempName( LPCWSTR lpwszFormat )
 
 void ReplaceVariables( UString& str )
 {
+	ExpandEnvironmentStrings( str );
 	ReplaceWithArchivePath( str, strSfxFolder );
 	ReplaceWithArchiveName( str, strSfxName );
 	ExpandEnvironmentStrings( str );
@@ -225,6 +226,7 @@ void ReplaceVariables( UString& str )
 
 void ReplaceVariablesEx( UString& str )
 {
+	ExpandEnvironmentStrings( str );
 	ReplaceWithExtractPath( str, extractPath );
 	ReplaceVariables( str );
 }
@@ -723,6 +725,8 @@ BOOL SfxExecute( LPCWSTR lpwszCmdLine, DWORD dwFlags, LPCWSTR lpwszDirectory )
 		execInfo.lpVerb = L"runas";
 
 	fileParams = LoadQuotedString( lpwszCmdLine, filePath );
+	if( filePath.Length() == 0 )
+		return TRUE;
 	execInfo.lpFile = filePath;
 	execInfo.lpParameters = fileParams;
 	if( ::ShellExecuteEx( &execInfo ) != FALSE )
@@ -806,6 +810,13 @@ BOOL SfxExecute( LPCWSTR lpwszCmdLine, DWORD dwFlags, LPCWSTR lpwszDirectory )
 	}
 #endif // _SFX_USE_PREFIX_WAITALL
 
+#include <new.h>
+int sfx_new_handler( size_t size )
+{
+	MessageBoxA( NULL, "Could not allocate memory", "7-Zip SFX", MB_OK|MB_ICONSTOP );
+	return 0;
+}
+
 #ifdef _SFX_USE_CUSTOM_EXCEPTIONS
 int APIENTRY WinMain2( HINSTANCE hInstance,
 					   HINSTANCE hPrevInstance,
@@ -829,6 +840,7 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 					 HINSTANCE hPrevInstance,
 					 LPSTR lpCmdLine, int nCmdShow )
 {
+	_set_new_handler( sfx_new_handler );
 	CreateDummyWindow();
 
 	OSVERSIONINFO versionInfo;
@@ -899,7 +911,7 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 	}
 #endif // _SFX_USE_ELEVATION
 #ifdef _DEBUG
-	strModulePathName = L"C:\\7zSfxMod\\1.5.0-develop\\snapshots\\7zsd_tools_150_1899_x86.exe";
+	strModulePathName = L"C:\\7zSfxMod\\1.5.0-develop\\snapshots\\7zsd_tools_150_1912_x86_test.exe";
 #else
 	if( ::GetModuleFileName( NULL, strModulePathName.GetBuffer(MAX_PATH*2), MAX_PATH*2 ) == 0 )
 	{
@@ -1605,7 +1617,7 @@ Loc_BeginPrompt:
 	{
 			FinishMessage++;
 	}
-	if( FinishMessage >= 0 && (lpwszValue = GetTextConfigValue( pairs, CFG_FINISHMESSAGE )) != NULL )
+	if( FinishMessage > 0 && (lpwszValue = GetTextConfigValue( pairs, CFG_FINISHMESSAGE )) != NULL )
 	{
 		if( FinishMessage > FINISHMESSAGE_MAX_TIMEOUT )
 			FinishMessage = FINISHMESSAGE_MAX_TIMEOUT;

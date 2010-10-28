@@ -2,9 +2,9 @@
 /* File:        SfxDialogs.cpp                                               */
 /* Created:     Sat, 13 Jan 2007 02:03:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sat, 09 Oct 2010 21:50:15 GMT                                */
+/* Last update: Fri, 22 Oct 2010 11:29:44 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1366                                                         */
+/* Revision:    1379                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1262                                                         */
 /* Updated:     Sun, 27 Jun 2010 06:55:56 GMT                                */
@@ -384,6 +384,12 @@ BOOL CSfxDialog::OnInitDialog()
 		if( hSmallIcon == NULL ) hSmallIcon = hBigIcon;
 		SendMessage( WM_SETICON, ICON_BIG, (LPARAM)hBigIcon );
 		SendMessage( WM_SETICON, ICON_SMALL, (LPARAM)hSmallIcon );
+	}
+
+	if( GUIFlags&GUIFLAGS_ALLOW_AMPERSAND )
+	{
+		::SetWindowLongPtr( GetDlgItem(SDC_TEXT), GWL_STYLE, ::GetWindowLongPtr(GetDlgItem(SDC_TEXT),GWL_STYLE)|SS_NOPREFIX );
+		::SetWindowLongPtr( GetDlgItem(SDC_TEXT2), GWL_STYLE, ::GetWindowLongPtr(GetDlgItem(SDC_TEXT2),GWL_STYLE)|SS_NOPREFIX );
 	}
 
 	SetDlgItemText( SDC_TEXT, m_lpwszText );
@@ -1012,7 +1018,8 @@ void CSfxDialog_BeginPromptWithExtractPath::ResizeAndPosition()
 BOOL CSfxDialog_FinishMessage::OnInitDialog()
 {
 	CSfxDialog::OnInitDialog();
-	SetButtonTimer( FinishMessage );
+	if( FinishMessage > 1 )
+		SetButtonTimer( FinishMessage );
 	MessageBeep( MB_ICONASTERISK );
 	return FALSE;
 }
