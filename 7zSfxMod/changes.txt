@@ -1,7 +1,0 @@
-1.4.0.1799
-+ Update manifest for Windows7 PCA support
-+ Поддержка Windows7 PCA в манифесте
-
-1.4.0.1898
-* Неверный размер диалогов со строками, использующих переменные среды (Das Betrunkene Pferd:forum.oszone.net)
-* Incorrect size of dialogs that use text with environment variables (Das Betrunkene Pferd:forum.oszone.net)

@@ -2,9 +2,9 @@
 /* File:        main.cpp                                                     */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Wed, 06 Oct 2010 10:46:33 GMT                                */
+/* Last update: Wed, 13 Oct 2010 09:53:16 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1896                                                         */
+/* Revision:    1903                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1794                                                         */
 /* Updated:     Sat, 26 Jun 2010 10:45:08 GMT                                */
@@ -206,6 +206,7 @@ UString CreateTempName( LPCWSTR lpwszFormat )
 
 void ReplaceVariables( UString& str )
 {
+	ExpandEnvironmentStrings( str );
 	ReplaceWithArchivePath( str, strSfxFolder );
 	ReplaceWithArchiveName( str, strSfxName );
 	ExpandEnvironmentStrings( str );
@@ -213,6 +214,7 @@ void ReplaceVariables( UString& str )
 
 void ReplaceVariablesEx( UString& str )
 {
+	ExpandEnvironmentStrings( str );
 	ReplaceWithExtractPath( str, extractPath );
 	ReplaceVariables( str );
 }
@@ -695,6 +697,13 @@ void SfxCleanup()
 		DeleteFileOrDirectoryAlways( extractPath );
 }
 
+#include <new.h>
+int sfx_new_handler( size_t size )
+{
+	MessageBoxA( NULL, "Could not allocate memory", "7-Zip SFX", MB_OK|MB_ICONSTOP );
+	return 0;
+}
+
 
 #ifdef _SFX_USE_CUSTOM_EXCEPTIONS
 int APIENTRY WinMain2( HINSTANCE hInstance,
@@ -719,6 +728,7 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 					 HINSTANCE hPrevInstance,
 					 LPSTR lpCmdLine, int nCmdShow )
 {
+	_set_new_handler( sfx_new_handler );
 	CreateDummyWindow();
 
 	OSVERSIONINFO versionInfo;

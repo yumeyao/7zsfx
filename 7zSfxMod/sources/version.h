@@ -2,9 +2,24 @@
 /* File:        version.h                                                    */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Fri, 08 Oct 2010 19:46:10 GMT                                */
+/* Last update: Fri, 22 Oct 2010 11:42:27 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1898                                                         */
+/* Revision:    1912                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1912                                                         */
+/* Updated:     Fri, 22 Oct 2010 11:42:27 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Fix issue with module's and system's mixed variables         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1903                                                         */
+/* Updated:     Wed, 13 Oct 2010 09:54:47 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Catch 'new' allocations errors                               */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1902                                                         */
+/* Updated:     Tue, 12 Oct 2010 09:06:15 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Fix MidFree/BigFree/free with NULL pointers                  */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1898                                                         */
 /* Updated:     Fri, 08 Oct 2010 19:46:10 GMT                                */
@@ -68,7 +83,7 @@
 /*						Correct 'x86' and 'x64' prefixes workflow			 */
 /*						for 'RunProgram'									 */
 /*---------------------------------------------------------------------------*/
-#define VERSION_H_REVISION 1898
+#define VERSION_H_REVISION 1912
 #define VERSION_REVISION VERSION_H_REVISION
 
 #ifndef _VERSION_H_INCLUDED_
@@ -76,8 +91,8 @@
 
 #define VERSION_SFX_NUM_TEXT	"1.4.0"
 #define VERSION_SFX_NUM_BIN		1,4,0,VERSION_REVISION
-#define VERSION_SFX_DATE_EN		"October 9, 2010"
-#define VERSION_SFX_DATE_RU		"9 окт€бр€ 2010 г."
+#define VERSION_SFX_DATE_EN		"October 22, 2010"
+#define VERSION_SFX_DATE_RU		"22 окт€бр€ 2010 г."
 #define VERSION_SFX_BRANCH_EN	"RC1"
 #define VERSION_SFX_BRANCH_RU	VERSION_SFX_BRANCH_EN
 

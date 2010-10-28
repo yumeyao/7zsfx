@@ -2,9 +2,9 @@
 /* File:        Helpers.cpp                                                  */
 /* Created:     Sat, 30 Jul 2005 11:10:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 27 Jun 2010 03:37:50 GMT                                */
+/* Last update: Tue, 12 Oct 2010 09:14:52 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1793                                                         */
+/* Revision:    1900                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1793                                                         */
 /* Updated:     Sun, 27 Jun 2010 03:37:50 GMT                                */
@@ -810,9 +810,9 @@ extern "C" void *MyAlloc(size_t size)
 	return malloc(size);
 }
 
-extern "C" void BigFree(void *address)	{ VirtualFree(address, 0, MEM_RELEASE); }
-extern "C" void MidFree(void *address)	{ VirtualFree(address, 0, MEM_RELEASE); }
-extern "C" void MyFree(void *address)	{ free(address); }
+extern "C" void BigFree(void *address)	{ if( address != NULL ) VirtualFree(address, 0, MEM_RELEASE); }
+extern "C" void MidFree(void *address)	{ if( address != NULL ) VirtualFree(address, 0, MEM_RELEASE); }
+extern "C" void MyFree(void *address)	{ if( address != NULL ) free(address); }
 
 int GetDirectorySeparatorPos( UString& ustrPath )
 {

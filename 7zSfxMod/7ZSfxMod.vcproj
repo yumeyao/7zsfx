@@ -8333,7 +8333,11 @@
 			</Filter>
 		</Filter>
 		<File
-			RelativePath=".\changes.txt"
+			RelativePath=".\changes_draft.txt"
+			>
+		</File>
+		<File
+			RelativePath=".\changes_ru.txt"
 			>
 		</File>
 	</Files>
