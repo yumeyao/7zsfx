@@ -2,9 +2,9 @@
 /* File:        version.h                                                    */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Mon, 25 Oct 2010 09:24:36 GMT                                */
+/* Last update: Mon, 01 Nov 2010 10:42:53 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1915                                                         */
+/* Revision:    1922                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1915                                                         */
 /* Updated:     Mon, 25 Oct 2010 09:18:54 GMT                                */
@@ -96,7 +96,7 @@
 /*						Correct 'x86' and 'x64' prefixes workflow			 */
 /*						for 'RunProgram'									 */
 /*---------------------------------------------------------------------------*/
-#define VERSION_H_REVISION 1915
+#define VERSION_H_REVISION 1922
 #define VERSION_REVISION VERSION_H_REVISION
 
 #ifndef _VERSION_H_INCLUDED_
@@ -104,8 +104,8 @@
 
 #define VERSION_SFX_NUM_TEXT	"1.5.0"
 #define VERSION_SFX_NUM_BIN		1,5,0,VERSION_REVISION
-#define VERSION_SFX_DATE_EN		"October 25, 2010"
-#define VERSION_SFX_DATE_RU		"25 окт€бр€ 2010 г."
+#define VERSION_SFX_DATE_EN		"November 1, 2010"
+#define VERSION_SFX_DATE_RU		"1 но€бр€ 2010 г."
 #define VERSION_SFX_BRANCH_EN	"alpha"
 #define VERSION_SFX_BRANCH_RU	VERSION_SFX_BRANCH_EN
 

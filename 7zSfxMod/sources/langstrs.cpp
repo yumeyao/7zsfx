@@ -158,6 +158,8 @@ LANGSTRING SfxLangStrings[] = {
 								"Недостаточно физической памяти.\nРаспаковка может занять продолжительное время.\n\nВы хотите продолжить?", NULL },
 #endif // _SFX_USE_CHECK_FREE_SPACE
 #endif // _SFX_USE_WARNINGS
+	{ STR_BUILD_OPTIONS,		"Build options:",
+								"Опции сборки:", NULL },
 
 	{ 0, "", "", NULL }
 };

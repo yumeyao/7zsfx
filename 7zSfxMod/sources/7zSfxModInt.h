@@ -2,9 +2,9 @@
 /* File:        7zSfxModInt.h                                                */
 /* Created:     Wed, 25 Jul 2007 09:54:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sat, 09 Oct 2010 22:50:22 GMT                                */
+/* Last update: Sun, 31 Oct 2010 01:52:14 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1173                                                         */
+/* Revision:    1194                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1067                                                         */
 /* Updated:     Sat, 26 Jun 2010 04:22:23 GMT                                */
@@ -23,8 +23,6 @@
 /*---------------------------------------------------------------------------*/
 #ifndef _7ZSFXMODINT_H_INCLUDED_
 #define _7ZSFXMODINT_H_INCLUDED_
-
-#include "config.h"
 
 #include "7zSfxMod.h"
 #include "langstrs.h"

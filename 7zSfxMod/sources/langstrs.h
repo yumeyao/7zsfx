@@ -91,6 +91,8 @@
 
 // added June 26, 2010
 #define STR_COPYRIGHT				44
+// added October 31, 2010
+#define STR_BUILD_OPTIONS			45
 
 LPCWSTR GetLanguageString( UINT id );
 void FreeLanguageStrings();

@@ -2,9 +2,9 @@
 /* File:        SfxDialogs.cpp                                               */
 /* Created:     Sat, 13 Jan 2007 02:03:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Fri, 22 Oct 2010 11:29:44 GMT                                */
+/* Last update: Mon, 01 Nov 2010 11:35:30 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1379                                                         */
+/* Revision:    1389                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1262                                                         */
 /* Updated:     Sun, 27 Jun 2010 06:55:56 GMT                                */
@@ -976,7 +976,9 @@ BOOL CSfxDialog_BeginPromptWithExtractPath::OnInitDialog()
 
 	CSfxDialog_ExtractPath::OnInitDialog();
 
+#ifdef _SFX_USE_BEGINPROMPTTIMEOUT
 	SetButtonTimer( BeginPromptTimeout );
+#endif // _SFX_USE_BEGINPROMPTTIMEOUT
 	if( m_uDlgResourceId == 0 )
 		ResizeAndPosition();
 

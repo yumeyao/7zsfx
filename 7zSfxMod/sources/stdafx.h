@@ -14,6 +14,8 @@
 #ifndef _STDAFX_H_INCLUDED_
 #define _STDAFX_H_INCLUDED_
 
+#include "config.h"
+
 #if !defined(UNICODE) || !defined(_UNICODE)
 	#error "UNICODE and _UNICODE must be defined"
 #endif // UNICODE && _UNICODE

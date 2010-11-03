@@ -2,9 +2,9 @@
 /* File:        SfxTest.cpp                                                  */
 /* Created:     Sun, 25 Feb 2007 09:13:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 06 Jun 2010 09:05:47 GMT                                */
+/* Last update: Mon, 01 Nov 2010 11:29:34 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1197                                                         */
+/* Revision:    1346                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1197                                                         */
 /* Updated:     Sun, 06 Jun 2010 09:05:47 GMT                                */
@@ -114,6 +114,7 @@ int TestSfxDialogs( CObjectVector<CTextConfigPair>& config )
 				dlg.Show( SD_OK|SD_ICONINFORMATION, lpwszTitle, lpwszValue );
 			}
 			break;
+#ifdef _SFX_USE_WARNINGS
 		case TSD_WARNING:
 		case TSD_WARNING_FORCE:
 			if( (lpwszValue = GetTextConfigValue( config, CFG_WARNINGTITLE)) != NULL ||
@@ -124,6 +125,7 @@ int TestSfxDialogs( CObjectVector<CTextConfigPair>& config )
 			else
 				nExitCode = ERRC_SFXTEST;
 			break;
+#endif // _SFX_USE_WARNINGS
 		}
 		lpwszFlags++;
 	}
@@ -154,8 +156,10 @@ int TestSfxDialogsToStdout( CObjectVector<CTextConfigPair>& config )
 	// TSD_HELPTEXT:
 	if( GetTextConfigValue( config, CFG_HELP_TEXT ) != NULL )
 		WriteStdoutChar( TSD_HELPTEXT );
+#ifdef _SFX_USE_WARNINGS
 	if( GetTextConfigValue( config, CFG_WARNINGTITLE) != NULL )
 		WriteStdoutChar( TSD_WARNING );
+#endif // _SFX_USE_WARNINGS
 	return ERRC_NONE;
 }
 

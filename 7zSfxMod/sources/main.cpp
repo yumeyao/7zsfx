@@ -2,9 +2,9 @@
 /* File:        main.cpp                                                     */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Fri, 22 Oct 2010 10:33:32 GMT                                */
+/* Last update: Mon, 01 Nov 2010 10:40:20 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1912                                                         */
+/* Revision:    1922                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1798                                                         */
 /* Updated:		Wed, 30 Jun 2010 09:24:36 GMT                                */
@@ -34,53 +34,6 @@
 #include "7zSfxModInt.h"
 #include "SfxDialogs.h"
 #include "ExtractEngine.h"
-
-#pragma warning( disable:4005 )
-
-#define SFX_USE_DLL			0x01
-#define METHOD_LZMA			0x02
-#define METHOD_DEFLATE		0x04
-#define METHOD_PPMD			0x08
-#define METHOD_BCJ			0x10
-#define METHOD_BCJ2			0x20
-#define METHOD_LZMA2		0x40
-
-#ifndef _DLL
-	#undef	SFX_USE_DLL
-	#define SFX_USE_DLL		0x00
-#endif // _DLL
-
-#ifndef COMPRESS_LZMA
-	#undef	METHOD_LZMA
-	#define	METHOD_LZMA		0x00
-#endif // LZMA
-
-#ifndef COMPRESS_DEFLATE
-	#undef	METHOD_DEFLATE
-	#define	METHOD_DEFLATE	0x00
-#endif // Deflate
-
-#ifndef COMPRESS_PPMD
-	#undef	METHOD_PPMD
-	#define	METHOD_PPMD		0x00
-#endif // PPMd
-
-#ifndef COMPRESS_BCJ
-	#undef	METHOD_BCJ
-	#define	METHOD_BCJ		0x00
-#endif // BCJ
-
-#ifndef COMPRESS_BCJ2
-	#undef	METHOD_BCJ2
-	#define	METHOD_BCJ2		0x00
-#endif // BCJ2
-
-#ifndef COMPRESS_LZMA2
-	#undef	METHOD_LZMA2
-	#define	METHOD_LZMA2	0x00
-#endif // LZMA2
-
-#pragma warning( default:4005 )
 
 #define SKIP_WHITESPACES_W(str) 	while( *str != L'\0' && ((unsigned)*str) <= L' ' ) str++;
 
@@ -688,6 +641,11 @@ void ShowSfxVersion()
 			ustrVersion += L", ";
 		ustrVersion += g_Codecs[ki]->Name;
 	}
+	ustrVersion += L"\n\n";
+	ustrVersion += GetLanguageString( STR_BUILD_OPTIONS );
+	WCHAR tmp[128];
+	wsprintf( tmp, L" \n\t%03X - %02X - %03X", SFXBUILD_OPTIONS1, SFXBUILD_OPTIONS2, SFXBUILD_OPTIONS3 );
+	ustrVersion += tmp;
 	ustrVersion += L"\n\n\n";
 	ustrVersion += GetLanguageString( STR_COPYRIGHT );
 	dlg.Show( SD_OK|SD_ICONINFORMATION, lpwszTitle, ustrVersion );
@@ -967,8 +925,8 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 			break;
 		case L'v':
 			return 0x4000 | VERSION_REVISION;
-		case L'f':
-			return 0x2000 | SFX_USE_DLL | METHOD_LZMA | METHOD_DEFLATE | METHOD_PPMD | METHOD_BCJ | METHOD_BCJ2;
+//		case L'f':
+//			return 0x2000 | SFX_USE_DLL | METHOD_LZMA | METHOD_DEFLATE | METHOD_PPMD | METHOD_BCJ | METHOD_BCJ2;
 		default:
 			return ERRC_SFXTEST;
 		}
