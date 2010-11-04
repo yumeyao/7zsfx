@@ -2,9 +2,9 @@
 /* File:        config.h                                                     */
 /* Created:     Sat, 23 Jan 2010 11:11:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Mon, 01 Nov 2010 11:41:37 GMT                                */
+/* Last update: Wed, 03 Nov 2010 09:52:51 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    283                                                          */
+/* Revision:    284                                                          */
 /*---------------------------------------------------------------------------*/
 /* Revision:    154                                                          */
 /* Updated:     Sat, 26 Jun 2010 04:15:20 GMT                                */
@@ -312,7 +312,7 @@
 	#endif // defined(_SFX_USE_CHECK_FREE_SPACE) || defined(_SFX_USE_CHECK_RAM)
 #endif // _SFX_USE_WARNINGS
 
-#ifdef _SFX_AUTHOR
+#ifdef _SFX_MAINTAINER
 	/* Oleg_Sch: My customs optimizations */
 	#define _SFX_USE_CUSTOM_MSVCRT			/* msvcrt.dll */
 											/* require msvcrt.lib from old VC6 for x86 */
@@ -321,6 +321,6 @@
 	#define _SFX_USE_CUSTOM_EXCEPTIONS		/* use custom realization of exceptions handlers */
 											/* see realization in 'config.cpp' */
 	#define _SFX_USE_TEST					/* internal use */
-#endif // _SFX_AUTHOR
+#endif // _SFX_MAINTAINER
 
 #endif // _CONFIG_H_INCLUDED_

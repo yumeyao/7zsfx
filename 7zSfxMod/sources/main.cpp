@@ -2,9 +2,9 @@
 /* File:        main.cpp                                                     */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Mon, 01 Nov 2010 10:40:20 GMT                                */
+/* Last update: Wed, 03 Nov 2010 23:43:52 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1922                                                         */
+/* Revision:    1924                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1798                                                         */
 /* Updated:		Wed, 30 Jun 2010 09:24:36 GMT                                */
@@ -1177,6 +1177,7 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 		UString executeString;
 		UString strCmdLine = LoadQuotedString( ::GetCommandLine(), sfxPath );
 		executeString = L'\"' + sfxPath + L"\" -" + CMDLINE_SFXELEVATION + L' ' + strCmdLine;
+		::SetProcessWorkingSetSize( ::GetCurrentProcess(), (SIZE_T)-1, (SIZE_T)-1 );
 		if( SfxExecute( executeString, SFXEXEC_RUNAS, NULL ) == FALSE )
 			return ERRC_ELEVATE;
 		return ERRC_NONE;
