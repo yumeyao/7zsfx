@@ -2,9 +2,9 @@
 /* File:        main.cpp                                                     */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Wed, 03 Nov 2010 23:43:52 GMT                                */
+/* Last update: Sun, 07 Nov 2010 06:56:19 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1924                                                         */
+/* Revision:    1928                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1798                                                         */
 /* Updated:		Wed, 30 Jun 2010 09:24:36 GMT                                */
@@ -79,6 +79,7 @@ UString strSfxFolder;
 UString strSfxName;
 UString	strErrorTitle;
 UString	strTitle;
+UString	strOSPlatform;
 
 bool	fUseInstallPath;
 
@@ -174,6 +175,9 @@ void ReplaceVariables( UString& str )
 	ExpandEnvironmentStrings( str );
 	ReplaceWithArchivePath( str, strSfxFolder );
 	ReplaceWithArchiveName( str, strSfxName );
+#ifdef _SFX_USE_PREFIX_PLATFORM
+	str.Replace( L"%%P", strOSPlatform );
+#endif // _SFX_USE_PREFIX_PLATFORM
 	ExpandEnvironmentStrings( str );
 }
 
@@ -869,7 +873,7 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 	}
 #endif // _SFX_USE_ELEVATION
 #ifdef _DEBUG
-	strModulePathName = L"C:\\7zSfxMod\\1.5.0-develop\\snapshots\\7zsd_tools_150_1912_x86_test.exe";
+	strModulePathName = L"C:\\7zSfxMod\\1.5.0-alpha\\snapshots\\7zsd_tools_150_1928_x86_test.exe";
 #else
 	if( ::GetModuleFileName( NULL, strModulePathName.GetBuffer(MAX_PATH*2), MAX_PATH*2 ) == 0 )
 	{
@@ -877,9 +881,6 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 		return ERRC_GET_PATHNAME;
 	}
 #endif
-#ifdef _SFX_FEATURES_TEST
-	strModulePathName = L"..\\snapshots\\7zsd_tools_140_1652_x64.exe";
-#endif // _SFX_FEATURES_TEST
 	strModulePathName.ReleaseBuffer();
 
 	if( (lpwszValue = IsSfxSwitch( str, CMDLINE_SFXTEST )) != NULL )
@@ -966,6 +967,9 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 		lpwszTitle = strTitle;
 		lpwszErrorTitle = strErrorTitle;
 	}
+#ifdef _SFX_USE_PREFIX_PLATFORM
+	strOSPlatform = GetPlatformName();
+#endif // _SFX_USE_PREFIX_PLATFORM
 	
 	// Create input stream
 	CSfxInStream *inStreamSpec = new CSfxInStream;

@@ -2,9 +2,9 @@
 /* File:        7zSfxModInt.h                                                */
 /* Created:     Wed, 25 Jul 2007 09:54:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 31 Oct 2010 01:52:14 GMT                                */
+/* Last update: Sun, 07 Nov 2010 06:39:56 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1194                                                         */
+/* Revision:    1201                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1067                                                         */
 /* Updated:     Sat, 26 Jun 2010 04:22:23 GMT                                */
@@ -208,6 +208,8 @@ bool LoadConfigs( IInStream * inStream, AString& result );
 	#define SFX_EXECUTE_PLATFORM_ANY		0
 	#define SFX_EXECUTE_PLATFORM_I386		1
 	#define SFX_EXECUTE_PLATFORM_AMD64		2
+
+	LPCWSTR GetPlatformName();
 #endif // _SFX_USE_PREFIX_PLATFORM
 
 #define CMDLINE_SFXWAITALL			_CFG_PARAM_TYPE"sfxwaitall"

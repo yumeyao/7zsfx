@@ -1,13 +1,7 @@
 ﻿;!@Install@!UTF-8!
 Title="Title"
+BeginPrompt="Test %%P"
 InstallPath="%TMP%"
-SetEnvironment="KillLog=1111 \"%TMP%\\nircmd.exe\" 1111 &"
-SetEnvironment="Msg=%KillLog%%%S 2222 &&"
-SetEnvironment="T_Msg= 3333 "
-SetEnvironment="Move_Msg= 4444 "
-SetEnvironment="M= 6666 "
-; 
-BeginPrompt="%Msg% 5555 %T_Msg%%%M%Move_Msg% %M% %M%"
 RunProgram="hidcon:cmd /c Echo"
 GUIFlags="16384"
 ;!@InstallEnd@!

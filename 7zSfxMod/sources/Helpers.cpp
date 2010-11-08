@@ -2,9 +2,9 @@
 /* File:        Helpers.cpp                                                  */
 /* Created:     Sat, 30 Jul 2005 11:10:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Tue, 12 Oct 2010 09:04:32 GMT                                */
+/* Last update: Sun, 07 Nov 2010 06:23:55 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1900                                                         */
+/* Revision:    1926                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1697                                                         */
 /* Updated:     Mon, 22 Mar 2010 11:16:07 GMT                                */
@@ -1202,18 +1202,31 @@ public:
 
 static CLangStrings __lsf;
 
-DWORD GetPlatform()
-{
-	typedef void (WINAPI * GetNativeSystemInfo_Proc)( __out  LPSYSTEM_INFO lpSystemInfo );
-	GetNativeSystemInfo_Proc pfnGetNativeSystemInfo;
-	if( (pfnGetNativeSystemInfo = (GetNativeSystemInfo_Proc)::GetProcAddress( ::LoadLibraryA("kernel32"), "GetNativeSystemInfo" )) != NULL )
+#if defined(_SFX_USE_PREFIX_PLATFORM) || defined(_SFX_USE_CONFIG_PLATFORM)
+	DWORD GetPlatform()
 	{
-		SYSTEM_INFO si;
-		pfnGetNativeSystemInfo( &si );
-		return si.wProcessorArchitecture;
+		typedef void (WINAPI * GetNativeSystemInfo_Proc)( __out  LPSYSTEM_INFO lpSystemInfo );
+		GetNativeSystemInfo_Proc pfnGetNativeSystemInfo;
+		if( (pfnGetNativeSystemInfo = (GetNativeSystemInfo_Proc)::GetProcAddress( ::LoadLibraryA("kernel32"), "GetNativeSystemInfo" )) != NULL )
+		{
+			SYSTEM_INFO si;
+			pfnGetNativeSystemInfo( &si );
+			return si.wProcessorArchitecture;
+		}
+		return PROCESSOR_ARCHITECTURE_INTEL;
 	}
-	return PROCESSOR_ARCHITECTURE_INTEL;
-}
+	LPCWSTR GetPlatformName()
+	{
+		switch( GetPlatform() )
+		{
+		case PROCESSOR_ARCHITECTURE_AMD64:
+			return L"x64";
+		default:
+			return L"x86";
+		}
+	}
+#endif // defined(_SFX_USE_PREFIX_PLATFORM) || defined(_SFX_USE_CONFIG_PLATFORM)
+
 
 #ifdef _SFX_USE_PREFIX_PLATFORM
 	#if defined(_WIN64) && defined(_M_X64)
