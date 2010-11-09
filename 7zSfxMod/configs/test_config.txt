@@ -1,7 +1,12 @@
 ﻿;!@Install@!UTF-8!
 Title="Title"
 BeginPrompt="Test %%P"
+HelpText="Default help"
 InstallPath="%TMP%"
 RunProgram="hidcon:cmd /c Echo"
 GUIFlags="16384"
 ;!@InstallEnd@!
+
+;!@Install@!UTF-8:Language:1049!
+HelpText=-
+;!@InstallEnd@:Language:1049!

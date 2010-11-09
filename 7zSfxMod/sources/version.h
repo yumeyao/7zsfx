@@ -2,9 +2,14 @@
 /* File:        version.h                                                    */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 07 Nov 2010 07:03:36 GMT                                */
+/* Last update: Mon, 08 Nov 2010 11:43:23 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1928                                                         */
+/* Revision:    1929                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1929                                                         */
+/* Updated:     Mon, 08 Nov 2010 11:43:23 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Deletion of redefined config parameters "Parameter=-"        */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1928                                                         */
 /* Updated:     Sun, 07 Nov 2010 07:00:32 GMT                                */
@@ -108,7 +113,7 @@
 /*						Correct 'x86' and 'x64' prefixes workflow			 */
 /*						for 'RunProgram'									 */
 /*---------------------------------------------------------------------------*/
-#define VERSION_H_REVISION 1928
+#define VERSION_H_REVISION 1929
 #define VERSION_REVISION VERSION_H_REVISION
 
 #ifndef _VERSION_H_INCLUDED_
@@ -116,8 +121,8 @@
 
 #define VERSION_SFX_NUM_TEXT	"1.5.0"
 #define VERSION_SFX_NUM_BIN		1,5,0,VERSION_REVISION
-#define VERSION_SFX_DATE_EN		"November 7, 2010"
-#define VERSION_SFX_DATE_RU		"7 но€бр€ 2010 г."
+#define VERSION_SFX_DATE_EN		"November 8, 2010"
+#define VERSION_SFX_DATE_RU		"8 но€бр€ 2010 г."
 #define VERSION_SFX_BRANCH_EN	"alpha"
 #define VERSION_SFX_BRANCH_RU	VERSION_SFX_BRANCH_EN
 

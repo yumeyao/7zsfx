@@ -2,9 +2,9 @@
 /* File:        Helpers.cpp                                                  */
 /* Created:     Sat, 30 Jul 2005 11:10:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 07 Nov 2010 06:23:55 GMT                                */
+/* Last update: Mon, 08 Nov 2010 11:40:53 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1926                                                         */
+/* Revision:    1928                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1697                                                         */
 /* Updated:     Mon, 22 Mar 2010 11:16:07 GMT                                */
@@ -327,6 +327,18 @@ void ReplaceHexChars( UString& str )
 	str = result;
 }
 
+void DeleteParams( CObjectVector<CTextConfigPair> &pairs, LPCWSTR lpwszName  )
+{
+	for( int  i = 0; i < pairs.Size(); i++ )
+	{
+		if( lstrcmp( (LPCWSTR)(pairs[i].ID), lpwszName ) == 0 )
+		{
+			pairs.Delete( i );
+			i--;
+		}
+	}
+}
+
 bool GetTextConfig( const AString &string, CObjectVector<CTextConfigPair> &pairs, bool fromCmdLine )
 {
 	static LPCWSTR MultipleParameters[] = {
@@ -366,7 +378,15 @@ bool GetTextConfig( const AString &string, CObjectVector<CTextConfigPair> &pairs
 		if( !SkipSpaces(string, pos) )
 			return ReportCfgError( string, startPos, fromCmdLine );
 		if( string[pos] != '\"' )
+		{
+			if( string[pos] == '-' )
+			{
+				DeleteParams( pairs, pair.ID );
+				pos++;
+				continue;
+			}
 			return ReportCfgError( string, startPos, fromCmdLine );
+		}
 		pos++;
 		message.Empty();
 #ifdef _SFX_USE_RTF_CONTROL
@@ -439,26 +459,7 @@ Loc_RTF:
 		}
 		if( *mp != NULL )
 		{
-			// Multiple parameter, check more for deletion
-			if( pair.String.Length() == 0 )
-			{
-				for( int  i = 0; i < pairs.Size(); i++ )
-				{
-					if( lstrcmp( pairs[i].ID, pair.ID ) == 0 )
-					{
-						// delete all previous parameters
-						for( int j = i; j < pairs.Size(); j++ )
-						{
-							if( lstrcmp( pairs[j].ID, pair.ID ) == 0 )
-							{
-								pairs.Delete(j);
-								j--;
-							}
-						}
-						break;
-					}
-				}
-			}
+			// Multiple parameter, add to list
 			pairs.Add( pair );
 		}
 		else
