@@ -19,8 +19,6 @@
 #ifndef _7ZSFXMODINT_H_INCLUDED_
 #define _7ZSFXMODINT_H_INCLUDED_
 
-#include "config.h"
-
 #include "7zSfxMod.h"
 #include "langstrs.h"
 #include "resource.h"

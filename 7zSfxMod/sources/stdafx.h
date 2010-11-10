@@ -2,9 +2,9 @@
 /* File:        stdafx.h                                                     */
 /* Created:     Sun, 29 Oct 2006 13:32:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sat, 29 May 2010 08:09:12 GMT                                */
+/* Last update: Wed, 10 Nov 2010 10:01:49 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1308                                                         */
+/* Revision:    1473                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1240                                                         */
 /* Updated:     Mon, 22 Mar 2010 11:33:37 GMT                                */
@@ -13,6 +13,8 @@
 /*---------------------------------------------------------------------------*/
 #ifndef _STDAFX_H_INCLUDED_
 #define _STDAFX_H_INCLUDED_
+
+#include "config.h"
 
 #if !defined(UNICODE) || !defined(_UNICODE)
 	#error "UNICODE and _UNICODE must be defined"

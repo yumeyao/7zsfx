@@ -6919,10 +6919,15 @@
 				Name="Copy"
 				>
 				<File
+					RelativePath=".\sources\copy.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\7-Zip\CPP\7zip\Compress\CopyCoder.cpp"
 					>
 					<FileConfiguration
 						Name="All|Win32"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -6932,6 +6937,7 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="All|x64"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -6941,6 +6947,7 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="SfxTools|Win32"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -6950,6 +6957,7 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="SfxTools|x64"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -6959,6 +6967,7 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LZMA2|Win32"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -6968,6 +6977,7 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LZMA2|x64"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -6977,6 +6987,7 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LZMA|Win32"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -6986,6 +6997,7 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LZMA|x64"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -6995,6 +7007,7 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Debug|Win32"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -7004,6 +7017,7 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Debug|x64"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -7013,6 +7027,7 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Deflate|Win32"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -7022,6 +7037,7 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Deflate|x64"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -7031,6 +7047,7 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="PPMd|Win32"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -7040,6 +7057,7 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="PPMd|x64"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -7053,6 +7071,7 @@
 					>
 					<FileConfiguration
 						Name="All|Win32"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -7062,6 +7081,7 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="All|x64"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -7071,6 +7091,7 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="SfxTools|Win32"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -7080,6 +7101,7 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="SfxTools|x64"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -7089,6 +7111,7 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LZMA2|Win32"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -7098,6 +7121,7 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LZMA2|x64"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -7107,6 +7131,7 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LZMA|Win32"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -7116,6 +7141,7 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LZMA|x64"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -7125,6 +7151,7 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Debug|Win32"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -7134,6 +7161,7 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Debug|x64"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -7143,6 +7171,7 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Deflate|Win32"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -7152,6 +7181,7 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Deflate|x64"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -7161,6 +7191,7 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="PPMd|Win32"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -7170,6 +7201,7 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="PPMd|x64"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"

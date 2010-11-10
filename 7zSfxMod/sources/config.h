@@ -2,9 +2,9 @@
 /* File:        config.h                                                     */
 /* Created:     Sat, 23 Jan 2010 11:11:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 06 Jun 2010 08:46:48 GMT                                */
+/* Last update: Wed, 10 Nov 2010 10:06:10 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    134                                                          */
+/* Revision:    291                                                          */
 /*---------------------------------------------------------------------------*/
 /* Revision:    134                                                          */
 /* Updated:     Sun, 06 Jun 2010 07:47:47 GMT                                */
@@ -17,6 +17,28 @@
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
 /* Description: New file stamp.                                              */
 /*---------------------------------------------------------------------------*/
+
+/* custom pre-defines */
+#ifndef NO_REGISTRY
+	#define NO_REGISTRY
+#endif // NO_REGISTRY
+
+#ifndef EXTRACT_ONLY
+	#define EXTRACT_ONLY
+#endif // EXTRACT_ONLY
+
+#ifndef NO_READ_FROM_CODER
+	#define NO_READ_FROM_CODER
+#endif // NO_READ_FROM_CODER
+
+#ifndef _SFX
+	#define _SFX
+#endif // _SFX
+
+#ifndef _NO_CRYPTO
+	#define _NO_CRYPTO
+#endif // _NO_CRYPTO
+
 #define _SFX_USE_CUSTOM_MSVCRT			/* msvcrt.dll */
 										/* require msvcrt.lib from old VC6 for x86 */
 										/* or new for x64 from the latest DDK */
