@@ -28,11 +28,26 @@
 #define _CONFIG_H_INCLUDED_
 
 /* custom pre-defines */
-#define NO_REGISTRY
-#define EXTRACT_ONLY
-#define NO_READ_FROM_CODER
-#define _SFX
-#define _NO_CRYPTO
+#ifndef NO_REGISTRY
+	#define NO_REGISTRY
+#endif // NO_REGISTRY
+
+#ifndef EXTRACT_ONLY
+	#define EXTRACT_ONLY
+#endif // EXTRACT_ONLY
+
+#ifndef NO_READ_FROM_CODER
+	#define NO_READ_FROM_CODER
+#endif // NO_READ_FROM_CODER
+
+#ifndef _SFX
+	#define _SFX
+#endif // _SFX
+
+#ifndef _NO_CRYPTO
+	#define _NO_CRYPTO
+#endif // _NO_CRYPTO
+
 
 /* SFXBUILD_OPTIONS1 (7-Zip compression methods, filters etc), defaults: 0 */
 

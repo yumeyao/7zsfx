@@ -95,6 +95,10 @@ LFLAGS = $(LFLAGS) -machine:x86
 MY_ML=ml
 !ENDIF
 
+!IFDEF _MAPFILE
+LFLAGS = $(LFLAGS) /MAP:$(OUTPUT)\$(MODULE_NAME).map
+!ENDIF
+
 !IFDEF _SFXTOOLS
 RFLAGS = $(RFLAGS) /D_SFXTOOLS
 !ENDIF
@@ -253,6 +257,9 @@ $(7ZIP_OBJS_ASM): $(SOURCES_7ZIP)\Asm\x86\$(*B).asm
 clean:
 	@echo Clearing ...
 	-@del /Q $(PROG) $(INTERMEDIATE)\*.obj $(INTERMEDIATE)\*.exp $(INTERMEDIATE)\*.res $(INTERMEDIATE)\*.pch 2>NUL
+
+rebuild: clean build
+
 
 $(INTERMEDIATE):
 	@if not exist "$(INTERMEDIATE)" (

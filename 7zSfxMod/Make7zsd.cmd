@@ -25,6 +25,7 @@ IF /I "%~1"=="/Dialogs"    SET "MODULE_SUBNAMES=%MODULE_SUBNAMES% LZMA_Dialogs" 
 
 IF /I "%~1"=="/size"       SET "OPTIMIZATION=METHODS_OPTIMIZATION=-O1"      & SHIFT & GOTO Parse_Args
 IF /I "%~1"=="/speed"      SET "OPTIMIZATION=METHODS_OPTIMIZATION=-O2"      & SHIFT & GOTO Parse_Args
+IF /I "%~1"=="/mapfile"	   SET "_MAPFILE=_MAPFILE=1" 			    & SHIFT & GOTO Parse_Args
 
 IF /I "%~1"=="-h"          GOTO Error_Usage
 IF /I "%~1"=="/?"          GOTO Error_Usage
@@ -60,7 +61,7 @@ FOR %%c IN (%TARGET_CPU%) DO (
 		set Lib=%DEVELOP_ROOT%\Lib\SDK.v7\%%c
 		set Lib=!Lib!;%DEVELOP_ROOT%\Lib\%COMPILER%\%%c
 
-		nmake -nologo _SFX_MAINTAINER=1 CPU=%%c MODULE_SUBNAME=%%m !COMPRESSION_METHODS! %OPTIMIZATION% %NMAKE_CMDS%
+		nmake -nologo _SFX_MAINTAINER=1 CPU=%%c MODULE_SUBNAME=%%m !COMPRESSION_METHODS! %OPTIMIZATION% %_MAPFILE% %NMAKE_CMDS%
 	)
 )
 

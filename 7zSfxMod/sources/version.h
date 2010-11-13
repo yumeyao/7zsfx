@@ -2,9 +2,14 @@
 /* File:        version.h                                                    */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Mon, 08 Nov 2010 11:43:23 GMT                                */
+/* Last update: Sat, 13 Nov 2010 10:18:14 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1929                                                         */
+/* Revision:    1934                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1934                                                         */
+/* Updated:     Sat, 13 Nov 2010 10:14:14 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Update 7-Zip sources up to 9.19 beta                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1929                                                         */
 /* Updated:     Mon, 08 Nov 2010 11:43:23 GMT                                */
@@ -113,7 +118,7 @@
 /*						Correct 'x86' and 'x64' prefixes workflow			 */
 /*						for 'RunProgram'									 */
 /*---------------------------------------------------------------------------*/
-#define VERSION_H_REVISION 1929
+#define VERSION_H_REVISION 1934
 #define VERSION_REVISION VERSION_H_REVISION
 
 #ifndef _VERSION_H_INCLUDED_
@@ -121,14 +126,14 @@
 
 #define VERSION_SFX_NUM_TEXT	"1.5.0"
 #define VERSION_SFX_NUM_BIN		1,5,0,VERSION_REVISION
-#define VERSION_SFX_DATE_EN		"November 8, 2010"
-#define VERSION_SFX_DATE_RU		"8 но€бр€ 2010 г."
+#define VERSION_SFX_DATE_EN		"November 13, 2010"
+#define VERSION_SFX_DATE_RU		"13 но€бр€ 2010 г."
 #define VERSION_SFX_BRANCH_EN	"alpha"
 #define VERSION_SFX_BRANCH_RU	VERSION_SFX_BRANCH_EN
 
-#define VERSION_7ZIP_NUM_TEXT	"9.18"
-#define VERSION_7ZIP_DATE_EN	"November 2, 2010"
-#define VERSION_7ZIP_DATE_RU	"2 но€бр€ 2010 г."
+#define VERSION_7ZIP_NUM_TEXT	"9.19"
+#define VERSION_7ZIP_DATE_EN	"November 11, 2010"
+#define VERSION_7ZIP_DATE_RU	"11 но€бр€ 2010 г."
 #define VERSION_7ZIP_BRANCH_EN	"beta"
 #define VERSION_7ZIP_BRANCH_RU	VERSION_7ZIP_BRANCH_EN
 
