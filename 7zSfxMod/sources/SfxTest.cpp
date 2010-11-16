@@ -2,9 +2,9 @@
 /* File:        SfxTest.cpp                                                  */
 /* Created:     Sun, 25 Feb 2007 09:13:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Mon, 01 Nov 2010 11:29:34 GMT                                */
+/* Last update: Mon, 15 Nov 2010 11:18:32 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1346                                                         */
+/* Revision:    1360                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1197                                                         */
 /* Updated:     Sun, 06 Jun 2010 09:05:47 GMT                                */
@@ -17,10 +17,14 @@
 /* Description: New file stamp.                                              */
 /*---------------------------------------------------------------------------*/
 #include "stdafx.h"
-#include "7ZSfxModInt.h"
-#include "SfxDialogs.h"
 
 #ifdef _SFX_USE_TEST
+
+#include "7ZSfxModInt.h"
+#include "SfxDialogs.h"
+#ifdef SFX_CRYPTO
+	#include "ExtractEngine.h"
+#endif // SFX_CRYPTO
 
 UString	TSD_Flags;
 DWORD	TSD_ExtractTimeout = 0;
@@ -126,6 +130,12 @@ int TestSfxDialogs( CObjectVector<CTextConfigPair>& config )
 				nExitCode = ERRC_SFXTEST;
 			break;
 #endif // _SFX_USE_WARNINGS
+#ifdef SFX_CRYPTO
+		case TSD_PASSWORD:
+		case TSD_PASSWORD_FORCE:
+			CSfxPassword::SetUI();
+			break;
+#endif // SFX_CRYPTO
 		}
 		lpwszFlags++;
 	}
@@ -160,6 +170,10 @@ int TestSfxDialogsToStdout( CObjectVector<CTextConfigPair>& config )
 	if( GetTextConfigValue( config, CFG_WARNINGTITLE) != NULL )
 		WriteStdoutChar( TSD_WARNING );
 #endif // _SFX_USE_WARNINGS
+#ifdef SFX_CRYPTO
+	if( GetTextConfigValue(config, CFG_PASSWORD_TITLE) != NULL || GetTextConfigValue(config, CFG_PASSWORD_TEXT) != NULL )
+		WriteStdoutChar( TSD_PASSWORD );
+#endif // SFX_CRYPTO
 	return ERRC_NONE;
 }
 

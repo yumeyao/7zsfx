@@ -2,9 +2,9 @@
 /* File:        SfxDialogs.cpp                                               */
 /* Created:     Sat, 13 Jan 2007 02:03:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Mon, 01 Nov 2010 11:35:30 GMT                                */
+/* Last update: Sun, 14 Nov 2010 00:34:22 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1389                                                         */
+/* Revision:    1401                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1262                                                         */
 /* Updated:     Sun, 27 Jun 2010 06:55:56 GMT                                */
@@ -1309,6 +1309,39 @@ void CSfxDialog_Extract::OnCancel()
 	}
 	return;
 }
+
+#ifdef SFX_CRYPTO
+/*--------------------------------------------------------------------------*/
+// CSfxDialog_Password
+/*--------------------------------------------------------------------------*/
+BOOL CSfxDialog_Password::OnInitDialog()
+{
+	CSfxDialog_ExtractPath::OnInitDialog();
+
+	RECT	rc1;
+	RECT	rc2;
+
+	ShowControl( SDC_EXTRACTPATHBROWSE, FALSE );
+	GetDlgItemRect( SDC_EXTRACTPATHBROWSE, &rc2 );
+	GetDlgItemRect( SDC_PASSWORDEDIT, &rc1 );
+	::DestroyWindow( GetDlgItem(SDC_PASSWORDEDIT) );
+	::CreateWindowExA( WS_EX_CLIENTEDGE,
+						WC_EDITA, "",
+						WS_CHILD|WS_VISIBLE|WS_TABSTOP|ES_PASSWORD|ES_LEFT|ES_AUTOHSCROLL,
+						rc1.left,rc1.top, rc2.right-rc1.left, rc1.bottom-rc1.top,
+						GetHwnd(), (HMENU)SDC_PASSWORDEDIT, NULL, NULL );
+	SendDlgItemMessage( SDC_PASSWORDEDIT, WM_SETFONT, SendMessage(WM_GETFONT,0,0), 1 );
+	SetFocus( GetDlgItem(SDC_PASSWORDEDIT) );
+	return 0;
+}
+
+void CSfxDialog_Password::OnCommand( int nControlID )
+{
+	if( nControlID == SDC_BUTTON1 )
+		m_strPassword = GetDlgItemText(SDC_PASSWORDEDIT);
+	CSfxDialog::OnCommand( nControlID );
+}
+#endif // SFX_CRYPTO
 
 ///////////////////////////////////////////////////////////////////////////////
 BOOL SfxBeginPrompt( LPCWSTR lpwszCaption, LPCWSTR lpwszText )

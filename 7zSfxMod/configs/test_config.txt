@@ -1,6 +1,8 @@
 ﻿;!@Install@!UTF-8!
 Title="Title"
 BeginPrompt="Test %%P"
+PasswordTitle="А архив-то зашифрован"
+PasswordText="Скажите \"пожалуйста\":"
 HelpText="Default help"
 InstallPath="%TMP%"
 RunProgram="hidcon:cmd /c Echo"

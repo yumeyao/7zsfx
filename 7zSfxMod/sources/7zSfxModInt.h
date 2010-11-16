@@ -2,9 +2,9 @@
 /* File:        7zSfxModInt.h                                                */
 /* Created:     Wed, 25 Jul 2007 09:54:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 07 Nov 2010 06:39:56 GMT                                */
+/* Last update: Sun, 14 Nov 2010 13:00:12 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1201                                                         */
+/* Revision:    1209                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1067                                                         */
 /* Updated:     Sat, 26 Jun 2010 04:22:23 GMT                                */
@@ -46,11 +46,15 @@ namespace SfxErrors
 		seCreateFolder,
 		seOverwrite,
 		seCreateFile,
+#ifdef SFX_CRYPTO
+		seNoPassword,
+#endif // SFX_CRYPTO
 	};
 }
 
 extern char kSignatureConfigStart[];
 extern char kSignatureConfigEnd[];
+extern const UInt64 kMaxCheckStartPosition;
 
 extern LPCWSTR	lpwszTitle;
 extern LPCWSTR	lpwszErrorTitle;
@@ -72,6 +76,10 @@ extern bool		fUseBackward;
 #ifdef _SFX_USE_BEGINPROMPTTIMEOUT
 	extern int		BeginPromptTimeout;
 #endif // _SFX_USE_BEGINPROMPTTIMEOUT
+#ifdef SFX_CRYPTO
+	extern LPCWSTR	lpwszPasswordTitle;
+	extern LPCWSTR	lpwszPasswordText;
+#endif // SFX_CRYPTO
 
 extern UString	extractPath;
 extern int		OverwriteMode, OverwriteFlags;
@@ -191,19 +199,6 @@ bool LoadConfigs( IInStream * inStream, AString& result );
 
 #define SetLastWriteTime	SetMTime
 
-#ifdef _USE_SFXVOLUMES
-	class CSfxInStream :
-		public IInStream,
-		public IStreamGetSize,
-		public CMyUnknownImp
-	{
-	protected:
-		CInFileStream	m_Files[1000];
-	};
-#else
-	#define CSfxInStream	CInFileStream
-#endif // _USE_SFXVOLUMES
-
 #ifdef _SFX_USE_PREFIX_PLATFORM
 	#define SFX_EXECUTE_PLATFORM_ANY		0
 	#define SFX_EXECUTE_PLATFORM_I386		1
@@ -214,5 +209,7 @@ bool LoadConfigs( IInStream * inStream, AString& result );
 
 #define CMDLINE_SFXWAITALL			_CFG_PARAM_TYPE"sfxwaitall"
 #define CMDLINE_SFXELEVATION		_CFG_PARAM_TYPE"sfxelevation"
+
+#define CSfxInStream	CInFileStream
 
 #endif // _7ZSFXMODINT_H_INCLUDED_

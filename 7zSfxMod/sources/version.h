@@ -2,9 +2,29 @@
 /* File:        version.h                                                    */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sat, 13 Nov 2010 10:18:14 GMT                                */
+/* Last update: Tue, 16 Nov 2010 10:56:27 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1934                                                         */
+/* Revision:    1937                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1937                                                         */
+/* Updated:     Tue, 16 Nov 2010 10:56:27 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Correct TOP-order of the "wrong password" error window		 */
+/*					for MiscFlags=+8 by recalling SfxPassword:EarlyPassword	 */
+/*					before extraction in main.cpp, ExtractArchive(...)		 */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1936                                                         */
+/* Updated:     Mon, 15 Nov 2010 10:28:46 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Add encryption stuff:                                        */
+/*					'PasswordTitle' & 'PasswordText' parameters				 */
+/*					'-p' command line switch								 */
+/*					'MiscFlags=+8' - password dialog on extraction stage	 */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1935                                                         */
+/* Updated:     Mon, 14 Nov 2010 10:03:58 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Add AES encryption support                                   */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1934                                                         */
 /* Updated:     Sat, 13 Nov 2010 10:14:14 GMT                                */
@@ -118,7 +138,7 @@
 /*						Correct 'x86' and 'x64' prefixes workflow			 */
 /*						for 'RunProgram'									 */
 /*---------------------------------------------------------------------------*/
-#define VERSION_H_REVISION 1934
+#define VERSION_H_REVISION 1937
 #define VERSION_REVISION VERSION_H_REVISION
 
 #ifndef _VERSION_H_INCLUDED_
@@ -126,8 +146,8 @@
 
 #define VERSION_SFX_NUM_TEXT	"1.5.0"
 #define VERSION_SFX_NUM_BIN		1,5,0,VERSION_REVISION
-#define VERSION_SFX_DATE_EN		"November 13, 2010"
-#define VERSION_SFX_DATE_RU		"13 но€бр€ 2010 г."
+#define VERSION_SFX_DATE_EN		"November 16, 2010"
+#define VERSION_SFX_DATE_RU		"16 но€бр€ 2010 г."
 #define VERSION_SFX_BRANCH_EN	"alpha"
 #define VERSION_SFX_BRANCH_RU	VERSION_SFX_BRANCH_EN
 

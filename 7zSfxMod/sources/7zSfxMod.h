@@ -2,9 +2,9 @@
 /* File:        7zSfxMod.h                                                   */
 /* Created:     Thu, 28 Jul 2005 02:44:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Fri, 08 Oct 2010 23:05:55 GMT                                */
+/* Last update: Sat, 13 Nov 2010 23:54:03 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1899                                                         */
+/* Revision:    1935                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1775                                                         */
 /* Updated:     Sun, 06 Jun 2010 07:46:34 GMT                                */
@@ -55,6 +55,10 @@
 #define CFG_PROGRESS					_CFG_PARAM_TYPE"Progress"
 #define CFG_SETENVIRONMENT				_CFG_PARAM_TYPE"SetEnvironment"
 #define CFG_BEGINPROMPTTIMEOUT			_CFG_PARAM_TYPE"BeginPromptTimeout"
+#ifdef SFX_CRYPTO
+#define CFG_PASSWORD_TITLE				_CFG_PARAM_TYPE"PasswordTitle"
+#define CFG_PASSWORD_TEXT				_CFG_PARAM_TYPE"PasswordText"
+#endif // SFX_CRYPTO
 
 
 #define GUIMODE_STANDARD				0
@@ -92,6 +96,9 @@
 #define MISCFLAGS_NO_CHECK_DISK_FREE	0x0001
 #define MISCFLAGS_NO_CHECK_RAM			0x0002
 #define MISCFLAGS_ELEVATE				0x0004
+#ifdef _SFX_USE_EARLY_PASSWORD
+	#define MISCFLAGS_LATE_PASSWORD		0x0008
+#endif // _SFX_USE_EARLY_PASSWORD
 
 #define ERRC_NONE						0
 #define ERRC_GET_PATHNAME				1
@@ -128,7 +135,13 @@
 	#define TSD_EXTRACTPATH			L'p'
 	#define TSD_EXTRACTPATH_FORCE	L'P'
 	#define TSD_WARNING				L'w'
+#ifdef _SFX_USE_WARNINGS
 	#define TSD_WARNING_FORCE		L'W'
+#endif // _SFX_USE_WARNINGS
+#ifdef SFX_CRYPTO
+	#define TSD_PASSWORD			L'x'
+	#define TSD_PASSWORD_FORCE		L'X'
+#endif // SFX_CRYPTO
 	#define TSD_ERROR				L'z'
 	#define TSD_ERROR_FORCE			L'Z'
 
@@ -151,6 +164,7 @@
 #define IDD_EXTRACT                     2004
 #define IDD_FINISHMESSAGE               2005
 #define IDD_HELPTEXT                    2006
+#define IDD_PASSWORD                    2007
 
 #define SDC_ICON						1201
 #define SDC_TEXT						1202
@@ -161,6 +175,7 @@
 #define SDC_EXTRACTPATHBROWSE			1207
 #define SDC_PROGRESS					1208
 #define SDC_BACK						1209
+#define SDC_PASSWORDEDIT				SDC_EXTRACTPATHEDIT
 
 #define IDC_NEXT                        SDC_BUTTON1
 #define IDC_CANCEL						SDC_BUTTON2

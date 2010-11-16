@@ -11,6 +11,10 @@ CPU=x86
 CFLAGS = $(CFLAGS) -D_SFX_MAINTAINER
 !ENDIF
 
+!IFDEF SFX_CRYPTO
+CFLAGS = $(CFLAGS) -DSFX_CRYPTO
+!ENDIF
+
 !IFDEF COMPRESS_COPY
 SFX_METHODS = $(SFX_METHODS) -DCOMPRESS_COPY
 !ENDIF
@@ -127,6 +131,7 @@ COMPL_MANIFEST = @mt -nologo -outputresource:$(PROG);^#1 /manifest "$(MANIFEST_F
 
 
 SFX_OBJS = 					\
+	$(INTERMEDIATE)\Config.obj		\
 	$(INTERMEDIATE)\Exceptions.obj		\
 	$(INTERMEDIATE)\ExtractEngine.obj	\
 	$(INTERMEDIATE)\Helpers.obj		\
@@ -137,9 +142,9 @@ SFX_OBJS = 					\
 	$(INTERMEDIATE)\SfxTest.obj		\
 
 SFX_OBJS_METHODS =				\
+	$(INTERMEDIATE)\AES.obj			\
 	$(INTERMEDIATE)\BCJ.obj			\
 	$(INTERMEDIATE)\BCJ2.obj		\
-	$(INTERMEDIATE)\Config.obj		\
 	$(INTERMEDIATE)\Copy.obj		\
 	$(INTERMEDIATE)\Deflate.obj		\
 	$(INTERMEDIATE)\LZMA.obj		\
@@ -191,6 +196,7 @@ SFX_RESOURCES =					\
 
 7ZIP_OBJS_ASM =					\
 	$(INTERMEDIATE)\7zCrcOpt.obj		\
+	$(INTERMEDIATE)\AesOpt.obj		\
 
 OBJS =						\
 	$(INTERMEDIATE)\StdAfx1.obj		\
@@ -227,7 +233,7 @@ $(INTERMEDIATE)\StdAfx2.obj: $(SOURCES_SFX)/stdafx.cpp
 $(SFX_OBJS): $(SOURCES_SFX)/$(*B).cpp
 	$(COMPL_CPP)
 
-$(SFX_OBJS_METHODS): $(SOURCES_SFX)/$(*B).cpp
+$(SFX_OBJS_METHODS): $(SOURCES_SFX)/methods/$(*B).cpp
 	$(COMPL_METHODS)
 
 $(INTERMEDIATE)\7zSfxMod.res: $(SOURCES_SFX)/7zSfxMod.rc

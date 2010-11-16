@@ -2,9 +2,9 @@
 /* File:        ExtractEngine.cpp                                            */
 /* Created:     Wed, 05 Oct 2005 07:36:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 06 Jun 2010 08:51:01 GMT                                */
+/* Last update: Tue, 16 Nov 2010 11:56:06 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1706                                                         */
+/* Revision:    1869                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1706                                                         */
 /* Updated:     Sun, 06 Jun 2010 08:51:01 GMT                                */
@@ -25,6 +25,10 @@ CSfxExtractEngine * SfxExtractEngine;
 
 Int32 CSfxExtractEngine::m_ErrorCode = NArchive::NExtract::NOperationResult::kOK;
 HANDLE CSfxExtractEngine::m_hExtractThread;
+#ifdef SFX_CRYPTO
+	bool	CSfxPassword::m_fPasswordDefined = false;
+	UString	CSfxPassword::m_strPassword;
+#endif // SFX_CRYPTO
 
 using namespace NWindows;
 
@@ -236,6 +240,9 @@ HRESULT CSfxExtractEngine::Extract(IInArchive *archive, LPCWSTR lpwszFolderName)
 		case SfxErrors::seCreateFolder:
 		case SfxErrors::seCreateFile:
 		case SfxErrors::seOverwrite:
+#ifdef SFX_CRYPTO
+		case SfxErrors::seNoPassword:
+#endif // SFX_CRYPTO
 			break;
 		default:
 			SfxErrorDialog( FALSE, ERR_7Z_INTERNAL_ERROR, m_ErrorCode );
@@ -275,7 +282,7 @@ HRESULT WINAPI CSfxExtractEngine::ExtractThread(CSfxExtractEngine *pThis)
 	}
 	HRESULT result = E_FAIL;
 #ifdef _SFX_USE_TEST
-	result = pThis->m_archiveHandler->Extract( 0, (UInt32)-1, nTestModeType == TMT_ARCHIVE ? 1 : 0, pThis );
+	result = pThis->m_archiveHandler->Extract( 0, (UInt32)-1, nTestModeType == TMT_ARCHIVE ? true : false, pThis );
 #else
 	result = pThis->m_archiveHandler->Extract( 0, (UInt32)-1, 0, pThis );
 #endif // _SFX_USE_TEST
@@ -284,3 +291,67 @@ HRESULT WINAPI CSfxExtractEngine::ExtractThread(CSfxExtractEngine *pThis)
 
 	return result;
 }
+
+#ifdef SFX_CRYPTO
+
+STDMETHODIMP CSfxExtractEngine::CryptoGetTextPassword(BSTR *password)
+{
+	if( CSfxPassword::IsDefined() == false && CSfxPassword::SetUI() == FALSE )
+		return SetOperationResult( SfxErrors::seNoPassword );
+	return StringToBstr(CSfxPassword::Get(), password);
+}
+
+BOOL CSfxPassword::SetUI()
+{
+	CSfxDialog_Password	passwdDialog;
+	if( passwdDialog.Show( SD_OKCANCEL, lpwszPasswordTitle, lpwszPasswordText, hwndExtractDlg ) != FALSE )
+	{
+		Set( passwdDialog.GetPassword() );
+		return TRUE;
+	}
+	return FALSE;
+}
+
+STDMETHODIMP CSfxPassword::CryptoGetTextPassword(BSTR *password)
+{
+	if( CSfxPassword::IsDefined() == false && CSfxPassword::SetUI() == FALSE )
+		return E_FAIL;
+	return StringToBstr(CSfxPassword::Get(), password);
+}
+
+STDMETHODIMP CSfxPassword::SetTotal(const UInt64 *files, const UInt64 *bytes)
+{
+	return S_OK;
+}
+
+STDMETHODIMP CSfxPassword::SetCompleted(const UInt64 *files, const UInt64 *bytes)
+{
+	return S_OK;
+}
+
+	#ifdef _SFX_USE_EARLY_PASSWORD
+	BOOL CSfxPassword::EarlyPassword( IInStream * inStream )
+	{
+		if( IsDefined() != false )
+			return TRUE;
+		CMyComPtr<IInArchive> archive = new NArchive::N7z::CHandler;
+		inStream->Seek( 0, STREAM_SEEK_SET, NULL );
+		if( archive->Open( inStream, &kMaxCheckStartPosition, NULL ) == S_OK )
+		{
+			UInt32 items;
+			archive->GetNumberOfItems( &items );
+			for( UInt32 i = 0; i < items; i++ )
+			{
+				NCOM::CPropVariant prop;
+				if( archive->GetProperty( i, kpidEncrypted, &prop ) == S_OK &&
+					prop.vt == VT_BOOL && prop.boolVal != FALSE )
+				{
+					return CSfxPassword::SetUI();
+				}
+			}
+		}
+		return TRUE;
+	}
+	#endif // _SFX_USE_EARLY_PASSWORD
+
+#endif // SFX_CRYPTO

@@ -30,40 +30,6 @@
 	#define _MSC_VER_OK	
 #endif // _MSC_VER
 
-// All possible defines
-#ifdef _DEBUGALL
-	#ifndef COMPRESS_LZMA
-		#define COMPRESS_LZMA
-	#endif
-	#ifndef COMPRESS_LZMA2
-		#define COMPRESS_LZMA2
-	#endif
-	#ifndef COMPRESS_PPMD
-		#define COMPRESS_PPMD
-	#endif
-	#ifndef COMPRESS_DEFLATE
-		#define COMPRESS_DEFLATE
-	#endif
-	#ifndef COMPRESS_BCJ
-		#define COMPRESS_BCJ
-	#endif
-	#ifndef COMPRESS_BCJ2
-		#define COMPRESS_BCJ2
-	#endif
-	#ifndef _SFX_USE_TEST
-		#define _SFX_USE_TEST
-	#endif
-	#ifndef _SFX_USE_RTF_CONTROL
-		#define _SFX_USE_RTF_CONTROL
-	#endif
-	#ifndef _SFX_USE_IMAGES
-		#define _SFX_USE_IMAGES
-	#endif
-//	#ifndef _USE_SFXVOLUMES
-//		#define _USE_SFXVOLUMES
-//	#endif
-# endif
-
 #define WIN32_LEAN_AND_MEAN
 #define _WIN32_WINNT 0x0500
 #define _RICHEDIT_VER	0x0200

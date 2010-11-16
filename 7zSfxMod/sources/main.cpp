@@ -2,9 +2,9 @@
 /* File:        main.cpp                                                     */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 07 Nov 2010 06:56:19 GMT                                */
+/* Last update: Tue, 16 Nov 2010 12:10:31 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1928                                                         */
+/* Revision:    1937                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1798                                                         */
 /* Updated:		Wed, 30 Jun 2010 09:24:36 GMT                                */
@@ -62,6 +62,10 @@ LPCWSTR lpwszExtractPathText;
 LPCWSTR lpwszCancelPrompt;
 LPCWSTR	lpwszCancelText;
 LPCWSTR	lpwszExtractDialogText;
+#ifdef SFX_CRYPTO
+	LPCWSTR	lpwszPasswordTitle = NULL;
+	LPCWSTR	lpwszPasswordText = NULL;
+#endif // SFX_CRYPTO
 
 int		GUIMode = 0;
 int		GUIFlags = -1;
@@ -107,6 +111,9 @@ ENVALIAS EnvAliases [] = {
 
 void SfxInit()
 {
+	InitCommonControls();
+	CrcGenerateTable();
+
 #ifdef _SFX_USE_LANG
 	GetUILanguage();
 #endif // _SFX_USE_LANG
@@ -144,7 +151,6 @@ void SfxInit()
 			}
 		}
 	}
-	InitCommonControls();
 }
 
 UString CreateTempName( LPCWSTR lpwszFormat )
@@ -433,6 +439,10 @@ LPCWSTR ParseConfigOverride( LPCWSTR lpwszCommandLine, CObjectVector<CTextConfig
 #ifdef _SFX_USE_BEGINPROMPTTIMEOUT
 		CFG_BEGINPROMPTTIMEOUT,
 #endif // _SFX_USE_BEGINPROMPTTIMEOUT
+#ifdef SFX_CRYPTO
+		CFG_PASSWORD_TITLE,
+		CFG_PASSWORD_TEXT,
+#endif // SFX_CRYPTO
 		NULL
 	};
 
@@ -549,7 +559,17 @@ void SetConfigVariables( CObjectVector<CTextConfigPair>& pairs )
 	// Cancel prompt text
 	if( (lpwszValue = GetTextConfigValue(pairs,CFG_CANCEL_PROMPT)) != NULL )
 		lpwszCancelPrompt = lpwszValue;
-	
+
+#ifdef SFX_CRYPTO
+	if( (lpwszValue = GetTextConfigValue(pairs,CFG_PASSWORD_TITLE)) != NULL )
+		lpwszPasswordTitle = lpwszValue;
+	else
+		lpwszPasswordTitle = lpwszTitle;
+	if( (lpwszValue = GetTextConfigValue(pairs,CFG_PASSWORD_TEXT)) != NULL )
+		lpwszPasswordText = lpwszValue;
+	else
+		lpwszPasswordText = GetLanguageString( STR_PASSWORD_TEXT );
+#endif // SFX_CRYPTO
 }
 
 void OverrideConfigParam( LPCWSTR lpwszName, LPCWSTR lpwszValue, CObjectVector<CTextConfigPair>& pairs )
@@ -873,7 +893,8 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 	}
 #endif // _SFX_USE_ELEVATION
 #ifdef _DEBUG
-	strModulePathName = L"C:\\7zSfxMod\\1.5.0-alpha\\snapshots\\7zsd_tools_150_1928_x86_test.exe";
+	strModulePathName = L"C:\\7zSfxMod\\1.5.0-alpha\\snapshots\\7zsd_tools_150_1935_x86_test.exe";
+	strModulePathName = L"C:\\Mobile\\2.exe";
 #else
 	if( ::GetModuleFileName( NULL, strModulePathName.GetBuffer(MAX_PATH*2), MAX_PATH*2 ) == 0 )
 	{
@@ -926,8 +947,6 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 			break;
 		case L'v':
 			return 0x4000 | VERSION_REVISION;
-//		case L'f':
-//			return 0x2000 | SFX_USE_DLL | METHOD_LZMA | METHOD_DEFLATE | METHOD_PPMD | METHOD_BCJ | METHOD_BCJ2;
 		default:
 			return ERRC_SFXTEST;
 		}
@@ -966,6 +985,9 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 		strErrorTitle += GetLanguageString( STR_ERROR_SUFFIX );
 		lpwszTitle = strTitle;
 		lpwszErrorTitle = strErrorTitle;
+#ifdef SFX_CRYPTO
+		lpwszPasswordTitle = lpwszTitle;
+#endif // SFX_CRYPTO
 	}
 #ifdef _SFX_USE_PREFIX_PLATFORM
 	strOSPlatform = GetPlatformName();
@@ -1144,9 +1166,17 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 		{
 			OverrideConfigParam( CFG_BEGINPROMPTTIMEOUT,str+4, pairs );
 			continue;
-			break;
 		}
 #endif // _SFX_USE_BEGINPROMPTTIMEOUT
+#ifdef SFX_CRYPTO
+		if( str[1] == L'p' || str[1] == L'P' )
+		{
+			UString password;
+			str = LoadQuotedString( str+2, password );
+			CSfxPassword::Set( password );
+			continue;
+		}
+#endif // SFX_CRYPTO
 
 		// assume 'yes'
 		if( (str[1] == L'y' || str[1] == L'Y') && ((unsigned)str[2]) <= L' ' )
@@ -1244,6 +1274,12 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 		return TestSfxDialogsToStdout( pairs );
 	}
 #endif // _SFX_USE_TEST
+
+#ifdef _SFX_USE_EARLY_PASSWORD
+	if( (MiscFlags&MISCFLAGS_LATE_PASSWORD) == 0 && CSfxPassword::EarlyPassword(inStream) == FALSE )
+		return ERRC_CANCELED;
+#endif // _SFX_USE_EARLY_PASSWORD
+
 	// Begin prompt
 Loc_BeginPrompt:
 	if( (lpwszValue = GetTextConfigValue(pairs,CFG_BEGINPROMPT)) != NULL )
@@ -1615,14 +1651,19 @@ Loc_BeginPrompt:
 HRESULT ExtractArchive( IInStream * inStream, const UString &folderName )
 {
 	HRESULT	result;
-	CMyComPtr<IInArchive> archive;
+	CMyComPtr<IInArchive> archive = new NArchive::N7z::CHandler;
 
-	CrcGenerateTable();
-	archive = new NArchive::N7z::CHandler;
 	inStream->Seek( 0, STREAM_SEEK_SET, NULL );
-	if( (result = archive->Open( inStream, &kMaxCheckStartPosition, NULL )) != S_OK )
+#ifdef SFX_CRYPTO
+	CSfxPassword * passwordCallback = new CSfxPassword;
+	if( (result = archive->Open(inStream, &kMaxCheckStartPosition, passwordCallback)) != S_OK )
+	{
+		SfxErrorDialog( FALSE, (CSfxPassword::IsDefined() == false) ? ERR_NON7Z_ARCHIVE : ERR_7Z_DATA_ERROR );
+#else
+	if( (result = archive->Open(inStream, &kMaxCheckStartPosition, NULL)) != S_OK )
 	{
 		SfxErrorDialog( FALSE, ERR_NON7Z_ARCHIVE );
+#endif // SFX_CRYPTO
 		return E_FAIL;
 	}
 
@@ -1635,6 +1676,9 @@ HRESULT ExtractArchive( IInStream * inStream, const UString &folderName )
 #endif // _SFX_USE_TEST
 
 	CSfxExtractEngine * extractEngine = new CSfxExtractEngine;
+#ifdef SFX_CRYPTO
+	CSfxPassword::EarlyPassword( inStream );
+#endif // SFX_CRYPTO
 	result = extractEngine->Extract( archive, folderName );
 	return result;
 }

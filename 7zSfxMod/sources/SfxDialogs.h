@@ -2,9 +2,9 @@
 /* File:        SfxDialogs.h                                                 */
 /* Created:     Sat, 13 Jan 2007 12:01:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sat, 09 Oct 2010 03:17:00 GMT                                */
+/* Last update: Sat, 13 Nov 2010 16:55:28 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1365                                                         */
+/* Revision:    1401                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1240                                                         */
 /* Updated:     Sun, 06 Jun 2010 08:48:12 GMT                                */
@@ -222,6 +222,20 @@ class CSfxDialog_Version: public CSfxDialog_WithoutCancelPrompt
 private:
 	int dummy;
 };
+
+#ifdef SFX_CRYPTO
+	class CSfxDialog_Password: public CSfxDialog_ExtractPath
+	{
+	public:
+		CSfxDialog_Password() { m_uDlgResourceId = IDD_PASSWORD; };
+		LPCWSTR GetPassword() { return m_strPassword; }
+	protected:
+		virtual BOOL	OnInitDialog();
+		virtual void	OnCommand( int nControlID );
+	private:
+		UString			m_strPassword;
+	};
+#endif // SFX_CRYPTO
 
 #ifdef _SFX_USE_LANG
 	LPVOID LoadInterfaceResource( LPCSTR lpType, LPCSTR lpName, size_t * lpSize = NULL );

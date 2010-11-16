@@ -2,9 +2,14 @@
 /* File:        langstrs.cpp                                                 */
 /* Created:     Wed, 10 Jan 2007 23:44:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sat, 26 Jun 2010 04:44:01 GMT                                */
+/* Last update: Tue, 16 Nov 2010 11:27:17 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1263                                                         */
+/* Revision:    1406                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1404                                                         */
+/* Updated:     Sun, 14 Nov 2010 01:04:46 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Add 'password' strings                                       */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1263                                                         */
 /* Updated:     Sat, 26 Jun 2010 04:44:01 GMT                                */
@@ -100,8 +105,17 @@ LANGSTRING SfxLangStrings[] = {
 									"7-Zip: Метод не поддерживается.", NULL },
 	{ ERR_7Z_CRC_ERROR,				"7-Zip: CRC error.",
 									"7-Zip: Ошибка контрольной суммы (CRC).", NULL },
-	{ ERR_7Z_DATA_ERROR,			"7-Zip: Data error.",
-									"7-Zip: Ошибка данных. Возможно, архив поврежден.", NULL },
+	{ ERR_7Z_DATA_ERROR,			"7-Zip: Data error.\nThe archive is corrupted"
+#ifdef SFX_CRYPTO
+									", or invalid password was entered"
+#endif // SFX_CRYPTO
+									".",
+									"7-Zip: Ошибка данных.\nАрхив поврежден"
+#ifdef SFX_CRYPTO
+									" или введен неверный пароль"
+#endif // SFX_CRYPTO
+									".",
+									NULL },
 	{ ERR_7Z_INTERNAL_ERROR,		"7-Zip: Internal error, code %u.",
 									"7-Zip: Внутренняя ошибка. Код ошибки %u.", NULL },
 	{ ERR_7Z_EXTRACT_ERROR1,		"7-Zip: Internal error, code 0x%08X.",
@@ -161,5 +175,9 @@ LANGSTRING SfxLangStrings[] = {
 	{ STR_BUILD_OPTIONS,		"Build options:",
 								"Опции сборки:", NULL },
 
+#ifdef SFX_CRYPTO
+	{ STR_PASSWORD_TEXT,		"Enter password:",
+								"Введите пароль:", NULL },
+#endif // SFX_CRYPTO
 	{ 0, "", "", NULL }
 };

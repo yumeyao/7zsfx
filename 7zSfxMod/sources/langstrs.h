@@ -2,9 +2,14 @@
 /* File:        langstrs.h                                                   */
 /* Created:     Fri, 29 Jul 2005 23:10:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sat, 26 Jun 2010 04:44:45 GMT                                */
+/* Last update: Sun, 14 Nov 2010 01:04:08 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1793                                                         */
+/* Revision:    1934                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1934                                                         */
+/* Updated:     Sun, 14 Nov 2010 01:04:08 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Add 'password' string id                                     */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1793                                                         */
 /* Updated:     Sat, 26 Jun 2010 04:44:45 GMT                                */
@@ -93,6 +98,10 @@
 #define STR_COPYRIGHT				44
 // added October 31, 2010
 #define STR_BUILD_OPTIONS			45
+// added November 14, 2010
+#ifdef SFX_CRYPTO
+	#define STR_PASSWORD_TEXT		46
+#endif // SFX_CRYPTO
 
 LPCWSTR GetLanguageString( UINT id );
 void FreeLanguageStrings();
