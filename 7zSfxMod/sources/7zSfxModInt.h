@@ -2,9 +2,9 @@
 /* File:        7zSfxModInt.h                                                */
 /* Created:     Wed, 25 Jul 2007 09:54:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 14 Nov 2010 13:00:12 GMT                                */
+/* Last update: Sat, 27 Nov 2010 13:07:39 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1209                                                         */
+/* Revision:    1222                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1067                                                         */
 /* Updated:     Sat, 26 Jun 2010 04:22:23 GMT                                */
@@ -80,7 +80,11 @@ extern bool		fUseBackward;
 	extern LPCWSTR	lpwszPasswordTitle;
 	extern LPCWSTR	lpwszPasswordText;
 #endif // SFX_CRYPTO
+#ifdef _SFX_USE_VOLUME_NAME_STYLE
+	extern int nVolumeNameStyle;
+#endif // _SFX_USE_VOLUME_NAME_STYLE
 
+extern UString	strModulePathName;
 extern UString	extractPath;
 extern int		OverwriteMode, OverwriteFlags;
 
@@ -210,6 +214,31 @@ bool LoadConfigs( IInStream * inStream, AString& result );
 #define CMDLINE_SFXWAITALL			_CFG_PARAM_TYPE"sfxwaitall"
 #define CMDLINE_SFXELEVATION		_CFG_PARAM_TYPE"sfxelevation"
 
-#define CSfxInStream	CInFileStream
+#if !defined(SFX_VOLUMES) && !defined(SFX_PROTECT)
+	#define CSfxInStream CInFileStream
+#else
+	#include "7zip/Archive/Common/MultiStream.h"
+	class CSfxInStream : public CMultiStream
+	{
+	public:
+#ifdef SFX_VOLUMES
+		bool Open(LPCTSTR fileName);
+		bool InitVolumes();
+		IInStream * GetVolumesStream();
+
+	private:
+		HRESULT OpenSubStream( LPCTSTR fileName, CSubStreamInfo * subStream );
+#endif // SFX_VOLUMES
+	};
+#endif // !defined(SFX_VOLUMES) && !defined(SFX_PROTECT)
+
+#ifdef _SFX_USE_CUSTOM_EXCEPTIONS
+	extern UINT_PTR uSfxExceptionText;
+	#define SFX_EXCEPTION_HANDLER_BEGIN(n)	uSfxExceptionText=(UINT_PTR)(n);
+	#define SFX_EXCEPTION_HANDLER_END		uSfxExceptionText=0;
+#else
+	#define SFX_EXCEPTION_HANDLER_BEGIN(n)
+	#define SFX_EXCEPTION_HANDLER_END
+#endif // _SFX_USE_CUSTOM_EXCEPTIONS
 
 #endif // _7ZSFXMODINT_H_INCLUDED_

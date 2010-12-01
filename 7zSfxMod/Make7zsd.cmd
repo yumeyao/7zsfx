@@ -8,6 +8,7 @@ set COMPILER=VC8
 
 set TARGET_CPU=
 set MODULE_SUBNAMES=
+set BUILD_OPTIONS=
 
 :Parse_Args
 
@@ -23,10 +24,11 @@ IF /I "%~1"=="/ppmd"       SET "MODULE_SUBNAMES=%MODULE_SUBNAMES% PPMd"      & S
 IF /I "%~1"=="/All"        SET "MODULE_SUBNAMES=%MODULE_SUBNAMES% All"      & SHIFT & GOTO Parse_Args
 IF /I "%~1"=="/Dialogs"    SET "MODULE_SUBNAMES=%MODULE_SUBNAMES% LZMA_Dialogs"  & SHIFT & GOTO Parse_Args
 
-IF /I "%~1"=="/size"       SET "OPTIMIZATION=METHODS_OPTIMIZATION=-O1"      & SHIFT & GOTO Parse_Args
-IF /I "%~1"=="/speed"      SET "OPTIMIZATION=METHODS_OPTIMIZATION=-O2"      & SHIFT & GOTO Parse_Args
-IF /I "%~1"=="/mapfile"	   SET "_MAPFILE=_MAPFILE=1" 			    & SHIFT & GOTO Parse_Args
-IF /I "%~1"=="/crypto"	   SET "SFX_CRYPTO=SFX_CRYPTO=1" 		    & SHIFT & GOTO Parse_Args
+IF /I "%~1"=="/size"       SET "BUILD_OPTIONS=%BUILD_OPTIONS% METHODS_OPTIMIZATION=-O1"	& SHIFT & GOTO Parse_Args
+IF /I "%~1"=="/speed"      SET "BUILD_OPTIONS=%BUILD_OPTIONS% METHODS_OPTIMIZATION=-O2"	& SHIFT & GOTO Parse_Args
+IF /I "%~1"=="/mapfile"	   SET "BUILD_OPTIONS=%BUILD_OPTIONS% _MAPFILE=1"		& SHIFT & GOTO Parse_Args
+IF /I "%~1"=="/crypto"	   SET "BUILD_OPTIONS=%BUILD_OPTIONS% SFX_CRYPTO=1"		& SHIFT & GOTO Parse_Args
+IF /I "%~1"=="/volumes"	   SET "BUILD_OPTIONS=%BUILD_OPTIONS% SFX_VOLUMES=1 _SFX_USE_VOLUME_NAME_STYLE=1"		& SHIFT & GOTO Parse_Args
 
 IF /I "%~1"=="-h"          GOTO Error_Usage
 IF /I "%~1"=="/?"          GOTO Error_Usage
@@ -62,7 +64,7 @@ FOR %%c IN (%TARGET_CPU%) DO (
 		set Lib=%DEVELOP_ROOT%\Lib\SDK.v7\%%c
 		set Lib=!Lib!;%DEVELOP_ROOT%\Lib\%COMPILER%\%%c
 
-		nmake -nologo _SFX_MAINTAINER=1 CPU=%%c MODULE_SUBNAME=%%m !COMPRESSION_METHODS! %OPTIMIZATION% %_MAPFILE% %SFX_CRYPTO% %NMAKE_CMDS%
+		nmake -nologo _SFX_MAINTAINER=1 CPU=%%c MODULE_SUBNAME=%%m !COMPRESSION_METHODS! %BUILD_OPTIONS% %NMAKE_CMDS%
 	)
 )
 

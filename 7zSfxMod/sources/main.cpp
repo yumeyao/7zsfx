@@ -2,9 +2,9 @@
 /* File:        main.cpp                                                     */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Tue, 16 Nov 2010 12:10:31 GMT                                */
+/* Last update: Sun, 28 Nov 2010 00:15:03 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1937                                                         */
+/* Revision:    1948                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1798                                                         */
 /* Updated:		Wed, 30 Jun 2010 09:24:36 GMT                                */
@@ -37,7 +37,7 @@
 
 #define SKIP_WHITESPACES_W(str) 	while( *str != L'\0' && ((unsigned)*str) <= L' ' ) str++;
 
-HRESULT ExtractArchive( IInStream * inStream, const UString &folderName );
+HRESULT ExtractArchive( CSfxInStream * inStream, const UString &folderName );
 bool	ReadConfig( IInStream * inStream, LPCSTR startID, LPCSTR endID, AString &stringResult );
 void	DeleteSFX( UString moduleName );
 
@@ -66,6 +66,9 @@ LPCWSTR	lpwszExtractDialogText;
 	LPCWSTR	lpwszPasswordTitle = NULL;
 	LPCWSTR	lpwszPasswordText = NULL;
 #endif // SFX_CRYPTO
+#ifdef _SFX_USE_VOLUME_NAME_STYLE
+	int nVolumeNameStyle=0;
+#endif // _SFX_USE_VOLUME_NAME_STYLE
 
 int		GUIMode = 0;
 int		GUIFlags = -1;
@@ -443,6 +446,9 @@ LPCWSTR ParseConfigOverride( LPCWSTR lpwszCommandLine, CObjectVector<CTextConfig
 		CFG_PASSWORD_TITLE,
 		CFG_PASSWORD_TEXT,
 #endif // SFX_CRYPTO
+#ifdef _SFX_USE_VOLUME_NAME_STYLE
+		CFG_VOLUME_NAME_STYLE,
+#endif // _SFX_USE_VOLUME_NAME_STYLE
 		NULL
 	};
 
@@ -519,9 +525,7 @@ void SetConfigVariables( CObjectVector<CTextConfigPair>& pairs )
 	if( (lpwszValue = GetTextConfigValue( pairs, CFG_GUIMODE )) != NULL )
 	{
 		if( lpwszValue[0] >= L'0' && lpwszValue[0] <= L'0'+GUIMODE_MAX )
-		{
 			GUIMode = lpwszValue[0] - L'0';
-		}
 	}
 	// Load OverwriteMode
 	if( (lpwszValue = GetTextConfigValue( pairs, CFG_OVERWRITE_MODE)) != NULL )
@@ -570,6 +574,13 @@ void SetConfigVariables( CObjectVector<CTextConfigPair>& pairs )
 	else
 		lpwszPasswordText = GetLanguageString( STR_PASSWORD_TEXT );
 #endif // SFX_CRYPTO
+#ifdef _SFX_USE_VOLUME_NAME_STYLE
+	if( (lpwszValue = GetTextConfigValue( pairs, CFG_VOLUME_NAME_STYLE )) != NULL )
+	{
+		if( lpwszValue[0] >= L'0' && lpwszValue[0] <= L'9' )
+			nVolumeNameStyle = lpwszValue[0] - L'0';
+	}
+#endif // _SFX_USE_VOLUME_NAME_STYLE
 }
 
 void OverrideConfigParam( LPCWSTR lpwszName, LPCWSTR lpwszValue, CObjectVector<CTextConfigPair>& pairs )
@@ -659,16 +670,23 @@ void ShowSfxVersion()
 	extern unsigned int g_NumCodecs;
 	extern const CCodecInfo *g_Codecs[]; 
 	UString ustrVersion = GetLanguageString( STR_SFXVERSION );
-	for( unsigned int ki = 0; ki < g_NumCodecs; ki++ )
+	unsigned int ki;
+	for( ki = 0; ki < g_NumCodecs; ki++ )
 	{
 		if( ki != 0 )
 			ustrVersion += L", ";
 		ustrVersion += g_Codecs[ki]->Name;
 	}
+#ifdef SFX_VOLUMES
+	if( ki != 0 )
+		ustrVersion += L", ";
+	ustrVersion += L"Volumes";
+#endif // SFX_VOLUMES
 	ustrVersion += L"\n\n";
 	ustrVersion += GetLanguageString( STR_BUILD_OPTIONS );
 	WCHAR tmp[128];
-	wsprintf( tmp, L" \n\t%03X - %02X - %03X", SFXBUILD_OPTIONS1, SFXBUILD_OPTIONS2, SFXBUILD_OPTIONS3 );
+	wsprintf( tmp, L" \n\t%X - %03X - %03X - %03X - %03X",
+				SFXBUILD_OPTIONS1, SFXBUILD_OPTIONS2, SFXBUILD_OPTIONS3, SFXBUILD_OPTIONS4, SFXBUILD_OPTIONS5 );
 	ustrVersion += tmp;
 	ustrVersion += L"\n\n\n";
 	ustrVersion += GetLanguageString( STR_COPYRIGHT );
@@ -894,7 +912,7 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 #endif // _SFX_USE_ELEVATION
 #ifdef _DEBUG
 	strModulePathName = L"C:\\7zSfxMod\\1.5.0-alpha\\snapshots\\7zsd_tools_150_1935_x86_test.exe";
-	strModulePathName = L"C:\\Mobile\\2.exe";
+	strModulePathName = L"C:\\tmp\\7zsfx.tmp\\style0.7z.exe";
 #else
 	if( ::GetModuleFileName( NULL, strModulePathName.GetBuffer(MAX_PATH*2), MAX_PATH*2 ) == 0 )
 	{
@@ -945,6 +963,24 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 			else
 				nTestModeType = TMT_DIALOGS_TO_STDOUT;
 			break;
+		case 'o':
+			if( lpwszValue[2] != L':' )
+				return 0;
+			switch( lpwszValue[3] )
+			{
+			case '1':
+				return SFXBUILD_OPTIONS1;
+			case '2':
+				return SFXBUILD_OPTIONS2;
+			case '3':
+				return SFXBUILD_OPTIONS3;
+			case '4':
+				return SFXBUILD_OPTIONS4;
+			case '5':
+				return SFXBUILD_OPTIONS5;
+			default:
+				return 0;
+			}
 		case L'v':
 			return 0x4000 | VERSION_REVISION;
 		default:
@@ -1368,7 +1404,7 @@ Loc_BeginPrompt:
 #ifdef _SFX_USE_TEST
 	HRESULT hrStatus;
 	if( TSD_ExtractTimeout == 0 )
-		hrStatus = ExtractArchive( inStream, extractPath );
+		hrStatus = ExtractArchive( inStreamSpec, extractPath );
 	else
 	{
 		if( ExtractDialog() != FALSE )
@@ -1377,7 +1413,7 @@ Loc_BeginPrompt:
 			hrStatus = E_FAIL;
 	}
 #else
-	HRESULT hrStatus = ExtractArchive( inStream, extractPath );
+	HRESULT hrStatus = ExtractArchive( inStreamSpec, extractPath );
 #endif // _SFX_USE_TEST
 
 	// delete temporary folder
@@ -1646,41 +1682,6 @@ Loc_BeginPrompt:
 	}
 	
 	return ERRC_NONE;
-}
-
-HRESULT ExtractArchive( IInStream * inStream, const UString &folderName )
-{
-	HRESULT	result;
-	CMyComPtr<IInArchive> archive = new NArchive::N7z::CHandler;
-
-	inStream->Seek( 0, STREAM_SEEK_SET, NULL );
-#ifdef SFX_CRYPTO
-	CSfxPassword * passwordCallback = new CSfxPassword;
-	if( (result = archive->Open(inStream, &kMaxCheckStartPosition, passwordCallback)) != S_OK )
-	{
-		SfxErrorDialog( FALSE, (CSfxPassword::IsDefined() == false) ? ERR_NON7Z_ARCHIVE : ERR_7Z_DATA_ERROR );
-#else
-	if( (result = archive->Open(inStream, &kMaxCheckStartPosition, NULL)) != S_OK )
-	{
-		SfxErrorDialog( FALSE, ERR_NON7Z_ARCHIVE );
-#endif // SFX_CRYPTO
-		return E_FAIL;
-	}
-
-#ifdef _SFX_USE_TEST
-	if( nTestModeType != TMT_ARCHIVE && CreateFolderTree( (LPCWSTR)folderName ) == FALSE )
-		return E_FAIL;
-#else
-	if( CreateFolderTree( (LPCWSTR)folderName ) == FALSE )
-		return E_FAIL;
-#endif // _SFX_USE_TEST
-
-	CSfxExtractEngine * extractEngine = new CSfxExtractEngine;
-#ifdef SFX_CRYPTO
-	CSfxPassword::EarlyPassword( inStream );
-#endif // SFX_CRYPTO
-	result = extractEngine->Extract( archive, folderName );
-	return result;
 }
 
 void DeleteSFX( UString moduleName )

@@ -2,9 +2,9 @@
 /* File:        7zSfxMod.h                                                   */
 /* Created:     Thu, 28 Jul 2005 02:44:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sat, 13 Nov 2010 23:54:03 GMT                                */
+/* Last update: Sat, 20 Nov 2010 14:04:15 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1935                                                         */
+/* Revision:    1942                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1775                                                         */
 /* Updated:     Sun, 06 Jun 2010 07:46:34 GMT                                */
@@ -59,6 +59,9 @@
 #define CFG_PASSWORD_TITLE				_CFG_PARAM_TYPE"PasswordTitle"
 #define CFG_PASSWORD_TEXT				_CFG_PARAM_TYPE"PasswordText"
 #endif // SFX_CRYPTO
+#ifdef _SFX_USE_VOLUME_NAME_STYLE
+#define CFG_VOLUME_NAME_STYLE			_CFG_PARAM_TYPE"VolumeNameStyle"
+#endif // _SFX_USE_VOLUME_NAME_STYLE
 
 
 #define GUIMODE_STANDARD				0

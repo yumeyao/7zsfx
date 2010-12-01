@@ -15,6 +15,6 @@ set sfx_name=..\snapshots\7zsd_tools_%SfxVersion%_%SfxBuild%
 set archive_name=%sfx_name%_%timestamp%
 
 cd ..\output
-7z a -p123 -mx=9 %archive_name%.7z -xr!7zsd_Debug* *.sfx
-copy /b 7zsd_LZMA2.sfx + ..\7zSfxMod\configs\test_config.2.txt +%archive_name%.7z %sfx_name%_x86_test2.exe
-del %archive_name%.7z
+rem 7z a -p123 -mx=9 %archive_name%.7z -xr!7zsd_Debug* *.sfx
+copy /b 7zsd_LZMA2.sfx + ..\7zSfxMod\configs\test_config.3.txt +C:\tmp\2010-11-21.1\Kvirc.7z.001 c:\tmp\Kvirc.exe
+rem del %archive_name%.7z

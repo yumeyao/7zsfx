@@ -2,9 +2,9 @@
 /* File:        AES.cpp                                                      */
 /* Created:     Sat, 13 Nov 2010 14:15:29 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sat, 13 Nov 2010 15:22:03 GMT                                */
+/* Last update: Sat, 27 Nov 2010 10:08:38 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1                                                            */
+/* Revision:    14                                                           */
 /*---------------------------------------------------------------------------*/
 #include "stdafx.h"
 
@@ -16,7 +16,7 @@
 	extern "C" {
 		#include "../C/Aes.c"
 		#include "../C/Sha256.c"
-		#ifdef _DEBUG
+		#if defined(_DEBUG) || defined(RELEASE_DEBUG)
 			#include "../C/AesOpt.c"
 		#endif // _DEBUG
 	}

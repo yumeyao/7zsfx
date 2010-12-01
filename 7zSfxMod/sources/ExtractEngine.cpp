@@ -2,9 +2,9 @@
 /* File:        ExtractEngine.cpp                                            */
 /* Created:     Wed, 05 Oct 2005 07:36:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Tue, 16 Nov 2010 11:56:06 GMT                                */
+/* Last update: Sat, 27 Nov 2010 12:30:03 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1869                                                         */
+/* Revision:    1880                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1706                                                         */
 /* Updated:     Sun, 06 Jun 2010 08:51:01 GMT                                */
@@ -292,6 +292,26 @@ HRESULT WINAPI CSfxExtractEngine::ExtractThread(CSfxExtractEngine *pThis)
 	return result;
 }
 
+#if defined(_SFX_USE_CUSTOM_EXCEPTIONS) && defined(SFX_CRYPTO)
+	UINT_PTR SfxException_OpenArchive()
+	{
+		return (CSfxPassword::IsDefined() == false) ? ERR_NON7Z_ARCHIVE : ERR_7Z_DATA_ERROR;
+	}
+#else
+	#define SfxException_OpenArchive	ERR_NON7Z_ARCHIVE
+#endif // defined(_SFX_USE_CUSTOM_EXCEPTIONS) && defined(SFX_CRYPTO)
+
+HRESULT SfxOpenArchive( IInArchive * archive, IInStream *stream,
+						const UInt64 *maxCheckStartPosition,
+						IArchiveOpenCallback *openArchiveCallback )
+{
+	HRESULT result;
+	SFX_EXCEPTION_HANDLER_BEGIN(SfxException_OpenArchive);
+	result = archive->Open( stream, maxCheckStartPosition, openArchiveCallback );
+	SFX_EXCEPTION_HANDLER_END;
+	return result;
+}
+
 #ifdef SFX_CRYPTO
 
 STDMETHODIMP CSfxExtractEngine::CryptoGetTextPassword(BSTR *password)
@@ -336,7 +356,7 @@ STDMETHODIMP CSfxPassword::SetCompleted(const UInt64 *files, const UInt64 *bytes
 			return TRUE;
 		CMyComPtr<IInArchive> archive = new NArchive::N7z::CHandler;
 		inStream->Seek( 0, STREAM_SEEK_SET, NULL );
-		if( archive->Open( inStream, &kMaxCheckStartPosition, NULL ) == S_OK )
+		if( SfxOpenArchive( archive, inStream, &kMaxCheckStartPosition, NULL ) == S_OK )
 		{
 			UInt32 items;
 			archive->GetNumberOfItems( &items );
@@ -355,3 +375,50 @@ STDMETHODIMP CSfxPassword::SetCompleted(const UInt64 *files, const UInt64 *bytes
 	#endif // _SFX_USE_EARLY_PASSWORD
 
 #endif // SFX_CRYPTO
+
+
+HRESULT ExtractArchive( CSfxInStream * inStream, const UString &folderName )
+{
+	HRESULT	result;
+	CMyComPtr<IInArchive> archiveHandler = new NArchive::N7z::CHandler;
+	CMyComPtr<IInStream> archiveStream;
+
+	inStream->Seek( 0, STREAM_SEEK_SET, NULL );
+#ifdef SFX_VOLUMES
+	inStream->InitVolumes();
+#endif // SFX_VOLUMES
+	if( (result = inStream->QueryInterface(IID_IInStream,(void **)&archiveStream)) == S_OK )
+	{
+#ifdef SFX_CRYPTO
+		CSfxPassword * passwordCallback = new CSfxPassword;
+		result = SfxOpenArchive( archiveHandler, archiveStream, &kMaxCheckStartPosition, passwordCallback );
+#else
+		result = SfxOpenArchive( archiveHandler, archiveStream, &kMaxCheckStartPosition, NULL );
+#endif // SFX_CRYPTO
+	}
+
+	if( result != S_OK )
+	{
+#ifdef SFX_CRYPTO
+		SfxErrorDialog( FALSE, (CSfxPassword::IsDefined() == false) ? ERR_NON7Z_ARCHIVE : ERR_7Z_DATA_ERROR );
+#else
+		SfxErrorDialog( FALSE, ERR_NON7Z_ARCHIVE );
+#endif // SFX_CRYPTO
+		return E_FAIL;
+	}
+
+#ifdef _SFX_USE_TEST
+	if( nTestModeType != TMT_ARCHIVE && CreateFolderTree( (LPCWSTR)folderName ) == FALSE )
+		return E_FAIL;
+#else
+	if( CreateFolderTree( (LPCWSTR)folderName ) == FALSE )
+		return E_FAIL;
+#endif // _SFX_USE_TEST
+
+	CSfxExtractEngine * extractEngine = new CSfxExtractEngine;
+#ifdef SFX_CRYPTO
+	CSfxPassword::EarlyPassword( archiveStream );
+#endif // SFX_CRYPTO
+	result = extractEngine->Extract( archiveHandler, folderName );
+	return result;
+}

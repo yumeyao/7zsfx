@@ -505,7 +505,7 @@
 				InlineFunctionExpansion="1"
 				FavorSizeOrSpeed="2"
 				AdditionalIncludeDirectories="..\7-Zip\CPP\"
-				PreprocessorDefinitions="NDEBUG;COMPRESS_LZMA;COMPRESS_LZMA2;COMPRESS_BCJ;COMPRESS_BCJ2;WIN32;_WINDOWS;_MBCS;EXTRACT_ONLY;NO_REGISTRY;_SFX;_NO_CRYPTO;UNICODE;_USE_SFXTEST"
+				PreprocessorDefinitions="NDEBUG;COMPRESS_LZMA;COMPRESS_LZMA2;COMPRESS_BCJ;COMPRESS_BCJ2;WIN32;_WINDOWS;_MBCS;EXTRACT_ONLY;NO_REGISTRY;_SFX;_NO_CRYPTO;UNICODE;_USE_SFXTEST,RELEASE_DEBUG,SFX_MAINTAINER"
 				StringPooling="true"
 				ExceptionHandling="0"
 				RuntimeLibrary="2"
@@ -537,6 +537,7 @@
 				OutputFile="$(OutDir)\7zsd_$(ConfigurationName).sfx"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				GenerateDebugInformation="false"
 				GenerateMapFile="true"
 				MapFileName="$(OutDir)\7zsd_$(ConfigurationName).map"
 				SubSystem="2"
@@ -945,7 +946,7 @@
 				Optimization="0"
 				FavorSizeOrSpeed="0"
 				AdditionalIncludeDirectories="..\7-Zip\CPP\"
-				PreprocessorDefinitions="_DEBUG;_DEBUGALL;COMPRESS_PPMD,COMPRESS_LZMA,WIN32;_WINDOWS;_MBCS;UNICODE"
+				PreprocessorDefinitions="_DEBUG;_DEBUGALL;COMPRESS_PPMD,COMPRESS_LZMA,WIN32;_WINDOWS;_MBCS;UNICODE,SFX_VOLUMES"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
@@ -2246,6 +2247,10 @@
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\sources\SfxInStream.cpp"
+				>
 			</File>
 			<File
 				RelativePath="sources\SfxTest.cpp"

@@ -2,9 +2,9 @@
 /* File:        Exceptions.cpp                                               */
 /* Created:     Mon, 15 Mar 2010 11:26:32 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Fri, 28 May 2010 22:43:01 GMT                                */
+/* Last update: Sat, 27 Nov 2010 12:10:25 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    75                                                           */
+/* Revision:    258                                                          */
 /*---------------------------------------------------------------------------*/
 /* Revision:    75                                                           */
 /* Updated:     Fri, 28 May 2010 22:41:25 GMT                                */
@@ -43,18 +43,29 @@
 #endif // defined(_MSC_VER) && defined(_WIN32) && !defined(_DEBUG)
 
 #ifdef _SFX_USE_CUSTOM_EXCEPTIONS
+	UINT_PTR uSfxExceptionText = 0;
+	typedef UINT_PTR (* GetSfxExceptionText)(void);
 	void ReportException( PEXCEPTION_RECORD rec )
 	{
-		WCHAR buf[1024];
-		LPCWSTR lpwszFormat = GetLanguageString( ERR_SFX_EXCEPTION );
-		wsprintf( buf, lpwszFormat, rec->ExceptionCode, rec->ExceptionAddress );
-		for( DWORD i = 0; i < rec->NumberParameters; i++ )
+		if( uSfxExceptionText != 0 )
 		{
-			WCHAR buf2[128];
-			wsprintf( buf2, L"\t0x%p\n", rec->ExceptionInformation[i] );
-			lstrcat( buf, buf2 );
+			if( HIWORD(uSfxExceptionText) )
+				uSfxExceptionText = ((GetSfxExceptionText)uSfxExceptionText)();
+			ShowSfxErrorDialog( GetLanguageString(uSfxExceptionText) );
 		}
-		ShowSfxErrorDialog( buf );
+		else
+		{
+			WCHAR buf[1024];
+			LPCWSTR lpwszFormat = GetLanguageString( ERR_SFX_EXCEPTION );
+			wsprintf( buf, lpwszFormat, rec->ExceptionCode, rec->ExceptionAddress );
+			for( DWORD i = 0; i < rec->NumberParameters; i++ )
+			{
+				WCHAR buf2[128];
+				wsprintf( buf2, L"\t0x%p\n", rec->ExceptionInformation[i] );
+				lstrcat( buf, buf2 );
+			}
+			ShowSfxErrorDialog( buf );
+		}
 		SfxCleanup();
 		ExitProcess( ERRC_EXCEPTION );
 	}

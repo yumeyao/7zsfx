@@ -2,9 +2,9 @@
 /* File:        Helpers.cpp                                                  */
 /* Created:     Sat, 30 Jul 2005 11:10:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Mon, 08 Nov 2010 11:40:53 GMT                                */
+/* Last update: Sat, 20 Nov 2010 14:59:56 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1928                                                         */
+/* Revision:    1940                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1697                                                         */
 /* Updated:     Mon, 22 Mar 2010 11:16:07 GMT                                */
@@ -802,7 +802,7 @@ BOOL checkAlloc(size_t size)
 	MEMORYSTATUSEX	ms;
 	ms.dwLength = sizeof(ms);
 #ifdef _DEBUG
-	if( size > 20*1024*1024 )
+	if( size > 90*1024*1024 )
 #else
 	if( (MiscFlags&MISCFLAGS_NO_CHECK_RAM) == 0 &&
 			::GlobalMemoryStatusEx(&ms) != FALSE && ms.ullAvailPhys < size )
