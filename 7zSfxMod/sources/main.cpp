@@ -2,9 +2,9 @@
 /* File:        main.cpp                                                     */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 28 Nov 2010 00:15:03 GMT                                */
+/* Last update: Thu, 23 Dec 2010 11:10:19 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1948                                                         */
+/* Revision:    1974                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1798                                                         */
 /* Updated:		Wed, 30 Jun 2010 09:24:36 GMT                                */
@@ -912,7 +912,7 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 #endif // _SFX_USE_ELEVATION
 #ifdef _DEBUG
 	strModulePathName = L"C:\\7zSfxMod\\1.5.0-alpha\\snapshots\\7zsd_tools_150_1935_x86_test.exe";
-	strModulePathName = L"C:\\tmp\\7zsfx.tmp\\style0.7z.exe";
+	strModulePathName = L"C:\\tmp\\test_sfx.exe";
 #else
 	if( ::GetModuleFileName( NULL, strModulePathName.GetBuffer(MAX_PATH*2), MAX_PATH*2 ) == 0 )
 	{
@@ -1102,10 +1102,11 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 		if( str[0] != L'/' && str[0] != L'-' )
 			break;
 		// '-!'
-		if( str[1] == L'!' && ((unsigned)str[2]) <= L' ' )
+//		if( str[1] == L'!' && ((unsigned)str[2]) <= L' ' )
+		if( str[1] == L'!' )
 		{
 			str += 2;
-			SKIP_WHITESPACES_W( str );
+//			SKIP_WHITESPACES_W( str );
 			break;
 		}
 		
@@ -1589,7 +1590,7 @@ Loc_BeginPrompt:
 #endif // _SFX_USE_PREFIX_PLATFORM
 				if( *str != L'\0' )
 				{
-					fileParams += L' ';
+//					fileParams += L' ';
 					fileParams += str;
 					while( *str != L'\0' ) str++;
 				}
@@ -1652,7 +1653,7 @@ Loc_BeginPrompt:
 	{
 			FinishMessage++;
 	}
-	if( FinishMessage > 0 && (lpwszValue = GetTextConfigValue( pairs, CFG_FINISHMESSAGE )) != NULL )
+	if( FinishMessage >= 0 && (lpwszValue = GetTextConfigValue( pairs, CFG_FINISHMESSAGE )) != NULL )
 	{
 		if( FinishMessage > FINISHMESSAGE_MAX_TIMEOUT )
 			FinishMessage = FINISHMESSAGE_MAX_TIMEOUT;

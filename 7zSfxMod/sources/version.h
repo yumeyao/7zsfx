@@ -2,9 +2,20 @@
 /* File:        version.h                                                    */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Tue, 30 Nov 2010 10:01:29 GMT                                */
+/* Last update: Mon, 27 Dec 2010 10:10:14 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1951                                                         */
+/* Revision:    1978                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1978                                                         */
+/* Updated:     Mon, 27 Dec 2010 10:10:14 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Change '-!' workflow                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1974                                                         */
+/* Updated:     Thu, 23 Dec 2010 10:31:06 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Bugfix: Incorrect work of 'FinishMessage' without prefixes	 */
+/*					or command line switch									 */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1948                                                         */
 /* Updated:     Sat, 27 Nov 2010 12:51:23 GMT                                */
@@ -148,7 +159,7 @@
 /*						Correct 'x86' and 'x64' prefixes workflow			 */
 /*						for 'RunProgram'									 */
 /*---------------------------------------------------------------------------*/
-#define VERSION_H_REVISION 1951
+#define VERSION_H_REVISION 1978
 #define VERSION_REVISION VERSION_H_REVISION
 
 #ifndef _VERSION_H_INCLUDED_
@@ -156,8 +167,8 @@
 
 #define VERSION_SFX_NUM_TEXT	"1.5.0"
 #define VERSION_SFX_NUM_BIN		1,5,0,VERSION_REVISION
-#define VERSION_SFX_DATE_EN		"November 30, 2010"
-#define VERSION_SFX_DATE_RU		"30 но€бр€ 2010 г."
+#define VERSION_SFX_DATE_EN		"December 27, 2010"
+#define VERSION_SFX_DATE_RU		"27 декабр€ 2010 г."
 #define VERSION_SFX_BRANCH_EN	"alpha"
 #define VERSION_SFX_BRANCH_RU	VERSION_SFX_BRANCH_EN
 
