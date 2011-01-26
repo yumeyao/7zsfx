@@ -2,7 +2,7 @@
 rem SetLocal enabledelayedexpansion
 
 set archive_name=c:\tmp\test.7z
-set config_name=..\7zSfxMod\configs\test20101223.txt
+set config_name=..\7zSfxMod\configs\test20110107.txt
 set test_sfx=c:\tmp\test_sfx.exe
 
 cd ..\output

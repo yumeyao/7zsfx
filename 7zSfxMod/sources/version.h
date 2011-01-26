@@ -2,9 +2,14 @@
 /* File:        version.h                                                    */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Mon, 27 Dec 2010 10:10:14 GMT                                */
+/* Last update: Fri, 07 Jan 2011 04:59:21 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1978                                                         */
+/* Revision:    1989                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1989                                                         */
+/* Updated:     Fri, 07 Jan 2011 04:59:21 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Incorrect work of '-fm0' command line switch                 */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1978                                                         */
 /* Updated:     Mon, 27 Dec 2010 10:10:14 GMT                                */
@@ -159,7 +164,7 @@
 /*						Correct 'x86' and 'x64' prefixes workflow			 */
 /*						for 'RunProgram'									 */
 /*---------------------------------------------------------------------------*/
-#define VERSION_H_REVISION 1978
+#define VERSION_H_REVISION 1989
 #define VERSION_REVISION VERSION_H_REVISION
 
 #ifndef _VERSION_H_INCLUDED_
@@ -167,8 +172,8 @@
 
 #define VERSION_SFX_NUM_TEXT	"1.5.0"
 #define VERSION_SFX_NUM_BIN		1,5,0,VERSION_REVISION
-#define VERSION_SFX_DATE_EN		"December 27, 2010"
-#define VERSION_SFX_DATE_RU		"27 декабря 2010 г."
+#define VERSION_SFX_DATE_EN		"January 7, 2011"
+#define VERSION_SFX_DATE_RU		"7 января 2011 г."
 #define VERSION_SFX_BRANCH_EN	"alpha"
 #define VERSION_SFX_BRANCH_RU	VERSION_SFX_BRANCH_EN
 

@@ -2,9 +2,9 @@
 /* File:        main.cpp                                                     */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Thu, 23 Dec 2010 11:10:19 GMT                                */
+/* Last update: Fri, 07 Jan 2011 05:14:29 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1974                                                         */
+/* Revision:    1989                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1798                                                         */
 /* Updated:		Wed, 30 Jun 2010 09:24:36 GMT                                */
@@ -1651,9 +1651,9 @@ Loc_BeginPrompt:
 	}
 	if( FinishMessage == -1 && fAssumeYes == false )
 	{
-			FinishMessage++;
+			FinishMessage = 1;
 	}
-	if( FinishMessage >= 0 && (lpwszValue = GetTextConfigValue( pairs, CFG_FINISHMESSAGE )) != NULL )
+	if( FinishMessage > 0 && (lpwszValue = GetTextConfigValue( pairs, CFG_FINISHMESSAGE )) != NULL )
 	{
 		if( FinishMessage > FINISHMESSAGE_MAX_TIMEOUT )
 			FinishMessage = FINISHMESSAGE_MAX_TIMEOUT;
