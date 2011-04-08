@@ -2,9 +2,9 @@
 /* File:        7zSfxModInt.h                                                */
 /* Created:     Wed, 25 Jul 2007 09:54:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sat, 27 Nov 2010 13:07:39 GMT                                */
+/* Last update: Wed, 30 Mar 2011 10:22:11 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1222                                                         */
+/* Revision:    1345                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1067                                                         */
 /* Updated:     Sat, 26 Jun 2010 04:22:23 GMT                                */
@@ -84,6 +84,10 @@ extern bool		fUseBackward;
 	extern int nVolumeNameStyle;
 #endif // _SFX_USE_VOLUME_NAME_STYLE
 
+
+#ifdef _SFX_USE_PREFIX_PLATFORM
+	extern UString	strOSPlatform;
+#endif // _SFX_USE_PREFIX_PLATFORM
 extern UString	strModulePathName;
 extern UString	extractPath;
 extern int		OverwriteMode, OverwriteFlags;
@@ -178,6 +182,7 @@ UString MyGetEnvironmentVariable( LPCWSTR lpwszName );
 #endif // _SFX_USE_LANG
 #ifdef _SFX_USE_PREFIX_PLATFORM
 	BOOL SfxPrepareExecute( int nPlatform );
+	void ReplaceWithPlatform( UString& str );
 	#if defined(_WIN64) && defined(_M_X64)
 		#define SfxFinalizeExecute()
 	#else

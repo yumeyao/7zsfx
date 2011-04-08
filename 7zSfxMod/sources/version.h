@@ -2,9 +2,24 @@
 /* File:        version.h                                                    */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Fri, 07 Jan 2011 04:59:21 GMT                                */
+/* Last update: Thu, 07 Apr 2011 11:07:18 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1989                                                         */
+/* Revision:    2079                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    2079                                                         */
+/* Updated:     Thu, 07 Apr 2011 11:06:15 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Correct manifest revision                                    */
+/*---------------------------------------------------------------------------*/
+/* Revision:    2073                                                         */
+/* Updated:     Fri, 01 Apr 2011 08:59:48 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Correct copyright year                                       */
+/*---------------------------------------------------------------------------*/
+/* Revision:    2071                                                         */
+/* Updated:     Wed, 30 Mar 2011 10:32:51 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Correct '%%P' in Shortcut                                    */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1989                                                         */
 /* Updated:     Fri, 07 Jan 2011 04:59:21 GMT                                */
@@ -164,7 +179,7 @@
 /*						Correct 'x86' and 'x64' prefixes workflow			 */
 /*						for 'RunProgram'									 */
 /*---------------------------------------------------------------------------*/
-#define VERSION_H_REVISION 1989
+#define VERSION_H_REVISION 2079
 #define VERSION_REVISION VERSION_H_REVISION
 
 #ifndef _VERSION_H_INCLUDED_
@@ -172,8 +187,8 @@
 
 #define VERSION_SFX_NUM_TEXT	"1.5.0"
 #define VERSION_SFX_NUM_BIN		1,5,0,VERSION_REVISION
-#define VERSION_SFX_DATE_EN		"January 7, 2011"
-#define VERSION_SFX_DATE_RU		"7 января 2011 г."
+#define VERSION_SFX_DATE_EN		"April 7, 2011"
+#define VERSION_SFX_DATE_RU		"7 апреля 2011 г."
 #define VERSION_SFX_BRANCH_EN	"alpha"
 #define VERSION_SFX_BRANCH_RU	VERSION_SFX_BRANCH_EN
 

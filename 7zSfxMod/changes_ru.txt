@@ -1,3 +1,6 @@
+1.5 alpha (сборка 2079) 07.04.11
+* Переменная '%%P' не разбиралась параметрах команд 'Shortcut', 'ShortcutX' (gora:forum.oszone.net)
+
 1.5 alpha (сборка 1989) 07.01.11 
 * Не работал ключ '-fm0' (usver32:forum.oszone.net)
 

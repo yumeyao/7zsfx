@@ -2,9 +2,9 @@
 /* File:        Helpers.cpp                                                  */
 /* Created:     Sat, 30 Jul 2005 11:10:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sat, 20 Nov 2010 14:59:56 GMT                                */
+/* Last update: Wed, 30 Mar 2011 10:21:42 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1940                                                         */
+/* Revision:    2069                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1697                                                         */
 /* Updated:     Mon, 22 Mar 2010 11:16:07 GMT                                */
@@ -782,6 +782,13 @@ void ReplaceWithArchiveName( UString& str, UString &archiveName )
 	tmp = archiveName; tmp += L"/"; str.Replace( L"%%M/", tmp );
 	str.Replace( L"%%M", archiveName );
 }
+
+#ifdef _SFX_USE_PREFIX_PLATFORM
+	void ReplaceWithPlatform( UString& str )
+	{
+		str.Replace( L"%%P", strOSPlatform );
+	}
+#endif // _SFX_USE_PREFIX_PLATFORM
 
 int MyStrincmp( LPCWSTR str1, LPCWSTR str2, int nLength )
 {

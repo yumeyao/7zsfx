@@ -86,7 +86,9 @@ UString strSfxFolder;
 UString strSfxName;
 UString	strErrorTitle;
 UString	strTitle;
-UString	strOSPlatform;
+#ifdef _SFX_USE_PREFIX_PLATFORM
+	UString	strOSPlatform;
+#endif // _SFX_USE_PREFIX_PLATFORM
 
 bool	fUseInstallPath;
 
@@ -185,7 +187,7 @@ void ReplaceVariables( UString& str )
 	ReplaceWithArchivePath( str, strSfxFolder );
 	ReplaceWithArchiveName( str, strSfxName );
 #ifdef _SFX_USE_PREFIX_PLATFORM
-	str.Replace( L"%%P", strOSPlatform );
+	ReplaceWithPlatform( str );
 #endif // _SFX_USE_PREFIX_PLATFORM
 	ExpandEnvironmentStrings( str );
 }
@@ -598,6 +600,9 @@ void PostExecute_Shortcut( LPCWSTR lpwszValue )
 	ReplaceWithExtractPath( strShortcut, extractPath );
 	ReplaceWithArchivePath( strShortcut, strSfxFolder );
 	ReplaceWithArchiveName( strShortcut, strSfxName );
+#ifdef _SFX_USE_PREFIX_PLATFORM
+	ReplaceWithPlatform( strShortcut );
+#endif // _SFX_USE_PREFIX_PLATFORM
 	for( int i = 0; i < Variables.Size(); i++ )
 	{
 		UString varValue = MyGetEnvironmentVariable( Variables[i].ID );
@@ -605,6 +610,9 @@ void PostExecute_Shortcut( LPCWSTR lpwszValue )
 		ReplaceWithExtractPath( varValue, extractPath );
 		ReplaceWithArchivePath( varValue, strSfxFolder );
 		ReplaceWithArchiveName( varValue, strSfxName );
+#ifdef _SFX_USE_PREFIX_PLATFORM
+		ReplaceWithPlatform( varValue );
+#endif // _SFX_USE_PREFIX_PLATFORM
 
 		ReplaceVariableInShortcut( strShortcut, Variables[i].ID, varValue );
 	}
