@@ -2,9 +2,9 @@
 /* File:        langstrs.cpp                                                 */
 /* Created:     Wed, 10 Jan 2007 23:44:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Fri, 01 Apr 2011 08:59:36 GMT                                */
+/* Last update: Sat, 16 Apr 2011 08:17:21 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1542                                                         */
+/* Revision:    1557                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1404                                                         */
 /* Updated:     Sun, 14 Nov 2010 01:04:46 GMT                                */
@@ -31,15 +31,16 @@ const UINT SfxSecondaryLangId = 0x419;
 
 LANGSTRING SfxLangStrings[] = {
 // Версия модуля
-	{ STR_SFXVERSION,		"SFX module version:\n\t"VERSION_SFX_TEXT_EN"\n"
-							"\n7-Zip version:\n\t"VERSION_7ZIP_TEXT_EN"\n"
-							"\nSupported methods and filters:\n\t",
-							"Версия модуля SFX:\n\t"VERSION_SFX_TEXT_RU"\n"
-							"\nВерсия 7-Zip:\n\t"VERSION_7ZIP_TEXT_RU"\n"
-							"\nПоддерживаемые методы и фильтры:\n\t", NULL },
-// Copyright
-	{ STR_COPYRIGHT,		"Copyright (c) 2005-2011 Oleg Scherbakov\n",
-							"Copyright (c) 2005-2011 Олег Щербаков\n", NULL },
+	{ STR_SFXVERSION,		"SFX module - Copyright (c) 2005-2011 Oleg Scherbakov\n"
+							"\t"VERSION_SFX_TEXT_EN"\n"
+							"\n7-Zip archiver - Copyright (c) 1999-2011 Igor Pavlov\n"
+							"\t"VERSION_7ZIP_TEXT_EN"\n"
+							"\nSupported methods and filters, build options:\n\t",
+						"SFX модуль - Copyright (c) 2005-2011 Олег Щербаков\n"
+						"\t"VERSION_SFX_TEXT_RU"\n"
+						"\nАрхиватор 7-Zip - Copyright (c) 1999-2011 Игорь Павлов\n"
+						"\t"VERSION_7ZIP_TEXT_RU"\n"
+						"\nПоддерживаемые методы и фильтры, опции сбоки:\n\t", NULL },
 // Заголовок окон сообщений по умолчанию, отображаемое, если
 // модуль не смог определить имя exe-файла.
 // Если SFX модуль смог распознать свое имя (а это практически 100%), вместо него
@@ -172,9 +173,6 @@ LANGSTRING SfxLangStrings[] = {
 								"Недостаточно физической памяти.\nРаспаковка может занять продолжительное время.\n\nВы хотите продолжить?", NULL },
 #endif // _SFX_USE_CHECK_FREE_SPACE
 #endif // _SFX_USE_WARNINGS
-	{ STR_BUILD_OPTIONS,		"Build options:",
-								"Опции сборки:", NULL },
-
 #ifdef SFX_CRYPTO
 	{ STR_PASSWORD_TEXT,		"Enter password:",
 								"Введите пароль:", NULL },

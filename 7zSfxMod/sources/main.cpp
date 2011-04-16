@@ -2,9 +2,9 @@
 /* File:        main.cpp                                                     */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Fri, 07 Jan 2011 05:14:29 GMT                                */
+/* Last update: Sat, 16 Apr 2011 07:27:36 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1989                                                         */
+/* Revision:    2088                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1798                                                         */
 /* Updated:		Wed, 30 Jun 2010 09:24:36 GMT                                */
@@ -690,14 +690,11 @@ void ShowSfxVersion()
 		ustrVersion += L", ";
 	ustrVersion += L"Volumes";
 #endif // SFX_VOLUMES
-	ustrVersion += L"\n\n";
-	ustrVersion += GetLanguageString( STR_BUILD_OPTIONS );
 	WCHAR tmp[128];
 	wsprintf( tmp, L" \n\t%X - %03X - %03X - %03X - %03X",
 				SFXBUILD_OPTIONS1, SFXBUILD_OPTIONS2, SFXBUILD_OPTIONS3, SFXBUILD_OPTIONS4, SFXBUILD_OPTIONS5 );
 	ustrVersion += tmp;
-	ustrVersion += L"\n\n\n";
-	ustrVersion += GetLanguageString( STR_COPYRIGHT );
+	ustrVersion += L"\n";
 	dlg.Show( SD_OK|SD_ICONINFORMATION, lpwszTitle, ustrVersion );
 }
 

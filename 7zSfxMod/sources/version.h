@@ -2,9 +2,14 @@
 /* File:        version.h                                                    */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Thu, 07 Apr 2011 11:07:18 GMT                                */
+/* Last update: Sat, 16 Apr 2011 08:04:14 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    2079                                                         */
+/* Revision:    2088                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    2088                                                         */
+/* Updated:     Sat, 16 Apr 2011 07:19:09 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Update 7-Zip sources up to 9.21 beta                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    2079                                                         */
 /* Updated:     Thu, 07 Apr 2011 11:06:15 GMT                                */
@@ -179,7 +184,7 @@
 /*						Correct 'x86' and 'x64' prefixes workflow			 */
 /*						for 'RunProgram'									 */
 /*---------------------------------------------------------------------------*/
-#define VERSION_H_REVISION 2079
+#define VERSION_H_REVISION 2088
 #define VERSION_REVISION VERSION_H_REVISION
 
 #ifndef _VERSION_H_INCLUDED_
@@ -187,15 +192,15 @@
 
 #define VERSION_SFX_NUM_TEXT	"1.5.0"
 #define VERSION_SFX_NUM_BIN		1,5,0,VERSION_REVISION
-#define VERSION_SFX_DATE_EN		"April 7, 2011"
-#define VERSION_SFX_DATE_RU		"7 апрел€ 2011 г."
-#define VERSION_SFX_BRANCH_EN	"alpha"
+#define VERSION_SFX_DATE_EN		"April 16, 2011"
+#define VERSION_SFX_DATE_RU		"16 апрел€ 2011"
+#define VERSION_SFX_BRANCH_EN	"beta"
 #define VERSION_SFX_BRANCH_RU	VERSION_SFX_BRANCH_EN
 
-#define VERSION_7ZIP_NUM_TEXT	"9.20"
-#define VERSION_7ZIP_DATE_EN	"November 18, 2010"
-#define VERSION_7ZIP_DATE_RU	"18 но€бр€ 2010 г."
-#define VERSION_7ZIP_BRANCH_EN	""
+#define VERSION_7ZIP_NUM_TEXT	"9.21"
+#define VERSION_7ZIP_DATE_EN	"April 11, 2011"
+#define VERSION_7ZIP_DATE_RU	"11 апрел€ 2011"
+#define VERSION_7ZIP_BRANCH_EN	"beta"
 #define VERSION_7ZIP_BRANCH_RU	VERSION_7ZIP_BRANCH_EN
 
 

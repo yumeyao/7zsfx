@@ -2,9 +2,9 @@
 /* File:        langstrs.h                                                   */
 /* Created:     Fri, 29 Jul 2005 23:10:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 14 Nov 2010 01:04:08 GMT                                */
+/* Last update: Sat, 16 Apr 2011 07:13:35 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1934                                                         */
+/* Revision:    2087                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1934                                                         */
 /* Updated:     Sun, 14 Nov 2010 01:04:08 GMT                                */
@@ -94,13 +94,8 @@
 #endif // _SFX_USE_CHECK_RAM
 #endif // _SFX_USE_WARNINGS
 
-// added June 26, 2010
-#define STR_COPYRIGHT				44
-// added October 31, 2010
-#define STR_BUILD_OPTIONS			45
-// added November 14, 2010
 #ifdef SFX_CRYPTO
-	#define STR_PASSWORD_TEXT		46
+	#define STR_PASSWORD_TEXT		44
 #endif // SFX_CRYPTO
 
 LPCWSTR GetLanguageString( UINT id );
