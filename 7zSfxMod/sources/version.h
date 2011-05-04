@@ -2,9 +2,15 @@
 /* File:        version.h                                                    */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 21 Nov 2010 05:15:23 GMT                                */
+/* Last update: Thu, 28 Apr 2011 11:37:49 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1942                                                         */
+/* Revision:    2100                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    2100                                                         */
+/* Updated:     Thu, 28 Apr 2011 11:36:51 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Fix Win XP/2003 x64											 */
+/*					msvcrt.dll '__CxxFrameHandler3' link error				 */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1940                                                         */
 /* Updated:     Fri, 19 Nov 2010 10:32:00 GMT                                */
@@ -98,16 +104,16 @@
 /*						Correct 'x86' and 'x64' prefixes workflow			 */
 /*						for 'RunProgram'									 */
 /*---------------------------------------------------------------------------*/
-#define VERSION_H_REVISION 1942
+#define VERSION_H_REVISION 2100
 #define VERSION_REVISION VERSION_H_REVISION
 
 #ifndef _VERSION_H_INCLUDED_
 #define _VERSION_H_INCLUDED_
 
-#define VERSION_SFX_NUM_TEXT	"1.4.0"
-#define VERSION_SFX_NUM_BIN		1,4,0,VERSION_REVISION
-#define VERSION_SFX_DATE_EN		"November 21, 2010"
-#define VERSION_SFX_DATE_RU		"21 но€бр€ 2010 г."
+#define VERSION_SFX_NUM_TEXT	"1.4.1"
+#define VERSION_SFX_NUM_BIN		1,4,1,VERSION_REVISION
+#define VERSION_SFX_DATE_EN		"April 28, 2011"
+#define VERSION_SFX_DATE_RU		"28 апрел€ 2011 г."
 #define VERSION_SFX_BRANCH_EN	""
 #define VERSION_SFX_BRANCH_RU	VERSION_SFX_BRANCH_EN
 
