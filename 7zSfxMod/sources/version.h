@@ -2,9 +2,14 @@
 /* File:        version.h                                                    */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Thu, 28 Apr 2011 11:37:49 GMT                                */
+/* Last update: Tue, 22 Nov 2011 10:33:33 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    2100                                                         */
+/* Revision:    2308                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    2308                                                         */
+/* Updated:     Tue, 22 Nov 2011 10:33:33 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Fixing incorrect _SFX_USE_LANG in config parsing             */
 /*---------------------------------------------------------------------------*/
 /* Revision:    2100                                                         */
 /* Updated:     Thu, 28 Apr 2011 11:36:51 GMT                                */
@@ -104,16 +109,16 @@
 /*						Correct 'x86' and 'x64' prefixes workflow			 */
 /*						for 'RunProgram'									 */
 /*---------------------------------------------------------------------------*/
-#define VERSION_H_REVISION 2100
+#define VERSION_H_REVISION 2308
 #define VERSION_REVISION VERSION_H_REVISION
 
 #ifndef _VERSION_H_INCLUDED_
 #define _VERSION_H_INCLUDED_
 
-#define VERSION_SFX_NUM_TEXT	"1.4.1"
-#define VERSION_SFX_NUM_BIN		1,4,1,VERSION_REVISION
-#define VERSION_SFX_DATE_EN		"April 28, 2011"
-#define VERSION_SFX_DATE_RU		"28 апреля 2011 г."
+#define VERSION_SFX_NUM_TEXT	"1.4.2"
+#define VERSION_SFX_NUM_BIN		1,4,2,VERSION_REVISION
+#define VERSION_SFX_DATE_EN		"November 22, 2011"
+#define VERSION_SFX_DATE_RU		"22 Ноября 2011 г."
 #define VERSION_SFX_BRANCH_EN	""
 #define VERSION_SFX_BRANCH_RU	VERSION_SFX_BRANCH_EN
 

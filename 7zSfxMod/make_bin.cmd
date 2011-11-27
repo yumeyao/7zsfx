@@ -1,7 +1,7 @@
 @Echo off
 rem SetLocal enabledelayedexpansion
 
-Set SfxVersion=141
+Set SfxVersion=142
 
 For /F %%i In (SfxBuild.txt) Do Set %%i
 

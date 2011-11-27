@@ -2,9 +2,9 @@
 /* File:        main.cpp                                                     */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Wed, 13 Oct 2010 09:53:16 GMT                                */
+/* Last update: Tue, 22 Nov 2011 10:30:20 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1903                                                         */
+/* Revision:    2308                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1794                                                         */
 /* Updated:     Sat, 26 Jun 2010 10:45:08 GMT                                */
@@ -894,20 +894,18 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 	// Read SFX config
 	AString	config;
 
+#ifdef _SFX_USE_LANG
 	AString strSignatureBegin;
 	AString strSignatureEnd;
 
-#ifdef _SFX_USE_LANG
 	CreateLanguageSignature( idSfxLang, strSignatureBegin, strSignatureEnd );
-#endif // _SFX_USE_LANG
 	if( ReadConfig( inStream, strSignatureBegin, strSignatureEnd, config ) == false )
-	{
+#endif // _SFX_USE_LANG
 		if( ReadConfig( inStream, kSignatureConfigStart, kSignatureConfigEnd, config ) == false )
 		{
 			SfxErrorDialog( FALSE, ERR_READ_CONFIG );
 			return ERRC_READ_CONFIG;
 		}
-	}
 
 #ifdef _SFX_USE_TEST
 	if( nTestModeType == 0 && (lpwszValue = IsSfxSwitch( str,CMDLINE_SFXCONFIG )) != NULL )
