@@ -2,9 +2,14 @@
 /* File:        version.h                                                    */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Thu, 28 Apr 2011 11:52:35 GMT                                */
+/* Last update: Tue, 22 Nov 2011 10:47:32 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    2100                                                         */
+/* Revision:    2308                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    2308                                                         */
+/* Updated:     Tue, 22 Nov 2011 09:52:20 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Correct russian lang strings & manifest                      */
 /*---------------------------------------------------------------------------*/
 /* Revision:    2100                                                         */
 /* Updated:     Thu, 28 Apr 2011 11:43:52 GMT                                */
@@ -191,7 +196,7 @@
 /*						Correct 'x86' and 'x64' prefixes workflow			 */
 /*						for 'RunProgram'									 */
 /*---------------------------------------------------------------------------*/
-#define VERSION_H_REVISION 2100
+#define VERSION_H_REVISION 2308
 #define VERSION_REVISION VERSION_H_REVISION
 
 #ifndef _VERSION_H_INCLUDED_
@@ -199,8 +204,8 @@
 
 #define VERSION_SFX_NUM_TEXT	"1.5.0"
 #define VERSION_SFX_NUM_BIN		1,5,0,VERSION_REVISION
-#define VERSION_SFX_DATE_EN		"April 28, 2011"
-#define VERSION_SFX_DATE_RU		"28 апрел€ 2011"
+#define VERSION_SFX_DATE_EN		"November 22, 2011"
+#define VERSION_SFX_DATE_RU		"22 но€бр€ 2011"
 #define VERSION_SFX_BRANCH_EN	"beta"
 #define VERSION_SFX_BRANCH_RU	VERSION_SFX_BRANCH_EN
 
