@@ -7014,6 +7014,10 @@
 			>
 		</File>
 		<File
+			RelativePath=".\makefile"
+			>
+		</File>
+		<File
 			RelativePath=".\Requests.txt"
 			>
 		</File>

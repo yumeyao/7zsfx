@@ -2,9 +2,9 @@
 /* File:        SfxDialogs.cpp                                               */
 /* Created:     Sat, 13 Jan 2007 02:03:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 14 Nov 2010 00:34:22 GMT                                */
+/* Last update: Sat, 21 Jan 2012 00:01:25 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1401                                                         */
+/* Revision:    1834                                                         */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1262                                                         */
 /* Updated:     Sun, 27 Jun 2010 06:55:56 GMT                                */
@@ -941,9 +941,9 @@ void CSfxDialog_ExtractPath::BrowseExtractPath()
 
 	memset( &bi, 0, sizeof(bi) );
 	bi.hwndOwner = GetHwnd();
-	bi.ulFlags = BIF_RETURNONLYFSDIRS;
+	bi.ulFlags = BIF_RETURNONLYFSDIRS|BIF_NEWDIALOGSTYLE;
 	
-	LPITEMIDLIST pidl = SHBrowseForFolder( &bi );
+	LPITEMIDLIST pidl = safe_SHBrowseForFolder( &bi );
 
 	if( pidl == NULL )
 		return;

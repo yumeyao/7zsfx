@@ -2,9 +2,14 @@
 /* File:        Exceptions.cpp                                               */
 /* Created:     Mon, 15 Mar 2010 11:26:32 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Thu, 28 Apr 2011 11:43:37 GMT                                */
+/* Last update: Fri, 20 Jan 2012 22:42:16 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    410                                                          */
+/* Revision:    677                                                          */
+/*---------------------------------------------------------------------------*/
+/* Revision:    677                                                          */
+/* Updated:     Fri, 20 Jan 2012 22:42:16 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Ignoring 'First-chance' exception RPC_S_SERVER_UNAVAILABLE   */
 /*---------------------------------------------------------------------------*/
 /* Revision:    75                                                           */
 /* Updated:     Fri, 28 May 2010 22:41:25 GMT                                */
@@ -45,8 +50,15 @@
 #ifdef _SFX_USE_CUSTOM_EXCEPTIONS
 	UINT_PTR uSfxExceptionText = 0;
 	typedef UINT_PTR (* GetSfxExceptionText)(void);
+	#ifdef _SFX_USE_CUSTOM_EXCEPTIONS_VECTORED_WIN64
+		DWORD dwFirstChanceException = 0;
+	#endif // _SFX_USE_CUSTOM_EXCEPTIONS_VECTORED_WIN64
 	void ReportException( PEXCEPTION_RECORD rec )
 	{
+		#ifdef _SFX_USE_CUSTOM_EXCEPTIONS_VECTORED_WIN64
+			if( rec->ExceptionCode == dwFirstChanceException )
+				return;
+		#endif // _SFX_USE_CUSTOM_EXCEPTIONS_VECTORED_WIN64
 		if( uSfxExceptionText != 0 )
 		{
 			if( HIWORD(uSfxExceptionText) )
@@ -98,9 +110,17 @@
 	CCustomExceptions::CCustomExceptions() { AddVectoredExceptionHandler( 0, ExceptionHandler ); }
 	CCustomExceptions::~CCustomExceptions() { RemoveVectoredExceptionHandler( ExceptionHandler ); }
 
-	LONG NTAPI CCustomExceptions::ExceptionHandler( PEXCEPTION_POINTERS pExection )
+	LONG NTAPI CCustomExceptions::ExceptionHandler( PEXCEPTION_POINTERS pException )
 	{
-		ReportException( pExection->ExceptionRecord );
+		ReportException( pException->ExceptionRecord );
 		return NULL;
+	}
+
+	LPITEMIDLIST safe_SHBrowseForFolder( LPBROWSEINFO lpbi )
+	{
+		dwFirstChanceException = RPC_S_SERVER_UNAVAILABLE;
+		LPITEMIDLIST pidl = SHBrowseForFolder( lpbi );
+		dwFirstChanceException = 0;
+		return pidl;
 	}
 #endif // _SFX_USE_CUSTOM_EXCEPTIONS_VECTORED_WIN64

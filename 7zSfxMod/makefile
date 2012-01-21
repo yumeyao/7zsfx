@@ -62,6 +62,7 @@ CFLAGS= $(CFLAGS) -DSFXBUILD_OPTIONS3=$(SFXBUILD_OPTIONS3)
 !IFNDEF PLATFORM_BITS
 !IF "$(CPU)" == "x64" || "$(CPU)" == "amd64"
 PLATFORM_BITS=64
+RFLAGS=/d _WIN64
 !ELSE
 PLATFORM_BITS=32
 !ENDIF
@@ -92,7 +93,7 @@ CFLAGS = $(CFLAGS)			\
 	$(SFX_METHODS)			\
 
 LFLAGS = -nologo -opt:REF -opt:ICF -opt:NOWIN98 -subsystem:WINDOWS
-RFLAGS = -nologo
+RFLAGS = $(RFLAGS) -nologo
 
 !IF "$(CPU)" == "x64" || "$(CPU)" == "amd64"
 LFLAGS = $(LFLAGS) -machine:x64

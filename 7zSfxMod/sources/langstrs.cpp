@@ -31,12 +31,12 @@ const UINT SfxSecondaryLangId = 0x419;
 
 LANGSTRING SfxLangStrings[] = {
 // Версия модуля
-	{ STR_SFXVERSION,		"SFX module - Copyright (c) 2005-2011 Oleg Scherbakov\n"
+	{ STR_SFXVERSION,		"SFX module - Copyright (c) 2005-2012 Oleg Scherbakov\n"
 							"\t"VERSION_SFX_TEXT_EN"\n"
 							"\n7-Zip archiver - Copyright (c) 1999-2011 Igor Pavlov\n"
 							"\t"VERSION_7ZIP_TEXT_EN"\n"
 							"\nSupported methods and filters, build options:\n\t",
-						"SFX модуль - Copyright (c) 2005-2011 Олег Щербаков\n"
+						"SFX модуль - Copyright (c) 2005-2012 Олег Щербаков\n"
 						"\t"VERSION_SFX_TEXT_RU"\n"
 						"\nАрхиватор 7-Zip - Copyright (c) 1999-2011 Игорь Павлов\n"
 						"\t"VERSION_7ZIP_TEXT_RU"\n"
