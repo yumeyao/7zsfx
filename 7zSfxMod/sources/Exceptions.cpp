@@ -2,9 +2,9 @@
 /* File:        Exceptions.cpp                                               */
 /* Created:     Mon, 15 Mar 2010 11:26:32 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Thu, 28 Apr 2011 11:36:47 GMT                                */
+/* Last update: Fri, 20 Jan 2012 11:58:16 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    410                                                          */
+/* Revision:    677                                                          */
 /*---------------------------------------------------------------------------*/
 /* Revision:    75                                                           */
 /* Updated:     Fri, 28 May 2010 22:41:25 GMT                                */
@@ -43,8 +43,15 @@
 #endif // defined(_MSC_VER) && defined(_WIN32) && !defined(_DEBUG)
 
 #ifdef _SFX_USE_CUSTOM_EXCEPTIONS
+	#ifdef _SFX_USE_CUSTOM_EXCEPTIONS_VECTORED_WIN64
+		DWORD dwFirstChanceException = 0;
+	#endif // _SFX_USE_CUSTOM_EXCEPTIONS_VECTORED_WIN64
 	void ReportException( PEXCEPTION_RECORD rec )
 	{
+		#ifdef _SFX_USE_CUSTOM_EXCEPTIONS_VECTORED_WIN64
+			if( rec->ExceptionCode == dwFirstChanceException )
+				return;
+		#endif // _SFX_USE_CUSTOM_EXCEPTIONS_VECTORED_WIN64
 		WCHAR buf[1024];
 		LPCWSTR lpwszFormat = GetLanguageString( ERR_SFX_EXCEPTION );
 		wsprintf( buf, lpwszFormat, rec->ExceptionCode, rec->ExceptionAddress );
@@ -87,9 +94,18 @@
 	CCustomExceptions::CCustomExceptions() { AddVectoredExceptionHandler( 0, ExceptionHandler ); }
 	CCustomExceptions::~CCustomExceptions() { RemoveVectoredExceptionHandler( ExceptionHandler ); }
 
-	LONG NTAPI CCustomExceptions::ExceptionHandler( PEXCEPTION_POINTERS pExection )
+	LONG NTAPI CCustomExceptions::ExceptionHandler( PEXCEPTION_POINTERS pException )
 	{
-		ReportException( pExection->ExceptionRecord );
+		ReportException( pException->ExceptionRecord );
 		return NULL;
 	}
+
+	LPITEMIDLIST safe_SHBrowseForFolder( LPBROWSEINFO lpbi )
+	{
+		dwFirstChanceException = RPC_S_SERVER_UNAVAILABLE;
+		LPITEMIDLIST pidl = SHBrowseForFolder( lpbi );
+		dwFirstChanceException = 0;
+		return pidl;
+	}
+
 #endif // _SFX_USE_CUSTOM_EXCEPTIONS_VECTORED_WIN64

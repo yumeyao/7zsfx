@@ -794,7 +794,7 @@ void CSfxDialog_ExtractPath::BrowseExtractPath()
 	bi.hwndOwner = GetHwnd();
 	bi.ulFlags = BIF_RETURNONLYFSDIRS;
 	
-	LPITEMIDLIST pidl = SHBrowseForFolder( &bi );
+	LPITEMIDLIST pidl = safe_SHBrowseForFolder( &bi );
 
 	if( pidl == NULL )
 		return;

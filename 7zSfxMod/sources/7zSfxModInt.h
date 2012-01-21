@@ -2,9 +2,15 @@
 /* File:        7zSfxModInt.h                                                */
 /* Created:     Wed, 25 Jul 2007 09:54:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Sun, 06 Jun 2010 07:47:34 GMT                                */
+/* Last update: Fri, 20 Jan 2012 23:35:13 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    1047                                                         */
+/* Revision:    1641                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    1641                                                         */
+/* Updated:     Fri, 20 Jan 2012 23:34:46 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Add 'safe_SHBrowseForFolder' that ignore                     */
+/*              RPC_S_SERVER_UNAVAILABLE exception on x64 platform           */
 /*---------------------------------------------------------------------------*/
 /* Revision:    1047                                                         */
 /* Updated:     Sun, 06 Jun 2010 07:47:34 GMT                                */
@@ -181,5 +187,11 @@ UString MyGetEnvironmentVariable( LPCWSTR lpwszName );
 	#define SFX_EXECUTE_PLATFORM_I386		1
 	#define SFX_EXECUTE_PLATFORM_AMD64		2
 #endif // _SFX_USE_PREFIX_PLATFORM
+
+#if defined(_SFX_USE_CUSTOM_EXCEPTIONS) && defined(_WIN64)
+		LPITEMIDLIST safe_SHBrowseForFolder( LPBROWSEINFO lpbi );
+#else
+	#define safe_SHBrowseForFolder	SHBrowseForFolder
+#endif // defined(_SFX_USE_CUSTOM_EXCEPTIONS) && defined(_WIN64)
 
 #endif // _7ZSFXMODINT_H_INCLUDED_

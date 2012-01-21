@@ -8372,6 +8372,10 @@
 			RelativePath=".\changes_ru.txt"
 			>
 		</File>
+		<File
+			RelativePath=".\makefile"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

@@ -2,9 +2,14 @@
 /* File:        version.h                                                    */
 /* Created:     Fri, 29 Jul 2005 03:23:00 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Last update: Tue, 22 Nov 2011 10:33:33 GMT                                */
+/* Last update: Sat, 21 Jan 2012 00:14:24 GMT                                */
 /*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
-/* Revision:    2308                                                         */
+/* Revision:    2367                                                         */
+/*---------------------------------------------------------------------------*/
+/* Revision:    2367                                                         */
+/* Updated:     Fri, 20 Jan 2012 11:59:36 GMT                                */
+/*              by Oleg N. Scherbakov, mailto:oleg@7zsfx.info                */
+/* Description: Fix SHBrowseForFolder RPC exception on x64 platform          */
 /*---------------------------------------------------------------------------*/
 /* Revision:    2308                                                         */
 /* Updated:     Tue, 22 Nov 2011 10:33:33 GMT                                */
@@ -109,16 +114,16 @@
 /*						Correct 'x86' and 'x64' prefixes workflow			 */
 /*						for 'RunProgram'									 */
 /*---------------------------------------------------------------------------*/
-#define VERSION_H_REVISION 2308
+#define VERSION_H_REVISION 2367
 #define VERSION_REVISION VERSION_H_REVISION
 
 #ifndef _VERSION_H_INCLUDED_
 #define _VERSION_H_INCLUDED_
 
-#define VERSION_SFX_NUM_TEXT	"1.4.2"
-#define VERSION_SFX_NUM_BIN		1,4,2,VERSION_REVISION
-#define VERSION_SFX_DATE_EN		"November 22, 2011"
-#define VERSION_SFX_DATE_RU		"22 Ноября 2011 г."
+#define VERSION_SFX_NUM_TEXT	"1.4.3"
+#define VERSION_SFX_NUM_BIN		1,4,3,VERSION_REVISION
+#define VERSION_SFX_DATE_EN		"January 21, 2012"
+#define VERSION_SFX_DATE_RU		"21 Января 2012 г."
 #define VERSION_SFX_BRANCH_EN	""
 #define VERSION_SFX_BRANCH_RU	VERSION_SFX_BRANCH_EN
 

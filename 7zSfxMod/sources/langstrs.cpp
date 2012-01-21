@@ -33,8 +33,8 @@ LANGSTRING SfxLangStrings[] = {
 							"\nВерсия 7-Zip:\n\t"VERSION_7ZIP_TEXT_RU"\n"
 							"\nПоддерживаемые методы и фильтры:\n\t", NULL },
 // Copyright
-	{ STR_COPYRIGHT,		"Copyright (c) 2005-2010 Oleg Scherbakov\n",
-							"Copyright (c) 2005-2010 Олег Щербаков\n", NULL },
+	{ STR_COPYRIGHT,		"Copyright (c) 2005-2012 Oleg Scherbakov\n",
+							"Copyright (c) 2005-2012 Олег Щербаков\n", NULL },
 // Заголовок окон сообщений по умолчанию, отображаемое, если
 // модуль не смог определить имя exe-файла.
 // Если SFX модуль смог распознать свое имя (а это практически 100%), вместо него

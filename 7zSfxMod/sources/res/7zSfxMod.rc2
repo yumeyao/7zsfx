@@ -84,7 +84,7 @@ BEGIN
             VALUE "FileDescription", "7z Setup SFX (" PLATFORM_NAME ")"
             VALUE "FileVersion", VERSION_7ZSFX_TXT
             VALUE "InternalName", "7ZSfxMod"
-            VALUE "LegalCopyright", "Copyright © 2005-2010 Oleg N. Scherbakov"
+            VALUE "LegalCopyright", "Copyright © 2005-2012 Oleg N. Scherbakov"
             VALUE "OriginalFilename", "7ZSfxMod_" PLATFORM_NAME ".exe"
             VALUE "PrivateBuild", PRIVATEBUILD_EN
             VALUE "ProductName", "7-Zip SFX"
