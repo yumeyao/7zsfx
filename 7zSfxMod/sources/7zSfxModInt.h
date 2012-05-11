@@ -61,7 +61,9 @@ extern LPCWSTR	lpwszCancelPrompt;
 extern int		GUIMode;
 extern int		GUIFlags;
 extern int		MiscFlags;
+#ifdef _SFX_USE_LANG
 extern LANGID	idSfxLang;
+#endif
 extern int		ExtractDialogWidth;
 extern int		ExtractPathWidth;
 extern HWND		hwndExtractDlg;
@@ -183,9 +185,9 @@ UString MyGetEnvironmentVariable( LPCWSTR lpwszName );
 #endif // _USE_SFXVOLUMES
 
 #ifdef _SFX_USE_PREFIX_PLATFORM
-	#define SFX_EXECUTE_PLATFORM_ANY		0
-	#define SFX_EXECUTE_PLATFORM_I386		1
-	#define SFX_EXECUTE_PLATFORM_AMD64		2
+enum {  SFX_EXECUTE_PLATFORM_ANY,
+        SFX_EXECUTE_PLATFORM_I386,
+        SFX_EXECUTE_PLATFORM_AMD64};
 #endif // _SFX_USE_PREFIX_PLATFORM
 
 #if defined(_SFX_USE_CUSTOM_EXCEPTIONS) && defined(_WIN64)

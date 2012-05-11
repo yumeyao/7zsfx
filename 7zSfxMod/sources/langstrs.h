@@ -98,11 +98,9 @@ void FreeLanguageStrings();
 typedef struct tagLANGSTRING {
 	UINT	id;
 	LPCSTR	strPrimary;
-	LPCSTR	strSecondary;
 	LPWSTR	lpszUnicode;
 } LANGSTRING, * PLANGSTRING, * LPLANGSTRING;
 
-extern const UINT SfxSecondaryLangId;
 extern LANGSTRING SfxLangStrings[];
 
 

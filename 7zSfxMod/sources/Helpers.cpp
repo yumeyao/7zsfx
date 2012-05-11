@@ -888,7 +888,7 @@ HWND RecreateAsRichEdit( HWND hwndStatic )
 	RECT rcClient;
 	GetChildRect( hwndStatic, &rcClient );
 	HMENU hMenu = GetMenu( hwndStatic );
-	SetThreadLocale( 1049 );
+//	SetThreadLocale( 1049 );
 	HWND hwndRichEdit = ::CreateWindowExW( 0, RICHEDIT_CLASSW, L"",WS_VISIBLE|WS_CHILD|ES_READONLY|ES_MULTILINE,
 		rcClient.left, rcClient.top, rcClient.right-rcClient.left, rcClient.bottom-rcClient.top,
 		hwndParent, hMenu, NULL, NULL );
@@ -919,9 +919,9 @@ UString MyGetEnvironmentVariable( LPCWSTR lpwszName )
 }
 
 // Languages part
-LANGID idSfxLang = 0;
-
 #ifdef _SFX_USE_LANG
+
+LANGID idSfxLang = 0;
 
 LPVOID LoadInterfaceResource( LPCSTR lpType, LPCSTR lpName, size_t * lpSize )
 {
@@ -1067,23 +1067,17 @@ BOOL SetDlgControlImage( HWND hwndControl )
 
 #endif // _SFX_USE_IMAGES
 
+#ifdef _SFX_USE_LANG
 UINT GetUILanguage()
 {
 	if( idSfxLang == 0 )
 	{
 		idSfxLang = GetUserDefaultUILanguage();
-
-		if( PRIMARYLANGID(idSfxLang) != LANG_ENGLISH /* not english */ )
-			return idSfxLang;
-		if( GetSystemDefaultUILanguage() == MAKELANGID(LANG_ENGLISH,SUBLANG_DEFAULT) /* english */ &&
-				GetSystemDefaultLCID() == SfxSecondaryLangId )
-		{
-			idSfxLang = SfxSecondaryLangId;
-		}
 	}
 
 	return idSfxLang;
 }
+#endif
 
 LPCWSTR GetLanguageString( UINT id )
 {
@@ -1132,10 +1126,7 @@ LPCWSTR GetLanguageString( UINT id )
 		return SfxLangStrings[i].lpszUnicode;
 	
 	LPCSTR	lpszReturn = SfxLangStrings[i].strPrimary;
-	
-	if( SfxLangStrings[i].strSecondary != NULL && GetUILanguage() == SfxSecondaryLangId )
-		lpszReturn = SfxLangStrings[i].strSecondary;
-	
+
 	int nLength = lstrlenA(lpszReturn)+1;
 	SfxLangStrings[i].lpszUnicode = new WCHAR[nLength+2];
 	static UINT uACP = (UINT)-1;
@@ -1143,7 +1134,7 @@ LPCWSTR GetLanguageString( UINT id )
 	{
 		WCHAR acp_text[32];
 		uACP = CP_ACP;
-		if( GetLocaleInfo( idSfxLang, LOCALE_IDEFAULTANSICODEPAGE, acp_text, (sizeof(acp_text)/sizeof(acp_text[0]))-1 ) > 0 )
+		if( GetLocaleInfo( LOCALE_NEUTRAL, LOCALE_IDEFAULTANSICODEPAGE, acp_text, (sizeof(acp_text)/sizeof(acp_text[0]))-1 ) > 0 )
 			uACP = StringToLong( acp_text );
 	}
 	::MultiByteToWideChar( uACP, 0, lpszReturn, nLength, SfxLangStrings[i].lpszUnicode, nLength+1 );

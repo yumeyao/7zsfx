@@ -900,6 +900,7 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 
 	CreateLanguageSignature( idSfxLang, strSignatureBegin, strSignatureEnd );
 	if( ReadConfig( inStream, strSignatureBegin, strSignatureEnd, config ) == false )
+	// if fall through
 #endif // _SFX_USE_LANG
 		if( ReadConfig( inStream, kSignatureConfigStart, kSignatureConfigEnd, config ) == false )
 		{

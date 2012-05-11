@@ -53,6 +53,7 @@
 				Optimization="1"
 				InlineFunctionExpansion="1"
 				FavorSizeOrSpeed="2"
+				OmitFramePointers="true"
 				AdditionalIncludeDirectories="..\7-Zip\CPP\"
 				PreprocessorDefinitions="NDEBUG;COMPRESS_LZMA;COMPRESS_LZMA2;COMPRESS_DEFLATE;COMPRESS_PPMD;COMPRESS_BCJ;COMPRESS_BCJ2;WIN32;_WINDOWS;_MBCS;EXTRACT_ONLY;NO_REGISTRY;_SFX;_NO_CRYPTO;UNICODE;_USE_SFXTEST"
 				StringPooling="true"
@@ -74,7 +75,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				Culture="1049"
+				Culture="1033"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -184,7 +185,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				Culture="1049"
+				Culture="1033"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -268,8 +269,9 @@
 				Optimization="1"
 				InlineFunctionExpansion="1"
 				FavorSizeOrSpeed="2"
+				OmitFramePointers="true"
 				AdditionalIncludeDirectories="..\7-Zip\CPP\"
-				PreprocessorDefinitions="NDEBUG;COMPRESS_LZMA;COMPRESS_BCJ;COMPRESS_BCJ2;WIN32;_WINDOWS;_MBCS;EXTRACT_ONLY;NO_REGISTRY;_SFX;_NO_CRYPTO;UNICODE;_USE_SFXTEST"
+				PreprocessorDefinitions="NDEBUG;COMPRESS_LZMA;COMPRESS_BCJ;COMPRESS_BCJ2;WIN32;_WINDOWS;_MBCS;EXTRACT_ONLY;NO_REGISTRY;_SFX;_NO_CRYPTO;UNICODE;_SFXTOOLS"
 				StringPooling="true"
 				ExceptionHandling="0"
 				BufferSecurityCheck="false"
@@ -289,7 +291,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG,_SFXTOOLS"
-				Culture="1049"
+				Culture="1033"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -376,7 +378,7 @@
 				FavorSizeOrSpeed="2"
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="..\7-Zip\CPP\"
-				PreprocessorDefinitions="NDEBUG;COMPRESS_LZMA;COMPRESS_BCJ;COMPRESS_BCJ2;WIN32;_WINDOWS;_MBCS;EXTRACT_ONLY;NO_REGISTRY;_SFX;_NO_CRYPTO;UNICODE;_USE_SFXTEST"
+				PreprocessorDefinitions="NDEBUG;COMPRESS_LZMA;COMPRESS_BCJ;COMPRESS_BCJ2;WIN32;_WINDOWS;_MBCS;EXTRACT_ONLY;NO_REGISTRY;_SFX;_NO_CRYPTO;UNICODE;_SFXTOOLS"
 				StringPooling="true"
 				MinimalRebuild="false"
 				ExceptionHandling="0"
@@ -400,7 +402,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG,_SFXTOOLS"
-				Culture="1049"
+				Culture="1033"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -486,6 +488,7 @@
 				Optimization="1"
 				InlineFunctionExpansion="1"
 				FavorSizeOrSpeed="2"
+				OmitFramePointers="true"
 				AdditionalIncludeDirectories="..\7-Zip\CPP\"
 				PreprocessorDefinitions="NDEBUG;COMPRESS_LZMA;COMPRESS_LZMA2;COMPRESS_BCJ;COMPRESS_BCJ2;WIN32;_WINDOWS;_MBCS;EXTRACT_ONLY;NO_REGISTRY;_SFX;_NO_CRYPTO;UNICODE;_USE_SFXTEST"
 				StringPooling="true"
@@ -507,7 +510,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				Culture="1049"
+				Culture="1033"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -615,7 +618,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				Culture="1049"
+				Culture="1033"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -699,6 +702,7 @@
 				Optimization="1"
 				InlineFunctionExpansion="1"
 				FavorSizeOrSpeed="2"
+				OmitFramePointers="true"
 				AdditionalIncludeDirectories="..\7-Zip\CPP\"
 				PreprocessorDefinitions="NDEBUG;COMPRESS_LZMA;COMPRESS_BCJ;COMPRESS_BCJ2;WIN32;_WINDOWS;_MBCS;EXTRACT_ONLY;NO_REGISTRY;_SFX;_NO_CRYPTO;UNICODE;_USE_SFXTEST"
 				StringPooling="true"
@@ -720,7 +724,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				Culture="1049"
+				Culture="1033"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -831,7 +835,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				Culture="1049"
+				Culture="1033"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -936,7 +940,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
-				Culture="1049"
+				Culture="1033"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -1045,7 +1049,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG,_SFXTOOLS"
-				Culture="1049"
+				Culture="1033"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -1132,6 +1136,7 @@
 				Optimization="1"
 				InlineFunctionExpansion="1"
 				FavorSizeOrSpeed="2"
+				OmitFramePointers="true"
 				AdditionalIncludeDirectories="..\7-Zip\CPP\"
 				PreprocessorDefinitions="NDEBUG;COMPRESS_DEFLATE;WIN32;_WINDOWS;_MBCS;EXTRACT_ONLY;NO_REGISTRY;_SFX;_NO_CRYPTO;UNICODE;_USE_SFXTEST"
 				StringPooling="true"
@@ -1153,7 +1158,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				Culture="1049"
+				Culture="1033"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -1261,7 +1266,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				Culture="1049"
+				Culture="1033"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -1345,6 +1350,7 @@
 				Optimization="1"
 				InlineFunctionExpansion="1"
 				FavorSizeOrSpeed="2"
+				OmitFramePointers="true"
 				AdditionalIncludeDirectories="..\7-Zip\CPP\"
 				PreprocessorDefinitions="NDEBUG;COMPRESS_PPMD;WIN32;_WINDOWS;_MBCS;EXTRACT_ONLY;NO_REGISTRY;_SFX;_NO_CRYPTO;UNICODE;_USE_SFXTEST"
 				StringPooling="true"
@@ -1366,7 +1372,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				Culture="1049"
+				Culture="1033"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -1474,7 +1480,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				Culture="1049"
+				Culture="1033"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -2590,6 +2596,7 @@
 					<Tool
 						Name="VCResourceCompilerTool"
 						PreprocessorDefinitions="_WIN32"
+						Culture="1033"
 						AdditionalIncludeDirectories="sources"
 					/>
 				</FileConfiguration>
@@ -8364,18 +8371,6 @@
 				</File>
 			</Filter>
 		</Filter>
-		<File
-			RelativePath=".\changes_draft.txt"
-			>
-		</File>
-		<File
-			RelativePath=".\changes_ru.txt"
-			>
-		</File>
-		<File
-			RelativePath=".\makefile"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

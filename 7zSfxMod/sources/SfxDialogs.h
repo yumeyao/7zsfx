@@ -82,7 +82,12 @@ protected:
 	RECT	m_rcText;
 	BOOL	m_fUseIcon;
 	HFONT	m_hFont;
+#ifdef _SFXTOOLS
 	UINT	m_uDlgResourceId;
+#endif
+#ifdef _SFX_USE_RTF_CONTROL
+	bool	isRichText;
+#endif
 	static POINT	m_ptCenter;
 	static BYTE m_DialogsTemplate[];
 	static INT_PTR CALLBACK SfxDialogProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
@@ -97,13 +102,21 @@ protected:
 class CSfxDialog_BeginPromptClassic : public CSfxDialog
 {
 public:
-	CSfxDialog_BeginPromptClassic() { m_uDlgResourceId = IDD_BEGINPROMT_CLASSIC; };
+	CSfxDialog_BeginPromptClassic() { 
+#ifdef _SFXTOOLS
+		m_uDlgResourceId = IDD_BEGINPROMT_CLASSIC; 
+#endif
+	};
 };
 
 class CSfxDialog_ExtractPath : public CSfxDialog
 {
 public:
-	CSfxDialog_ExtractPath() { m_uDlgResourceId = IDD_EXTRACTPATH; };
+	CSfxDialog_ExtractPath() { 
+#ifdef _SFXTOOLS
+		m_uDlgResourceId = IDD_EXTRACTPATH;
+#endif
+};
 protected:
 	void			SetPathText();
 	virtual BOOL	OnInitDialog();
@@ -120,7 +133,11 @@ protected:
 class CSfxDialog_BeginPromptWithExtractPath : public CSfxDialog_ExtractPath
 {
 public:
-	CSfxDialog_BeginPromptWithExtractPath() { m_uDlgResourceId = IDD_BEGINPROMT_EXTRACTPATH; };
+	CSfxDialog_BeginPromptWithExtractPath() { 
+#ifdef _SFXTOOLS
+		m_uDlgResourceId = IDD_BEGINPROMT_EXTRACTPATH;
+#endif
+};
 protected:
 	virtual BOOL	OnInitDialog();
 	virtual void	ResizeAndPosition();
@@ -131,7 +148,11 @@ protected:
 class CSfxDialog_Extract : public CSfxDialog
 {
 public:
-	CSfxDialog_Extract() { m_uDlgResourceId = IDD_EXTRACT; };
+	CSfxDialog_Extract() { 
+#ifdef _SFXTOOLS
+		m_uDlgResourceId = IDD_EXTRACT; 
+#endif
+	};
 #ifdef _SFX_USE_WIN7_PROGRESSBAR
 	void SetTaskbarState( TBPFLAG tbpFlags );
 #endif // _SFX_USE_WIN7_PROGRESSBAR
@@ -161,7 +182,11 @@ protected:
 class CSfxDialog_FinishMessage : public CSfxDialog_WithoutCancelPrompt
 {
 public:
-	CSfxDialog_FinishMessage() { m_uDlgResourceId = IDD_FINISHMESSAGE; };
+	CSfxDialog_FinishMessage() {
+#ifdef _SFXTOOLS
+		m_uDlgResourceId = IDD_FINISHMESSAGE; 
+#endif
+	};
 protected:
 	void CreateButtonText( UString& str );
 	virtual BOOL OnInitDialog();
@@ -195,7 +220,11 @@ protected:
 class CSfxDialog_HelpText : public CSfxDialog_WithoutCancelPrompt
 {
 public:
-	CSfxDialog_HelpText() { m_uDlgResourceId = IDD_HELPTEXT; };
+	CSfxDialog_HelpText() { 
+#ifdef _SFXTOOLS
+		m_uDlgResourceId = IDD_HELPTEXT;
+#endif
+	};
 private:
 	int dummy;
 };

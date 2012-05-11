@@ -124,12 +124,3 @@ END
 	DLG_7ZSFXTOOLS_END_SIMPLE("HelpText",IDCANCEL,"%7zSfxString25%")
 #endif
 
-
-//////////////////////////////////////////////////////////////////////////////
-// Russian resources
-//////////////////////////////////////////////////////////////////////////////
-LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
-
-#ifdef _SFXTOOLS
-	IDC_BANNER              IMAGES  DISCARDABLE     "res\banner_ru.gif"
-#endif

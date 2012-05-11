@@ -90,7 +90,9 @@ CSfxDialog::CSfxDialog()
 	m_uType = 0;
 	m_lpwszCaption = m_lpwszText = NULL;
 	m_nCaptionWidthExtra = 24;
+#ifdef _SFXTOOLS
 	m_uDlgResourceId = 0;
+#endif
 	if( m_ptCenter.x == 0 && m_ptCenter.y == 0 )
 	{
 		m_ptCenter.x = ::GetSystemMetrics( SM_CXFULLSCREEN )/2;
@@ -293,6 +295,7 @@ BOOL CSfxDialog::OnInitDialog()
 		break;
 	}
 
+#ifdef _SFXTOOLS
 	if( m_uDlgResourceId != 0 )
 	{
 		HWND hwndChild=GetWindow(m_hWnd,GW_CHILD);
@@ -304,7 +307,7 @@ BOOL CSfxDialog::OnInitDialog()
 
 #ifdef _SFX_USE_RTF_CONTROL
 		{
-			hwndChild=GetWindow(m_hWnd,GW_CHILD);
+			HWND hwndChild=GetWindow(m_hWnd,GW_CHILD);
 			while( hwndChild != NULL )
 			{
 				if( RecreateAsRichEdit( hwndChild ) != NULL )
@@ -329,6 +332,7 @@ BOOL CSfxDialog::OnInitDialog()
 		SetDialogPos();
 		return FALSE;
 	}
+#endif
 	
 	// icon
 	HICON	hIcon = NULL;
@@ -400,7 +404,9 @@ INT_PTR CSfxDialog::Show( UINT uType, LPCWSTR lpwszCaption, LPCWSTR lpwszText, H
 
 BOOL CSfxDialog::ShowControl( int nControlID, BOOL fShow )
 {
+#ifdef _SFXTOOLS
 	if( m_uDlgResourceId == 0 )
+#endif
 	{
 		HWND hwndContfol = GetDlgItem( nControlID );
 		if( hwndContfol == NULL )
@@ -591,6 +597,7 @@ INT_PTR CSfxDialog::ShowImpl( HWND hwndParent )
 	// new
 	HMODULE hRsrcModule = GetModuleHandle(NULL);
 	LPCDLGTEMPLATE lpDlgTemplate = NULL;
+#ifdef _SFXTOOLS
 	if( m_uDlgResourceId != 0 )
 	{
 #ifdef _SFX_USE_LANG
@@ -609,9 +616,12 @@ INT_PTR CSfxDialog::ShowImpl( HWND hwndParent )
 	}
 	if( lpDlgTemplate == NULL )
 	{
+#endif
 		lpDlgTemplate = (LPCDLGTEMPLATE)LocalDlgTemplate;
+#ifdef _SFXTOOLS
 		m_uDlgResourceId = 0;
 	}
+#endif
 	return DialogBoxIndirectParam( hRsrcModule, lpDlgTemplate, hwndParent, SfxDialogProc, (LPARAM)this );
 }
 
@@ -866,7 +876,9 @@ BOOL CSfxDialog_FinishMessage::OnInitDialog()
 	{
 		UString str;
 		CreateButtonText( str );
+#ifdef _SFXTOOLS
 		if( m_uDlgResourceId == 0 )
+#endif
 			ResizeAndPositionButton( SDC_BUTTON1, str );
 		SetTimer( GetHwnd(), 1, 1000, NULL );
 	}
@@ -1266,7 +1278,12 @@ void SfxErrorDialog( BOOL fUseLastError, UINT idFormat, ... )
 		LPWSTR lpMsgBuf;
 		DWORD dwLastError = ::GetLastError();
 		if( ::FormatMessage( FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-							 NULL, dwLastError, idSfxLang,
+							 NULL, dwLastError, 
+#ifdef _SFX_USE_LANG
+							 idSfxLang,
+#else
+							 0,
+#endif
 							 (LPWSTR)&lpMsgBuf, 0, &va ) != 0 ||
 			::FormatMessage( FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
 							 NULL, dwLastError, 0,
