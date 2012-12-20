@@ -175,7 +175,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
-				Detect64BitPortabilityProblems="true"
 				DisableSpecificWarnings="4530"
 				OmitDefaultLibName="true"
 			/>
@@ -202,7 +201,6 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				OptimizeForWindows98="1"
 				TargetMachine="17"
 			/>
 			<Tool
@@ -391,7 +389,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
-				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="0"
 				DisableSpecificWarnings="4530"
 				OmitDefaultLibName="true"
@@ -421,7 +418,6 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				OptimizeForWindows98="1"
 				TargetMachine="17"
 			/>
 			<Tool
@@ -608,7 +604,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
-				Detect64BitPortabilityProblems="true"
 				DisableSpecificWarnings="4530"
 				OmitDefaultLibName="true"
 			/>
@@ -635,7 +630,6 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				OptimizeForWindows98="1"
 				TargetMachine="17"
 			/>
 			<Tool
@@ -825,7 +819,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
-				Detect64BitPortabilityProblems="true"
 				DisableSpecificWarnings="4530"
 				OmitDefaultLibName="true"
 			/>
@@ -852,7 +845,6 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				OptimizeForWindows98="1"
 				TargetMachine="17"
 			/>
 			<Tool
@@ -1039,7 +1031,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
-				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4530"
 			/>
@@ -1069,7 +1060,6 @@
 				HeapReserveSize="16777216"
 				OptimizeReferences="0"
 				EnableCOMDATFolding="0"
-				OptimizeForWindows98="1"
 				TargetMachine="17"
 			/>
 			<Tool
@@ -1256,7 +1246,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
-				Detect64BitPortabilityProblems="true"
 				DisableSpecificWarnings="4530"
 				OmitDefaultLibName="true"
 			/>
@@ -1283,7 +1272,6 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				OptimizeForWindows98="1"
 				TargetMachine="17"
 			/>
 			<Tool
@@ -1470,7 +1458,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
-				Detect64BitPortabilityProblems="true"
 				DisableSpecificWarnings="4530"
 				OmitDefaultLibName="true"
 			/>
@@ -1497,7 +1484,6 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				OptimizeForWindows98="1"
 				TargetMachine="17"
 			/>
 			<Tool

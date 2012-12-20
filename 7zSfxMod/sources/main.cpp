@@ -730,7 +730,7 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 {
 	_set_new_handler( sfx_new_handler );
 	CreateDummyWindow();
-
+#ifdef _SFX_CHECK_OS_VERSION
 	OSVERSIONINFO versionInfo;
 	versionInfo.dwOSVersionInfoSize = sizeof(versionInfo);
 	if( ::GetVersionEx(&versionInfo) == FALSE ||
@@ -740,6 +740,7 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 		::MessageBoxA( NULL, "Sorry, this program requires Microsoft Windows 2000 or later.", "7-Zip SFX", MB_OK|MB_ICONSTOP );
 		return ERRC_PLATFORM;
 	}
+#endif
 
 	kSignatureConfigStart[0] = kSignatureConfigEnd[0] = ';';
 
@@ -797,8 +798,8 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 #endif // _SFX_FEATURES_TEST
 	strModulePathName.ReleaseBuffer();
 
-	if( (lpwszValue = IsSfxSwitch( str, CMDLINE_SFXTEST )) != NULL )
 #ifdef _SFX_USE_TEST
+	if( (lpwszValue = IsSfxSwitch( str, CMDLINE_SFXTEST )) != NULL )
 	{
 		if( lpwszValue[0] != L':' )
 			return ERRC_SFXTEST;
@@ -859,10 +860,6 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 			if( nTestModeType != TMT_ARCHIVE )
 				strModulePathName = tmpstr;
 		}
-	}
-#else
-	{
-		return ERRC_SFXTEST;
 	}
 #endif // _SFX_USE_TEST
 
@@ -952,6 +949,9 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 	SetConfigVariables( pairs );
 	// parse command line
 	str--;
+#ifdef _SFX_PARAMS_FIRST_RUN_OVERRIDE
+	bool fParamsFirstRunOverride = false;
+#endif
 	while( true )
 	{
 		while( ((unsigned)*str) > L' ' ) str++;
@@ -959,7 +959,12 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 		if( str[0] != L'/' && str[0] != L'-' )
 			break;
 		// '-!'
+#ifdef _SFX_PARAMS_FIRST_RUN_OVERRIDE
+		if( str[1] == L'!' && (((unsigned)str[2]) <= L' '
+			|| ( str[2] == L'!' && ((unsigned)str[3]) <= L' ' && (fParamsFirstRunOverride = true))))
+#else
 		if( str[1] == L'!' && ((unsigned)str[2]) <= L' ' )
+#endif
 		{
 			str += 2;
 			SKIP_WHITESPACES_W( str );
@@ -1249,6 +1254,9 @@ Loc_BeginPrompt:
 			#ifdef _SFX_USE_PREFIX_PLATFORM
 				int	nPlatform = SFX_EXECUTE_PLATFORM_ANY;
 			#endif // _SFX_USE_PREFIX_PLATFORM
+			#ifdef _SFX_USE_PREFIX_WORKINGDIR
+				LPWSTR lpwszWorkingDir = NULL;
+			#endif // _SFX_USE_PREFIX_WORKINGDIR
 			bool	fUseHidcon = false;
 			bool	fUseNoWait = false;
 			UString	ustrRunProgram;
@@ -1346,6 +1354,31 @@ Loc_BeginPrompt:
 					continue;
 				}
 #endif // _SFX_USE_PREFIX_PLATFORM
+#ifdef _SFX_USE_PREFIX_WORKINGDIR
+				if( (lpwszTmp = CheckPrefix( lpwszValue, L"dir", CPF_NONE )) != NULL )
+				{
+					lpwszValue = lpwszTmp;
+					bool fInQuotes = false;
+					while (*lpwszTmp != L':' || (*lpwszTmp && fInQuotes))
+					{
+						if (*lpwszTmp == L'\"')
+							fInQuotes = !fInQuotes;
+						lpwszTmp++;
+					}
+					if (*lpwszTmp == L':')
+					{
+						size_t nSize = (size_t)lpwszTmp - (size_t)lpwszValue;
+						lpwszWorkingDir = (LPWSTR)malloc(nSize + 1 * sizeof(*lpwszWorkingDir));
+						if (lpwszWorkingDir != NULL)
+						{
+							memcpy(lpwszWorkingDir, lpwszValue, nSize);
+							lpwszWorkingDir[nSize/sizeof(*lpwszWorkingDir)] = L'\0';
+						}
+						lpwszValue = lpwszTmp + 1;
+					}
+					continue;
+				}
+#endif // _SFX_USE_PREFIX_WORKINGDIR
 				break;
 			}
 			
@@ -1374,6 +1407,14 @@ Loc_BeginPrompt:
 			memset( &execInfo, 0, sizeof(execInfo) );
 			execInfo.cbSize = sizeof(execInfo);
 			execInfo.lpDirectory = extractPath;
+#ifdef _SFX_USE_PREFIX_WORKINGDIR
+			if (lpwszWorkingDir != NULL)
+			{
+				::SetCurrentDirectoryW(extractPath);
+				::SetCurrentDirectoryW(lpwszWorkingDir);
+				execInfo.lpDirectory = NULL;
+			}
+#endif // _SFX_USE_PREFIX_WORKINGDIR
 	
 			execInfo.fMask = SEE_MASK_NOCLOSEPROCESS | SEE_MASK_FLAG_DDEWAIT | SEE_MASK_DOENVSUBST | SEE_MASK_FLAG_NO_UI;
 			execInfo.nShow = SW_SHOWNORMAL;
@@ -1402,7 +1443,15 @@ Loc_BeginPrompt:
 				{
 					fileParams += L' ';
 					fileParams += str;
-					while( *str != L'\0' ) str++;
+#ifdef _SFX_PARAMS_FIRST_RUN_OVERRIDE
+					if (
+#ifdef _SFX_PARAMETER_FOR_ONLY_FIRST_RUN
+						!
+#endif
+						fParamsFirstRunOverride
+						)
+						while( *str != L'\0' ) str++;
+#endif
 				}
 				ReplaceVariablesEx( fileParams );
 				if( fileParams.IsEmpty() == false )
@@ -1440,10 +1489,12 @@ Loc_BeginPrompt:
 		// create shortcuts
 #define SH_TEST
 		SetEnvironment();
+#ifdef _SFX_USE_PROCESSPOSTEXECUTE
 		ProcessPostExecuteSub( PostExecute_Shortcut, pairs, CFG_SHORTCUT, lpwszBatchInstall, ShortcutDefault );
 
 		::SetCurrentDirectory( strSfxFolder );
 		ProcessPostExecuteSub( PostExecute_Delete, pairs, CFG_DELETE, lpwszBatchInstall, DeleteDefault );
+#endif
 
 		SfxCleanup();
 #ifdef _SFX_USE_TEST

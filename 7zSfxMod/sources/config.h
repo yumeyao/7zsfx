@@ -51,7 +51,12 @@
 
 //#define _SFX_USE_TEST					/* internal use */
 //#define _SFX_USE_LANG					/* use -sfxlang:XXXX command line switch */
+//#define _SFX_USE_PROCESSPOSTEXECUTE		/* used for creating shortcuts or deleting the sfx exe. */
 #define _SFX_USE_PREFIX_PLATFORM		/* use x86 & x64 prefixes for execution parameters */
+#define _SFX_USE_PREFIX_WORKINGDIR		/* use working directory prefix */
+//#define _SFX_PARAMS_FOR_ONLY_FIRST_RUN	/* Parameters are only for first run */
+#define _SFX_PARAMS_FIRST_RUN_OVERRIDE  /* User -!! to override(switch) first run param settings */
+
 #define _SFX_USE_CUSTOM_EXCEPTIONS		/* use custom realization of exceptions handlers */
 										/* see realization in 'config.cpp' */
 
