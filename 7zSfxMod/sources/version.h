@@ -114,7 +114,7 @@
 /*						Correct 'x86' and 'x64' prefixes workflow			 */
 /*						for 'RunProgram'									 */
 /*---------------------------------------------------------------------------*/
-#define VERSION_H_REVISION 0000
+#define VERSION_H_REVISION 0035
 #define VERSION_REVISION VERSION_H_REVISION
 
 #ifndef _VERSION_H_INCLUDED_
@@ -122,7 +122,7 @@
 
 #define VERSION_SFX_NUM_TEXT	"1.4.5"
 #define VERSION_SFX_NUM_BIN		1,4,5,VERSION_REVISION
-#define VERSION_SFX_DATE_EN		"December 21, 2012"
+#define VERSION_SFX_DATE_EN		"January 25, 2013"
 #define VERSION_SFX_BRANCH_EN	""
 
 #define VERSION_7ZIP_NUM_TEXT	"9.20"

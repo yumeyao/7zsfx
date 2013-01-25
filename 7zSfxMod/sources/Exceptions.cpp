@@ -74,13 +74,6 @@
 #endif // _SFX_USE_CUSTOM_EXCEPTIONS_I386
 
 #ifdef _SFX_USE_CUSTOM_EXCEPTIONS_VECTORED_WIN64
-	/* Fix Win XP/2003 x64 msvcrt.dll '__CxxFrameHandler3' link error */
-	/* YumeYao msfn.org http://www.msfn.org/board/topic/101552-7z-sfx-modified-module-and-tools/page__view__findpost__p__938387 */
-	/* Plastikat oszone.net http://forum.oszone.net/post-1661544-1155.html */
-	extern "C" void *__CxxFrameHandler( PEXCEPTION_RECORD rec, void * frame, PCONTEXT context, void ** dispatch );
-	extern "C" void __CxxFrameHandler3( PEXCEPTION_RECORD rec, void * frame, PCONTEXT context, void ** dispatch )
-		{ __CxxFrameHandler( rec, frame, context, dispatch ); }
-
 	class CCustomExceptions
 	{
 	public:

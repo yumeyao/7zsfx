@@ -3,25 +3,34 @@
 
 include 7zAsm.asm
 
+ifndef x64
+    .386
+endif
 MY_ASM_START
 
 rD   equ  r2
 rN   equ  r7
 
+ifndef x64
+g_CrcTable EQU _g_CrcTable
+endif
+
+extrn g_CrcTable :near
+
 ifdef x64
     num_VAR     equ r8
-    table_VAR   equ r9
+    table_VAR   equ r5
 else
     data_size   equ (REG_SIZE * 5)
-    crc_table   equ (REG_SIZE + data_size)
-    num_VAR     equ [r4 + data_size]
-    table_VAR   equ [r4 + crc_table]
+    num_VAR     equ r5
+    num_VAR_Arg equ [r4 + data_size]
+    table_VAR   equ offset g_CrcTable
 endif
 
 SRCDAT  equ  rN + rD + 4 *
 
 CRC macro op:req, dest:req, src:req, t:req
-    op      dest, DWORD PTR [r5 + src * 4 + 0400h * t]
+    op      dest, DWORD PTR [src * 4 + 0400h * t + table_VAR]
 endm
 
 CRC_XOR macro dest:req, src:req, t:req
@@ -39,17 +48,23 @@ CRC1b macro
     xor     x6, x3
     shr     x0, 8
     CRC     xor, x0, r6, 0
-    dec     rN
+    sub     rN, 1
 endm
 
-MY_PROLOG macro crc_end:req
+MY_PROLOG macro crc_end:req, crc_end_early:req
     MY_PUSH_4_REGS
     
     mov     x0, x1
-    mov     rN, num_VAR
-    mov     r5, table_VAR
+ifndef x64
+    mov     rN, num_VAR_Arg
+    mov     num_VAR, rN
     test    rN, rN
-    jz      crc_end
+else
+    lea     r5, g_CrcTable
+    mov     rN, num_VAR
+    test    num_VAR, num_VAR
+endif
+    jz      crc_end_early
   @@:
     test    rD, 7
     jz      @F
@@ -66,24 +81,27 @@ MY_PROLOG macro crc_end:req
     xor     x0, [SRCDAT 0]
 endm
 
-MY_EPILOG macro crc_end:req
+MY_EPILOG macro crc_end:req, crc_end_early:req
     xor     x0, [SRCDAT 0]
     mov     rD, rN
     mov     rN, num_VAR
     sub     rN, rD
   crc_end:
     test    rN, rN
-    jz      @F
-    CRC1b
-    jmp     crc_end
+    jz      crc_end_early
   @@:
+    CRC1b
+    jnz     @B
+  crc_end_early:
     MY_POP_4_REGS
 endm
 
-MY_PROC CrcUpdateT8, 4
-    MY_PROLOG crc_end_8
+MY_PROC CrcUpdateT8, 3
+    MY_PROLOG crc_end_8, crc_end_8_early
     mov     x1, [SRCDAT 1]
+ifndef x64
     align 16
+endif
   main_loop_8:
     mov     x6, [SRCDAT 2]
     movzx   x3, x1_L
@@ -110,12 +128,18 @@ MY_PROC CrcUpdateT8, 4
     add     rD, 8
     jnz     main_loop_8
 
-    MY_EPILOG crc_end_8
+    MY_EPILOG crc_end_8, crc_end_8_early
 MY_ENDP
 
-MY_PROC CrcUpdateT4, 4
-    MY_PROLOG crc_end_4
+ifndef x64
+db 'Y', 'a', 'o'
+endif
+
+MY_PROC CrcUpdateT4, 3
+    MY_PROLOG crc_end_4, crc_end_4_early
+ifndef x64
     align 16
+endif
   main_loop_4:
     movzx   x1, x0_L
     movzx   x3, x0_H
@@ -141,7 +165,7 @@ MY_PROC CrcUpdateT4, 4
     add     rD, 8
     jnz     main_loop_4
 
-    MY_EPILOG crc_end_4
+    MY_EPILOG crc_end_4, crc_end_4_early
 MY_ENDP
 
 end
