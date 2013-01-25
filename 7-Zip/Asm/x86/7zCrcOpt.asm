@@ -96,43 +96,8 @@ MY_EPILOG macro crc_end:req, crc_end_early:req
     MY_POP_4_REGS
 endm
 
-MY_PROC CrcUpdateT8, 3
-    MY_PROLOG crc_end_8, crc_end_8_early
-    mov     x1, [SRCDAT 1]
 ifndef x64
-    align 16
-endif
-  main_loop_8:
-    mov     x6, [SRCDAT 2]
-    movzx   x3, x1_L
-    CRC_XOR x6, r3, 3
-    movzx   x3, x1_H
-    CRC_XOR x6, r3, 2
-    shr     x1, 16
-    movzx   x3, x1_L
-    movzx   x1, x1_H
-    CRC_XOR x6, r3, 1
-    movzx   x3, x0_L
-    CRC_XOR x6, r1, 0
-
-    mov     x1, [SRCDAT 3]
-    CRC_XOR x6, r3, 7
-    movzx   x3, x0_H
-    shr     x0, 16
-    CRC_XOR x6, r3, 6
-    movzx   x3, x0_L
-    CRC_XOR x6, r3, 5
-    movzx   x3, x0_H
-    CRC_MOV x0, r3, 4
-    xor     x0, x6
-    add     rD, 8
-    jnz     main_loop_8
-
-    MY_EPILOG crc_end_8, crc_end_8_early
-MY_ENDP
-
-ifndef x64
-db 'Y', 'a', 'o'
+db 'Y', 'u', 'm', 'e'
 endif
 
 MY_PROC CrcUpdateT4, 3
